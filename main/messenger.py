@@ -41,7 +41,7 @@ class Messenger:
         self.logger.info(message)
         self.number += 1
         if self.number > self.max_messages:
-            self.message_history = self.message_history[(self.max_messages - self.number):]
+            self.message_history = self.message_history[(self.number - self.max_messages):]
             self.number = self.max_messages
 
     def get_latest(self, count=-1):
