@@ -1,10 +1,10 @@
 from main.constants import *
 from creature.creature import Creature
+from main.messenger import *
 
-import logging
-logger = logging.getLogger(LOG_NAME)
+messenger = get_messenger()
 
 class Player(Creature):
     def dies(self):
-        logger.info('You die.')
-        logger.info('Press any key to continue.')
+        messenger.add('You die.')
+        messenger.add('Press any key to continue.')

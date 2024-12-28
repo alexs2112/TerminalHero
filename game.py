@@ -2,24 +2,20 @@
 
 import pygame
 from main.constants import *
-from screen.start_screen import StartScreen
-
-def setup_logger():
-    # https://docs.python.org/3/howto/logging.html#configuring-logging
-    import logging
-    logger = logging.getLogger(LOG_NAME)
-    logger.setLevel(logging.DEBUG)
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('[%(levelname)s] %(message)s')
-    ch.setFormatter(formatter)
-    logger.addHandler(ch)
+from main.messenger import get_messenger
+import argparse
 
 class Game:
-    def __init__(self):
+    def __init__(self, args):
         pygame.init()        
-        pygame.display.set_caption("Eee")
+        pygame.display.set_caption("Terminal Hero")
         self.canvas = pygame.display.set_mode((800,480))
+        
+        self.args = args
+        self.messenger = get_messenger(args)
+
+        # This needs to be called after messenger is created or else it will be empty
+        from screen.start_screen import StartScreen
         self.screen = StartScreen(self.canvas) 
 
     def game_loop(self):
@@ -37,7 +33,10 @@ class Game:
             pygame.display.update()
 
 if __name__ == "__main__":
-    setup_logger()
-    game = Game()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v', '--verbose', action='store_true', help='log debug and info statements')
+    args = parser.parse_args()
+
+    game = Game(args)
     game.game_loop()
     

@@ -1,9 +1,8 @@
 import pygame
 from main.constants import *
+from main.messenger import *
 
-import logging
-logger = logging.getLogger(LOG_NAME)
-
+messenger = get_messenger()
 sprite_sheet = pygame.image.load('resources/onebit.png')
 
 class Creature:
@@ -30,7 +29,7 @@ class Creature:
             target.armor -= armor_dam
             dam -= armor_dam
         target.hp -= dam
-        logger.info(f"{self.name} attacks {target.name} for {total_dam} damage.")
+        messenger.add(f"{self.name} attacks {target.name} for {total_dam} damage.")
         if target.hp < 0:
             target.dies()
     
@@ -38,7 +37,7 @@ class Creature:
         return self.hp > 0
 
     def dies(self):
-        logger.info(f"{self.name} dies.")
+        messenger.add(f"{self.name} dies.")
 
     def draw_sprite(self, surface, x, y):
         # This seems terribly inefficient
