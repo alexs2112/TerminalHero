@@ -90,7 +90,7 @@ class CombatScreen(Screen):
 
         segment_width = SCREEN_WIDTH / 2 / (len(self.allies) + 1)
         x = segment_width
-        y = SCREEN_HEIGHT / 2 - 60
+        y = SCREEN_HEIGHT / 2 - 72
         for i in range(len(self.allies)):
             self.draw_creature(self.allies[i], ALLY_KEYS[i], x, y)
             x += segment_width
@@ -123,11 +123,3 @@ class CombatScreen(Screen):
         full_health_rect = (x - 40, y, 80, 8)
         pygame.draw.rect(self.canvas, DIMGRAY, full_health_rect)
         pygame.draw.rect(self.canvas, RED, health_rect)
-
-    def draw_messages(self):
-        messages = messenger.get_latest()
-        x, y = 16, SCREEN_HEIGHT - 16 - (len(messages) * FONT_HEIGHT - 2)
-        for m in messages:
-            text = self.font.render(m, False, WHITE)
-            self.canvas.blit(text, (x, y))
-            y += (FONT_HEIGHT + 2)

@@ -22,7 +22,7 @@ class Creature:
             self.ai.take_turn(allies, enemies)
 
     def attack(self, target):
-        dam = self.damage - target.defense
+        dam = max(self.damage - target.defense, 0)
         total_dam = dam
         if target.armor > 0:
             armor_dam = min(target.armor, dam)
@@ -30,7 +30,7 @@ class Creature:
             dam -= armor_dam
         target.hp -= dam
         messenger.add(f"{self.name} attacks {target.name} for {total_dam} damage.")
-        if target.hp < 0:
+        if target.hp <= 0:
             target.dies()
 
     def is_alive(self):
