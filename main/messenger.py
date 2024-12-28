@@ -32,6 +32,11 @@ class Messenger:
         logger.addHandler(ch)
         return logger
 
+    def clear(self):
+        self.message_history.clear()
+        self.number = 0
+        self.clear_latest()
+
     def clear_latest(self):
         self.latest_messages.clear()
 
