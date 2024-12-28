@@ -1,22 +1,21 @@
 #!/bin/python3
 
-import pygame
+import argparse, pygame
 from main.constants import *
 from main.messenger import get_messenger
-import argparse
 
 class Game:
     def __init__(self, args):
-        pygame.init()        
+        pygame.init()
         pygame.display.set_caption("Terminal Hero")
-        self.canvas = pygame.display.set_mode((800,480))
-        
+        self.canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
         self.args = args
         self.messenger = get_messenger(args)
 
         # This needs to be called after messenger is created or else it will be empty
         from screen.start_screen import StartScreen
-        self.screen = StartScreen(self.canvas) 
+        self.screen = StartScreen(self.canvas)
 
     def game_loop(self):
         while True:

@@ -2,10 +2,8 @@ import pygame
 from screen.screen import Screen
 from screen.game_over_screen import GameOverScreen
 from main.constants import *
-from creature.creature import Creature
-from creature.player import Player
-from creature.ai.basic_ai import BasicAI
 from main.messenger import *
+from creature.creature_factory import CreatureFactory
 
 messenger = get_messenger()
 
@@ -21,16 +19,15 @@ class CombatScreen(Screen):
         self.test_setup()
 
     def test_setup(self):
-        self.player = Player("Player", (1,1,12,12), 10, 2, 5, 5)
+        self.creature_factory = CreatureFactory()
+        self.player = self.creature_factory.new_player()
         self.allies.append(self.player)
 
         self.enemies = [
-            Creature("Goblin", (1,27,12,12), 5, 1, 2, 3),
-            Creature("Kobold", (1,40,12,12), 3, 1, 2, 3),
-            Creature("Harold", (1,53,12,12), 4, 4, 2, 3)
+            self.creature_factory.new_goblin(),
+            self.creature_factory.new_kobold(),
+            self.creature_factory.new_harold()
         ]
-        for e in self.enemies:
-            e.ai = BasicAI(e)
 
     def check_events(self, events):
         # Don't let the player do multiple things at once
@@ -53,7 +50,7 @@ class CombatScreen(Screen):
         # Enemies take their turns after the player
         if turn_taken:
             self.enemy_turns()
-        
+
         # Remove creatures that have died
         to_remove = []
         for i in range(len(self.allies)):
@@ -83,7 +80,7 @@ class CombatScreen(Screen):
 
     def enemy_turns(self):
         for e in self.enemies:
-            if (e.is_alive()):
+            if e.is_alive():
                 e.take_turn(self.allies, self.enemies)
 
     def display(self):

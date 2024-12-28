@@ -4,9 +4,6 @@ from screen.combat_screen import CombatScreen
 from main.constants import *
 
 class StartScreen(Screen):
-    def __init__(self, canvas):
-        super().__init__(canvas)
-
     def check_events(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:

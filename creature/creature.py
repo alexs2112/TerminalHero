@@ -32,7 +32,7 @@ class Creature:
         messenger.add(f"{self.name} attacks {target.name} for {total_dam} damage.")
         if target.hp < 0:
             target.dies()
-    
+
     def is_alive(self):
         return self.hp > 0
 

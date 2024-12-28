@@ -9,8 +9,8 @@ class Screen:
     def load_resources(self):
         self.font = pygame.font.Font(FONT_PATH, FONT_SIZE)
 
-    def check_events(self):
+    def check_events(self, _):
         return self
-    
+
     def display(self):
         pass
