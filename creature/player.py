@@ -1,6 +1,6 @@
 from main.constants import *
-from creature.creature import Creature
 from main.messenger import *
+from creature.creature import Creature
 
 messenger = get_messenger()
 

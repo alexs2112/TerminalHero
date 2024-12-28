@@ -8,6 +8,7 @@ class GameOverScreen(Screen):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return None
+                # pylint: disable=import-outside-toplevel
                 from screen.start_screen import StartScreen
                 return StartScreen(self.canvas)
         return self

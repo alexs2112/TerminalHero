@@ -1,19 +1,21 @@
 #!/bin/python3
 
-import argparse, pygame
+import argparse
+import pygame
 from main.constants import *
 from main.messenger import get_messenger
 
 class Game:
-    def __init__(self, args):
+    def __init__(self, args_list):
         pygame.init()
         pygame.display.set_caption("Terminal Hero")
         self.canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-        self.args = args
-        self.messenger = get_messenger(args)
+        self.args = args_list
+        self.messenger = get_messenger(self.args)
 
         # This needs to be called after messenger is created or else it will be empty
+        # pylint: disable=import-outside-toplevel
         from screen.start_screen import StartScreen
         self.screen = StartScreen(self.canvas)
 

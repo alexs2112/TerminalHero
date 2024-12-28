@@ -1,0 +1,14 @@
+[MAIN]
+extension-pkg-allow-list=pygame
+
+[MESSAGES CONTROL]
+disable=W0401,
+        W0614,
+        W0603,
+        C0200,
+        C0116,
+        C0115,
+        C0114
+
+[FORMAT]
+max-line-length=120

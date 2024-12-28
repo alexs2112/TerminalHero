@@ -1,5 +1,7 @@
+import logging
 from main.constants import *
 
+# pylint: disable=invalid-name
 _messenger = None
 def get_messenger(args=None):
     global _messenger
@@ -17,7 +19,6 @@ class Messenger:
 
     def setup_logger(self, args):
         # https://docs.python.org/3/howto/logging.html#configuring-logging
-        import logging
         if not args or not args.verbose:
             level = logging.WARNING
         else:
@@ -30,7 +31,7 @@ class Messenger:
         ch.setFormatter(formatter)
         logger.addHandler(ch)
         return logger
-    
+
     def clear_latest(self):
         self.latest_messages.clear()
 
@@ -42,10 +43,9 @@ class Messenger:
         if self.number > self.max_messages:
             self.message_history = self.message_history[(self.max_messages - self.number):]
             self.number = self.max_messages
-    
+
     def get_latest(self, count=-1):
         if count > -1:
             start = max(self.number - count, 0)
             return self.message_history[start:]
-        else:
-            return self.latest_messages
+        return self.latest_messages
