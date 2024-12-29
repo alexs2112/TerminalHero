@@ -1,0 +1,17 @@
+{
+    "nodes": {
+        "": {
+            "name": "",
+            "text": "",
+            "children": [
+                [ "", "" ]
+            ]
+        },
+
+        "C": {
+            "name": "C",
+            "text": "C_text",
+            "children": [ ]
+        }
+    }
+}

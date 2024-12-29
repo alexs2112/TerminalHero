@@ -1,0 +1,78 @@
+{
+    "nodes": {
+        "base_node": {
+            "name": "Elder",
+            "text": "Ah, a traveler! What brings you to our humble village?",
+            "children": [
+                [ "I'm looking for information on a dangerous creature nearby", "node1" ],
+                [ "I seek guidance. Can you help me?", "node2" ],
+                [ "Just passing through.", "node3" ]
+            ]
+        },
+        "node1": {
+            "name": "Elder",
+            "text": "You must be speaking of the Forest Beast. Many have vanished in the woods recently. It's said to be lurking near the old ruins. Tread carefully, traveler",
+            "children": [
+                [ "Do you know how to defeat it?", "node1_1" ],
+                [ "Where exactly are the ruins?", "node1_2" ],
+                [ "I'll find it myself.", "None" ]
+            ]
+        },
+        "node1_1": {
+            "name": "Elder",
+            "text": "Some say the creature is vulnerable to fire, others claim only a silver blade can pierce its hide. No one knows for sure, but you may find a blacksmith in the village who could forge a weapon for you.",
+            "children": [
+                [ "Where can I find the blacksmith?", "None" ],
+                ["I'll figure it out myself, thank you.", "None" ]
+            ]
+        },
+        "node1_2": {
+            "name": "Elder",
+            "text": "The ruins are deep within the forest, past the ancient oak tree. If you venture that far, be cautious. The beast's scent grows stronger near the stones.",
+            "children": [
+                [ "Thank you, I will go there immediately.", "None" ],
+                [ "I'll think about it first.", "None" ]
+            ]
+        },
+        "node2": {
+            "name": "Elder",
+            "text": "Guidance, eh? The road ahead is not an easy one. Do you seek wisdom of the mind or strength of the body?",
+            "children": [
+                [ "I seek wisdom.", "node2_1" ],
+                [ "I need strength.", "node2_2" ]
+            ]
+        },
+        "node2_1": {
+            "name": "Elder",
+            "text": "Ah, the mind is a powerful ally. To gain wisdom, you must listen to the world around you—its people, its nature, and its history. Seek out the library in the northern hills for more knowledge.",
+            "children": [
+                [ "I'll head to the library.", "None" ],
+                [ "I have other matters to attend to.", "None" ]
+            ]
+        },
+        "node2_2": {
+            "name": "Elder",
+            "text": "Strength comes from within, but a good weapon and training help. If you seek to grow in power, visit the training grounds near the village gate.",
+            "children": [
+                [ "I'll go there now.", "None" ],
+                [ "Maybe later.", "None" ]
+            ]
+        },
+        "node3": {
+            "name": "Elder",
+            "text": "I see. Be wary, traveler. The roads are not as safe as they once were. Keep your wits about you.",
+            "children": [
+                [ "What dangers lie on the road?", "node3_1" ],
+                [ "I'll be fine, thank you.", "None" ]
+            ]
+        },
+        "node3_1": {
+            "name": "Elder",
+            "text": "Bandits have been spotted near the eastern pass. And there are rumors of strange creatures lurking in the night. If you wish to be safe, stay in the village until dawn.",
+            "children": [
+                [ "I'll risk it.", "None" ],
+                [ "I'll stay the night.", "None" ]
+            ]
+        }
+    }
+}
