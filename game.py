@@ -25,8 +25,8 @@ class Game:
 
         # This needs to be called after messenger is created or else it will be empty
         # pylint: disable=import-outside-toplevel
-        from screen.world_screen import WorldScreen
-        self.screen = WorldScreen(self.canvas, self.world)
+        from screen.start_screen import StartScreen
+        self.screen = StartScreen(self.canvas, self.world)
 
     def generate_world(self):
         world_builder = WorldBuilder(3,3, self.creature_factory)
@@ -53,16 +53,10 @@ class Game:
         base_node = load_dialog('resources/dialog/initial_elder_varik.json')
         self.screen = DialogScreen(self.canvas, None, base_node['root_node'])
 
-    def combat_test(self):
-        # pylint: disable=import-outside-toplevel
-        from screen.start_screen import StartScreen
-        self.screen = StartScreen(self.canvas)
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true', help='log debug and info statements')
     parser.add_argument('-d', '--dialog', action='store_true', help='test dialog')
-    parser.add_argument('-c', '--combat', action='store_true', help='test combat')
     args = parser.parse_args()
 
     game = Game(args)

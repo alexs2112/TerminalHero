@@ -1,15 +1,19 @@
 import pygame
 from screen.screen import Screen
-from screen.combat_screen import CombatScreen
+from screen.world_screen import WorldScreen
 from main.constants import *
 
 class StartScreen(Screen):
+    def __init__(self, canvas, world):
+        super().__init__(canvas)
+        self.world = world
+
     def check_events(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return None
-                return CombatScreen(self.canvas)
+                return WorldScreen(self.canvas, self.world)
         return self
 
     def display(self):

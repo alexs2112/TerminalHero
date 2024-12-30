@@ -6,18 +6,13 @@ class GameOverScreen(Screen):
     def check_events(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    return None
-                # pylint: disable=import-outside-toplevel
-                from screen.start_screen import StartScreen
-                return StartScreen(self.canvas)
+                return None
         return self
 
     def display(self):
         self.canvas.fill(BLACK)
         text = ['you died.',
-                'press escape to exit',
-                'press any other key to return to start']
+                'press any key to exit']
         x = SCREEN_WIDTH / 2
         y = (SCREEN_HEIGHT / 2) - (len(text) * int(FONT_HEIGHT / 2 + 2))
         for line in text:
