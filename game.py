@@ -25,10 +25,6 @@ class Game:
         self.world.player_position = (0,1)
 
         # This needs to be called after messenger is created or else it will be empty
-        # pylint: disable=import-outside-toplevel
-        # from screen.start_screen import StartScreen
-        # self.screen = StartScreen(self.canvas)
-
         from screen.world_screen import WorldScreen
         self.screen = WorldScreen(self.canvas, self.world)
 
@@ -56,14 +52,22 @@ class Game:
         from dialog.dialog_parser import load_dialog
         base_node = load_dialog('resources/dialog/initial_elder_varik.json')
         self.screen = DialogScreen(self.canvas, base_node['root_node'])
+    
+    def combat_test(self):
+        # pylint: disable=import-outside-toplevel
+        from screen.start_screen import StartScreen
+        self.screen = StartScreen(self.canvas)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true', help='log debug and info statements')
     parser.add_argument('-d', '--dialog', action='store_true', help='test dialog')
+    parser.add_argument('-c', '--combat', action='store_true', help='test combat')
     args = parser.parse_args()
 
     game = Game(args)
     if args.dialog:
         game.dialog_test()
+    if args.combat:
+        game.combat_test()
     game.game_loop()
