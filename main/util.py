@@ -1,6 +1,8 @@
 import pygame
 from main.constants import *
 
+NUMBERS = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9]
+
 def fit_text(text, width=SCREEN_WIDTH-32):
     max_char = int(width / FONT_WIDTH)
 

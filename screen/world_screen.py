@@ -2,6 +2,7 @@ import pygame
 from main.constants import *
 from main.util import world_sprites, creature_sprites, draw_sprite, fit_text
 from screen.screen import Screen
+from screen.area_screen import AreaScreen
 from world.world import World
 
 class WorldScreen(Screen):
@@ -27,8 +28,10 @@ class WorldScreen(Screen):
                     y = max(y - 1, 0)
                 if (x,y) != self.world.player_position:
                     self.world.player_position = (x,y)
-                    self.frame_num = 1
+                    self.frame_num = 0
                     self.local_time = 0
+                if event.key == pygame.K_RETURN:
+                    return AreaScreen(self.canvas, self.world.areas[x][y], self.world)
         return self
 
     def display(self):
@@ -39,8 +42,7 @@ class WorldScreen(Screen):
             self.local_time = 0
             self.frame_num = 1 - self.frame_num
 
-        self.draw_box((8, 8, SCREEN_WIDTH-16, SCREEN_HEIGHT-16))
-        self.draw_line((self.center_x, 10), (self.center_x, SCREEN_HEIGHT - 10))
+        self.draw_line((self.center_x, 0), (self.center_x, SCREEN_HEIGHT))
         self.draw_world()
 
     def draw_world(self):
@@ -56,7 +58,7 @@ class WorldScreen(Screen):
                 draw_y += WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2
             draw_x += WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2
 
-        if self.frame_num == 1:
+        if self.frame_num == 0:
             player_x = start_x + self.world.player_position[0] * (WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2)
             player_y = start_y + self.world.player_position[1] * (WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2)
             draw_sprite(self.canvas, creature_sprites, self.world.player.sprite_rect, player_x, player_y, scale=4)

@@ -60,7 +60,7 @@ class Game:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true', help='log debug and info statements')
-    parser.add_argument('-d', '--dialog', action='store_true', help='log debug and info statements')
+    parser.add_argument('-d', '--dialog', action='store_true', help='test dialog')
     args = parser.parse_args()
 
     game = Game(args)

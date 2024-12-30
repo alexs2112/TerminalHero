@@ -17,6 +17,7 @@ class Screen:
 
     def display(self):
         self.canvas.fill(BLACK)
+        self.draw_border()
 
     def write(self, text, location, colour=WHITE):
         t = self.font.render(text, True, colour)
@@ -26,6 +27,9 @@ class Screen:
         t = self.font.render(text, True, colour)
         new_x = location[0] - (len(text) * FONT_WIDTH) / 2
         self.canvas.blit(t, (new_x, location[1]))
+
+    def draw_border(self):
+        self.draw_box((0,0,SCREEN_WIDTH,SCREEN_HEIGHT))
 
     def draw_box(self, rect):
         pygame.draw.rect(self.canvas, GRAY, rect)

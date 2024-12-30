@@ -34,16 +34,11 @@ class DialogScreen(Screen):
     def display(self):
         super().display()
 
-        x, y, width, height = 8, 8, SCREEN_WIDTH - 16, SCREEN_HEIGHT - 16
-
-        self.draw_box((x,y,width,height))
-
-        x += 12
-        y += 12
+        x, y = 20, 20
         self.write_center_x(self.current_node.name, (int(SCREEN_WIDTH / 2), y))
         y += FONT_HEIGHT + 8
 
-        lines = fit_text(self.current_node.text, width - 32)
+        lines = fit_text(self.current_node.text, SCREEN_WIDTH - 32)
         for line in lines:
             self.write_center_x(line, (int(SCREEN_WIDTH / 2), y))
             y += FONT_HEIGHT + 2
@@ -53,7 +48,7 @@ class DialogScreen(Screen):
         index_size = FONT_WIDTH * 3 + 6
         for child in self.current_node.children:
             self.write(f'[{index}]', (x,y))
-            lines = fit_text(child[0], width - 32 - index_size)
+            lines = fit_text(child[0], SCREEN_WIDTH - 32 - index_size)
             colour = WHITE if child[1] else GRAY
             for line in lines:
                 self.write(line, (x + index_size, y), colour)
