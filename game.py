@@ -62,6 +62,4 @@ if __name__ == "__main__":
     game = Game(args)
     if args.dialog:
         game.dialog_test()
-    if args.combat:
-        game.combat_test()
     game.game_loop()
