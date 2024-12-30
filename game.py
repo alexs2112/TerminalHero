@@ -17,19 +17,19 @@ class Game:
         self.messenger = get_messenger(self.args)
         self.messenger.clear()
 
-        self.world = self.generate_world()
-
         self.creature_factory = CreatureFactory()
         self.player = self.creature_factory.new_player()
+        self.world = self.generate_world()
         self.world.player = self.player
         self.world.player_position = (0,1)
 
         # This needs to be called after messenger is created or else it will be empty
+        # pylint: disable=import-outside-toplevel
         from screen.world_screen import WorldScreen
         self.screen = WorldScreen(self.canvas, self.world)
 
     def generate_world(self):
-        world_builder = WorldBuilder(3,3)
+        world_builder = WorldBuilder(3,3, self.creature_factory)
         return world_builder.build_world()
 
     def game_loop(self):
@@ -51,7 +51,7 @@ class Game:
         from screen.dialog_screen import DialogScreen
         from dialog.dialog_parser import load_dialog
         base_node = load_dialog('resources/dialog/initial_elder_varik.json')
-        self.screen = DialogScreen(self.canvas, base_node['root_node'])
+        self.screen = DialogScreen(self.canvas, None, base_node['root_node'])
     
     def combat_test(self):
         # pylint: disable=import-outside-toplevel

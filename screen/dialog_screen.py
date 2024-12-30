@@ -8,8 +8,9 @@ from dialog.dialog_node import DialogNode
 messenger = get_messenger()
 
 class DialogScreen(Screen):
-    def __init__(self, canvas, root_node: DialogNode):
+    def __init__(self, canvas, last_screen: Screen, root_node: DialogNode):
         super().__init__(canvas)
+        self.last_screen = last_screen
         self.select_node(root_node)
 
     def check_events(self, events):
@@ -26,7 +27,7 @@ class DialogScreen(Screen):
 
     def select_child(self, index):
         if self.current_node.children[index][1] is None:
-            return None
+            return self.last_screen
 
         self.select_node(self.current_node.children[index][1])
         return self

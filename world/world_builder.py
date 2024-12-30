@@ -1,10 +1,12 @@
 from world.world import World
 from world.area import Area
+from creature.creature_factory import CreatureFactory
 
 class WorldBuilder:
-    def __init__(self, width, height):
+    def __init__(self, width, height, creature_factory):
         self.width: int = width
         self.height: int = height
+        self.creature_factory: CreatureFactory = creature_factory
         self.world: World = None
         self.initialize_world()
 
@@ -22,10 +24,12 @@ class WorldBuilder:
         self.world.areas[2][0] = Area("The Corpse Pile", (27,1,12,12),
                                       "Just outside of the wooden palisade walls of the village, a pile of corpses grows with bodies of the shrinking population. "
                                       "A growing population of giant vermin feast on the bodies within.")
-        self.world.areas[0][1] = Area("Mining Village of Arad", (1,14,12,12),
-                                      "The Mining Village of Arad is a harsh, desolate settlement, built around the remnants of a fallen Bloodstone meteorite. "
-                                      "This rare and magical gemstone, prized for its powerful healing properties, is the lifeblood of the village - and its curse. "
-                                      "Life in Arad is bleak, with the villagers, known as Meldspawn, toiling endlessly in the dangerous mines to meet the Capital's unrelenting demands.")
+        area = Area("Mining Village of Arad", (1,14,12,12),
+                    "The Mining Village of Arad is a harsh, desolate settlement, built around the remnants of a fallen Bloodstone meteorite. "
+                    "This rare and magical gemstone, prized for its powerful healing properties, is the lifeblood of the village - and its curse. "
+                    "Life in Arad is bleak, with the villagers, known as Meldspawn, toiling endlessly in the dangerous mines to meet the Capital's unrelenting demands.")
+        area.npcs = [self.creature_factory.new_elder_varik()]
+        self.world.areas[0][1] = area
         self.world.areas[1][1] = Area("The Bloodstone Mine", (14,14,12,12),
                                       "The village is built around the remains of a Bloodstone meteorite that had struck the earth a long time ago. "
                                       "It's an unstable and treacherous place, prone to cave-ins and the occasional appearance of strange, magical creatures drawn to the Bloodstone. "

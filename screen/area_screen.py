@@ -1,15 +1,10 @@
 import pygame
 from screen.screen import Screen
+from screen.dialog_screen import DialogScreen
 from world.area import Area
 from world.world import World
 from main.constants import *
 from main.util import fit_text, NUMBERS
-
-# Some basic functions that are called by the option the player selects
-def leave_area(canvas, world):
-    # pylint: disable=import-outside-toplevel
-    from screen.world_screen import WorldScreen
-    return WorldScreen(canvas, world)
 
 class AreaScreen(Screen):
     def __init__(self, canvas, area: Area, world: World):
@@ -18,11 +13,18 @@ class AreaScreen(Screen):
         self.description_lines = fit_text(self.area.description)
         self.world = world
         self.index = 0
+        self.dialog = {} # dict of {index: npc}
         self.options = self.define_options()
 
     def define_options(self):
         opts = []
-        opts.append(("Leave Area", leave_area))
+        i = 0
+        for npc in self.area.npcs:
+            if npc.has_dialog():
+                self.dialog[i] = npc
+                i += 1
+                opts.append((f"Speak to {npc.name}", self.speak_to_npc))
+        opts.append(("Leave Area", self.leave_area))
         return opts
 
     def check_events(self, events):
@@ -33,11 +35,11 @@ class AreaScreen(Screen):
                 elif event.key == pygame.K_UP:
                     self.index = max(0, self.index - 1)
                 elif event.key == pygame.K_RETURN:
-                    return self.options[self.index][1](self.canvas, self.world)
+                    return self.options[self.index][1](self.canvas, self.index)
                 elif event.key in NUMBERS:
                     i = int(pygame.key.name(event.key)) - 1
                     if i < len(self.options):
-                        return self.options[i][1](self.canvas, self.world)
+                        return self.options[i][1](self.canvas, i)
         return self
 
     def display(self):
@@ -58,3 +60,14 @@ class AreaScreen(Screen):
             if i == self.index:
                 colour = GREEN
             self.write(f"[{i+1}]: {opt}", (x,y), colour)
+            y += FONT_HEIGHT + 2
+
+    # Some basic functions that are called by the option the player selects
+    def leave_area(self, canvas, _):
+        # pylint: disable=import-outside-toplevel
+        from screen.world_screen import WorldScreen
+        return WorldScreen(canvas, self.world)
+
+    def speak_to_npc(self, canvas, index):
+        root_node = self.dialog[index].get_dialog_node()
+        return DialogScreen(canvas, self, root_node)

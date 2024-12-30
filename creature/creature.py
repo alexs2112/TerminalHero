@@ -4,16 +4,32 @@ from main.messenger import *
 messenger = get_messenger()
 
 class Creature:
-    def __init__(self, name, sprite_rect, max_hp, defense, armor, damage):
+    def __init__(self, name, sprite_rect):
         self.name = name
         self.sprite_rect = sprite_rect
+
+        self.max_hp = 0
+        self.hp = 0
+        self.defense = 0
+        self.max_armor = 0
+        self.armor = 0
+        self.damage = 0
+
+        self.ai = None
+
+        # For NPCs
+        self.dialog_function = None
+
+    def set_combat_stats(self, max_hp, defense, armor, damage):
         self.max_hp = max_hp
         self.hp = max_hp
         self.defense = defense
         self.max_armor = armor
         self.armor = armor
         self.damage = damage
-        self.ai = None
+
+    def set_ai(self, ai):
+        self.ai = ai
 
     def take_turn(self, allies, enemies):
         if self.ai:

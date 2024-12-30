@@ -75,3 +75,11 @@ class WorldScreen(Screen):
         for line in lines:
             self.write(line, (x, y))
             y += FONT_HEIGHT + 2
+
+        y += 12
+        if tile.npcs:
+            self.write("Notable People:", (x,y))
+            y += FONT_HEIGHT + 2
+
+        for npc in tile.npcs:
+            self.write(npc.name, (x+12,y))
