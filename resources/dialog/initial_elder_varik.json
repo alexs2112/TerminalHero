@@ -1,0 +1,174 @@
+{
+    "nodes": {
+        "root_node": {
+            "name": "Elder Varik",
+            "text": "Welcome, stranger, to the Mining Village of Arad. Not many outsiders come through here. What brings you to our humble village?",
+            "children": [
+                ["I heard about a stolen shipment of bloodstone. Is that true?", "2"],
+                ["I'm just passing through. What's this place like?", "3"],
+                ["I'm looking for work. Got anything for me?", "4"]
+            ]
+        },
+        "2": {
+            "name": "Elder Varik",
+            "text": "Yes, it's true. A shipment of bloodstone meant for the capital was stolen not long ago. It's a serious blow to our village. We rely on those shipments to keep the Empire's attention.",
+            "children": [
+                ["Who could have stolen it?", "5"],
+                ["Where was the shipment taken?", "6"],
+                ["What happens if you don't recover it?", "7"]
+            ]
+        },
+        "3": {
+            "name": "Elder Varik",
+            "text": "This village is all about mining bloodstone. It's a tough place, but we get by. The Empire left us here when they no longer needed the first generation of Meldspawn. Now we mine, and sometimes survive, sometimes barely.",
+            "children": [
+                ["Sounds like a hard life. Tell me more about the village.", "8"],
+                ["I see. What should I know about this village?", "9"]
+            ]
+        },
+        "4": {
+            "name": "Elder Varik",
+            "text": "Work? We always need help, especially now with the stolen shipment. If you're willing to investigate, I'd appreciate the aid.",
+            "children": [
+                ["Tell me more about the stolen shipment.", "2"],
+                ["I'll help. Where should I start?", "6"],
+                ["What else is there to do around here?", "8"]
+            ]
+        },
+        "5": {
+            "name": "Elder Varik",
+            "text": "It could have been anyone. Some think it's the rebels-the ones who want to overthrow the Empire. Others believe it could be bandits looking to profit from the stolen bloodstone.",
+            "children": [
+                ["What do the rebels want?", "10"],
+                ["How can I track the bandits?", "6"],
+                ["That's troubling. What else can you tell me?", "9"]
+            ]
+        },
+        "6": {
+            "name": "Elder Varik",
+            "text": "The shipment was ambushed just outside the village, near the forest to the north. Tracks lead toward the old ruins-dangerous territory. I'd be careful if I were you.",
+            "children": [
+                ["I'll check the ruins.", "None"],
+                ["What should I expect in the ruins?", "11"],
+                ["Who else can I ask about the bloodstone?", "12"]
+            ]
+        },
+        "7": {
+            "name": "Elder Varik",
+            "text": "If we don't recover the shipment, the Empire may see us as expendable. They might shut the village down, or worse, send more patrols to keep us in line. We can't afford that.",
+            "children": [
+                ["I understand. I'll help recover it.", "6"],
+                ["That sounds dire. Maybe I'll pass.", "None"]
+            ]
+        },
+        "8": {
+            "name": "Elder Varik",
+            "text": "Around here, we have a few key locations. The mine to the east, the corpse pile by the garrison, the starved pit where we dispose of the dead, and the garrison itself where the Empire keeps its eyes on us.",
+            "children": [
+                ["Tell me about the mine.", "13"],
+                ["What's the corpse pile for?", "14"],
+                ["What happens at the starvation pit?", "15"],
+                ["Tell me more about the garrison.", "16"]
+            ]
+        },
+        "9": {
+            "name": "Elder Varik",
+            "text": "The village isn't large, but it has its places of interest. The mine is where we work, the corpse pile by the garrison holds the remains of those who didn't survive, and the starved pit is where we send those who've given up on life. It's a tough place.",
+            "children": [
+                ["I see. What's the mine like?", "13"],
+                ["I'll head to the garrison first.", "16"],
+                ["Tell me about the starved pit.", "15"]
+            ]
+        },
+        "10": {
+            "name": "Elder Varik",
+            "text": "The rebels are a small, disgruntled group, mostly made up of former Meldspawn who are angry at the Empire for abandoning them. They want to break free from the Empire's control, but they're disorganized and desperate.",
+            "children": [
+                ["Where can I find the rebels?", "17"],
+                ["What else can you tell me about them?", "18"]
+            ]
+        },
+        "11": {
+            "name": "Elder Varik",
+            "text": "The ruins to the north are filled with wild beasts, and some say they're haunted by the spirits of the first Meldspawn. If you go there, be cautious.",
+            "children": [
+                ["I'll take my chances.", "None"],
+                ["Spirits? What's that about?", "19"],
+                ["Thanks for the warning. I'll head out.", "None"]
+            ]
+        },
+        "12": {
+            "name": "Elder Varik",
+            "text": "You can speak to the garrison commander, Captain Arlon. He's likely to know more about the stolen shipment or any patrols in the area. He's hard to miss; he spends most of his time at the garrison.",
+            "children": [
+                ["I'll go speak to Captain Arlon.", "16"],
+                ["Thanks for the information. I'll investigate on my own.", "None"]
+            ]
+        },
+        "13": {
+            "name": "Elder Varik",
+            "text": "The mine is where most of us work. It's a dangerous place-caves filled with unstable rock and veins of bloodstone that seem to be running dry. People say the deeper you go, the stranger it gets.",
+            "children": [
+                ["Strange? In what way?", "20"],
+                ["I'll head to the mine now.", "None"],
+                ["Sounds rough. I'll pass.", "None"]
+            ]
+        },
+        "14": {
+            "name": "Elder Varik",
+            "text": "The corpse pile is just what it sounds like. We dispose of the dead there, mostly those who didn't survive the work in the mines. It's a grim reminder of the cost of survival in this place.",
+            "children": [
+                ["That's grim. Is there a better way?", "8"],
+                ["I'll keep that in mind.", "None"]
+            ]
+        },
+        "15": {
+            "name": "Elder Varik",
+            "text": "The starvation pit is where we send those who give up hope. Some say it's a mercy, but it's a painful end. People here can only survive for so long before the hunger and despair take their toll.",
+            "children": [
+                ["That sounds awful. Can anything be done?", "8"],
+                ["I'll avoid that place.", "None"]
+            ]
+        },
+        "16": {
+            "name": "Elder Varik",
+            "text": "The garrison is where the Empire's soldiers stay. It's heavily guarded, but they mostly keep to themselves. They're watching us, but they don't interfere unless they need something.",
+            "children": [
+                ["I'll visit the garrison.", "None"],
+                ["Sounds tense. Who's in charge?", "17"]
+            ]
+        },
+        "17": {
+            "name": "Elder Varik",
+            "text": "Captain Arlon is the one you'll want to talk to. He's been here for years and knows the village like the back of his hand. He's not one to trust easily, though.",
+            "children": [
+                ["I'll speak to him.", "None"],
+                ["Thanks for the heads-up.", "None"]
+            ]
+        },
+        "18": {
+            "name": "Elder Varik",
+            "text": "The rebels are a secretive bunch. You'll find them mostly in the outskirts of the village, hiding in the shadows. But beware-they're not all friendly.",
+            "children": [
+                ["I'll keep my distance.", "None"],
+                ["Where exactly can I find them?", "17"]
+            ]
+        },
+        "19": {
+            "name": "Elder Varik",
+            "text": "The spirits of the first Meldspawn are said to haunt the ruins, angry that they were abandoned by the Empire. It's just a rumor, but some believe the deeper you go, the more you'll feel their presence.",
+            "children": [
+                ["I'll keep an eye out for them.", "None"],
+                ["Maybe I'll stick to the safer routes.", "None"]
+            ]
+        },
+        "20": {
+            "name": "Elder Varik",
+            "text": "There are rumors that the mine is cursed. Strange sounds in the deeper tunnels, whispers, and the occasional unexplained disappearance. No one knows for sure, but it's enough to keep most people from volunteering for deep mining expeditions.",
+            "children": [
+                ["That's unsettling. I'll stay close to the surface.", "None"],
+                ["I'm not afraid of rumors. I'll go deeper.", "None"]
+            ]
+        }
+    }
+}

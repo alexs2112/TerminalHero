@@ -4,6 +4,8 @@ import argparse
 import pygame
 from main.constants import *
 from main.messenger import get_messenger
+from world.world_builder import WorldBuilder
+from creature.creature_factory import CreatureFactory
 
 class Game:
     def __init__(self, args_list):
@@ -15,10 +17,24 @@ class Game:
         self.messenger = get_messenger(self.args)
         self.messenger.clear()
 
+        self.world = self.generate_world()
+
+        self.creature_factory = CreatureFactory()
+        self.player = self.creature_factory.new_player()
+        self.world.player = self.player
+        self.world.player_position = (0,1)
+
         # This needs to be called after messenger is created or else it will be empty
         # pylint: disable=import-outside-toplevel
         from screen.start_screen import StartScreen
         self.screen = StartScreen(self.canvas)
+
+        # from screen.world_screen import WorldScreen
+        # self.screen = WorldScreen(self.canvas, self.world)
+
+    def generate_world(self):
+        world_builder = WorldBuilder(3,3)
+        return world_builder.build_world()
 
     def game_loop(self):
         while True:
@@ -35,11 +51,11 @@ class Game:
             pygame.display.update()
 
     def dialog_test(self):
-        # pylint: disable=import-outside-toplevel,line-too-long
+        # pylint: disable=import-outside-toplevel
         from screen.dialog_screen import DialogScreen
         from dialog.dialog_parser import load_dialog
-        base_node = load_dialog('resources/dialog/test.json')
-        self.screen = DialogScreen(self.canvas, base_node['base_node'])
+        base_node = load_dialog('resources/dialog/initial_elder_varik.json')
+        self.screen = DialogScreen(self.canvas, base_node['root_node'])
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -51,4 +67,3 @@ if __name__ == "__main__":
     if args.dialog:
         game.dialog_test()
     game.game_loop()
-    

@@ -36,5 +36,3 @@ def load_dialog(filename):
 
 def load_node_initial(node_data):
     return DialogNode(node_data['name'], node_data['text'], node_data['children'])
-
-load_dialog('resources/dialog/test.json')

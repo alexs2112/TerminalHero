@@ -32,9 +32,9 @@ class DialogScreen(Screen):
         return self
 
     def display(self):
-        self.canvas.fill(BLACK)
+        super().display()
 
-        x, y, width, height = 16, 16, SCREEN_WIDTH - 32, SCREEN_HEIGHT - 32
+        x, y, width, height = 8, 8, SCREEN_WIDTH - 16, SCREEN_HEIGHT - 16
 
         self.draw_box((x,y,width,height))
 
@@ -47,7 +47,7 @@ class DialogScreen(Screen):
         for line in lines:
             self.write_center_x(line, (int(SCREEN_WIDTH / 2), y))
             y += FONT_HEIGHT + 2
-        y += 4
+        y += 8
 
         index = 1
         index_size = FONT_WIDTH * 3 + 6

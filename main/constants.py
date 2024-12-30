@@ -8,6 +8,11 @@ FONT_SIZE = 18
 FONT_HEIGHT = 18
 FONT_WIDTH = 10
 
+# World tile sizes are 12x12, multiply them by multiplier on world screen
+WORLD_TILE_WIDTH = 12
+WORLD_TILE_HEIGHT = 12
+WORLD_TILE_MODIFIER = 4
+
 BLACK       = (0,    0,  0)
 WHITE       = (255,255,255)
 RED         = (255,  0,  0)

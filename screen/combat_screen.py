@@ -3,6 +3,7 @@ from screen.screen import Screen
 from screen.game_over_screen import GameOverScreen
 from main.constants import *
 from main.messenger import *
+from main.util import draw_sprite, creature_sprites
 from creature.creature_factory import CreatureFactory
 
 messenger = get_messenger()
@@ -84,7 +85,7 @@ class CombatScreen(Screen):
                 e.take_turn(self.allies, self.enemies)
 
     def display(self):
-        self.canvas.fill(BLACK)
+        super().display()
         text = self.font.render('Hello World', True, WHITE)
         self.canvas.blit(text, (10, 10))
 
@@ -104,7 +105,7 @@ class CombatScreen(Screen):
         self.draw_messages()
 
     def draw_creature(self, creature, letter, x, y):
-        creature.draw_sprite(self.canvas, x - 36, y)
+        draw_sprite(self.canvas, creature_sprites, creature.sprite_rect, x - 36, y, scale=6)
         y += 100
 
         text = self.font.render(f"{letter}:{creature.name}", False, WHITE)

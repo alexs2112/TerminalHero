@@ -1,9 +1,7 @@
-import pygame
 from main.constants import *
 from main.messenger import *
 
 messenger = get_messenger()
-sprite_sheet = pygame.image.load('resources/onebit.png')
 
 class Creature:
     def __init__(self, name, sprite_rect, max_hp, defense, armor, damage):
@@ -38,11 +36,3 @@ class Creature:
 
     def dies(self):
         messenger.add(f"{self.name} dies.")
-
-    def draw_sprite(self, surface, x, y):
-        # This seems terribly inefficient
-        width, height = self.sprite_rect[2], self.sprite_rect[3]
-        cropped = pygame.Surface((width, height))
-        cropped.blit(sprite_sheet, (0,0), self.sprite_rect)
-        scaled = pygame.transform.scale(cropped, (width * 6, height * 6))
-        surface.blit(scaled, (x,y))

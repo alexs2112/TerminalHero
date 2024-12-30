@@ -16,12 +16,12 @@ class Screen:
         return self
 
     def display(self):
-        pass
+        self.canvas.fill(BLACK)
 
     def write(self, text, location, colour=WHITE):
         t = self.font.render(text, True, colour)
         self.canvas.blit(t, location)
-    
+
     def write_center_x(self, text, location, colour=WHITE):
         t = self.font.render(text, True, colour)
         new_x = location[0] - (len(text) * FONT_WIDTH) / 2
@@ -30,6 +30,9 @@ class Screen:
     def draw_box(self, rect):
         pygame.draw.rect(self.canvas, GRAY, rect)
         pygame.draw.rect(self.canvas, BLACK, (rect[0] + 6, rect[1] + 6, rect[2] - 12, rect[3] - 12))
+
+    def draw_line(self, start, end):
+        pygame.draw.line(self.canvas, GRAY, start, end, width=6)
 
     def draw_messages(self, max_messages=8):
         latest = len(messenger.latest_messages)
