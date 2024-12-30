@@ -1,12 +1,12 @@
 import pygame
 from main.constants import *
-from main.util import world_sprites, creature_sprites, draw_sprite, fit_text
+from main.util import world_sprites, creature_sprites, draw_sprite
 from screen.screen import Screen
 from screen.area_screen import AreaScreen
 from world.world import World
 
 class WorldScreen(Screen):
-    def __init__(self, canvas, world: World):
+    def __init__(self, canvas, world: World, start_area=None):
         super().__init__(canvas)
         self.world = world
         self.center_x = SCREEN_WIDTH / 2 + 64
@@ -14,24 +14,37 @@ class WorldScreen(Screen):
         self.local_time = 0
         self.frame_num = 0
 
+        self.known_areas = self.initialize_areas()
+        self.index = self.index_by_area(start_area)
+
+    def initialize_areas(self):
+        out = {}
+        for x in range(self.world.width):
+            for y in range(self.world.height):
+                if self.world.areas[x][y].condition_met() and not self.world.areas[x][y].is_filler:
+                    out[(x,y)] = self.world.areas[x][y]
+        return out
+
+    def index_by_area(self, area):
+        if area is None:
+            return 0
+        areas = list(self.known_areas.values())
+        for i in range(len(areas)):
+            if areas[i] == area:
+                return i
+        return 0
+
     def check_events(self, events):
-        x,y = self.world.player_position
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    x = min(x + 1, self.world.width - 1)
-                elif event.key == pygame.K_LEFT:
-                    x = max(x - 1, 0)
-                elif event.key == pygame.K_DOWN:
-                    y = min(y + 1, self.world.height - 1)
+                if event.key == pygame.K_DOWN:
+                    self.index = min(self.index + 1, len(self.known_areas) - 1)
                 elif event.key == pygame.K_UP:
-                    y = max(y - 1, 0)
-                if (x,y) != self.world.player_position:
-                    self.world.player_position = (x,y)
-                    self.frame_num = 0
-                    self.local_time = 0
+                    self.index = max(self.index - 1, 0)
+                self.frame_num = 0
+                self.local_time = 0
                 if event.key == pygame.K_RETURN:
-                    return AreaScreen(self.canvas, self.world.areas[x][y], self.world)
+                    return AreaScreen(self.canvas, self.area_by_index(self.index), self.world)
         return self
 
     def display(self):
@@ -60,37 +73,41 @@ class WorldScreen(Screen):
             draw_x += WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2
 
         if self.frame_num == 0:
-            player_x = start_x + self.world.player_position[0] * (WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2)
-            player_y = start_y + self.world.player_position[1] * (WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2)
+            cx, cy = self.pos_by_index(self.index)
+            player_x = start_x + cx * (WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2)
+            player_y = start_y + cy * (WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2)
             draw_sprite(self.canvas, creature_sprites, self.world.player.sprite_rect, player_x, player_y, scale=4)
 
-        self.draw_tile_info(self.world.player_position[0], self.world.player_position[1])
+        self.list_known_areas()
 
-    def draw_tile_info(self, x, y):
-        tile = self.world.areas[x][y]
-        self.write_center_x(tile.name, ((SCREEN_WIDTH - self.center_x) / 2 + self.center_x, 24))
+    def pos_by_index(self, index):
+        areas = list(self.known_areas)
+        if index >= 0 and index < len(areas):
+            return areas[index]
+        return areas[0]
 
+    def area_by_index(self, index):
+        areas = list(self.known_areas.values())
+        print(areas)
+        if index >= 0 and index < len(areas):
+            return areas[index]
+        return areas[0]
+
+    def list_known_areas(self):
+        i = 1
         x = self.center_x + 16
-        y = 24 + FONT_HEIGHT + 16
-        lines = fit_text(tile.description, SCREEN_WIDTH - self.center_x - 32)
-        for line in lines:
-            self.write(line, (x, y))
+        y = 24
+        for area in self.known_areas.values():
+            colour = WHITE
+            if (i - 1) == self.index:
+                colour = GREEN
+            self.write(f"{i}) {area.name}", (x,y), colour)
             y += FONT_HEIGHT + 2
-
-        y += 12
-        if tile.npcs:
-            self.write("Notable People:", (x,y))
-            y += FONT_HEIGHT + 2
-
-        for npc in tile.npcs:
-            self.write(npc.name, (x+12,y), GREEN)
-            y += FONT_HEIGHT + 2
-
-        y += 12
-        if tile.enemies:
-            self.write("Hostiles:", (x,y))
-            y += FONT_HEIGHT + 2
-
-        for enemy in tile.enemies:
-            self.write(enemy.name, (x+12, y), RED)
-            y += FONT_HEIGHT + 2
+            if (i - 1) == self.index:
+                for npc in area.npcs:
+                    self.write(npc.name, (x + FONT_WIDTH * 3, y))
+                    y += FONT_HEIGHT + 2
+                for enemy in area.enemies:
+                    self.write(enemy.name, (x + FONT_WIDTH * 3, y), RED)
+                    y += FONT_HEIGHT + 2
+            i += 1

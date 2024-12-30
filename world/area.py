@@ -17,6 +17,10 @@ class Area:
         # If the player needs to meet a condition to know about this area
         self.condition: str = None
 
+        # If this area is just filler to make the map look better
+        # Find a better way to handle this eventually
+        self.is_filler: bool = False
+
     def condition_met(self):
         if self.condition:
             if self.condition in player_log:

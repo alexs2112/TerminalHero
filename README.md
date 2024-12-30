@@ -12,6 +12,5 @@ Using a modified version of Kenney 1-Big Pack: https://kenney-assets.itch.io/1-b
 Using ChatGPT for placeholder dialogue and for fleshing out the game design documents.
 
 ### Rough To-Do List
-- Update the map so that instead of walking around, there is a list of known locations on the right that you can move around to
 - Simple test script to read dialogue json files and ensure all children are accounted for
     - Maybe generate a mermaid diagram for easier visualizations

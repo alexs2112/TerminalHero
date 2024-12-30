@@ -83,7 +83,7 @@ class AreaScreen(Screen):
         # pylint: disable=import-outside-toplevel
         from screen.world_screen import WorldScreen
         self.remove_player()
-        return WorldScreen(canvas, self.world)
+        return WorldScreen(canvas, self.world, self.area)
 
     def begin_combat(self, canvas, _):
         return CombatScreen(canvas, self.area, self)

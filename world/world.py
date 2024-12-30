@@ -4,7 +4,6 @@ from creature.player import Player
 class World:
     def __init__(self, width, height):
         self.player: Player = None
-        self.player_position = (0,0)
         self.width: int = width
         self.height: int = height
         self.areas: list[list[Area]] = []

@@ -30,7 +30,8 @@
                 ["I see. What's the mine like?", "mine_info"],
                 ["I'd like to hear about the corpse pile", "corpse_pile_info"],
                 ["Tell me about the starvation pit.", "starvation_pit_info"],
-                ["I'll head to the garrison first.", "garrison_info"]
+                ["I'll head to the garrison first.", "garrison_info"],
+                ["Thanks for the info.", "None"]
             ]
         },
         "mine_info": {

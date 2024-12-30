@@ -17,6 +17,7 @@ class CombatScreen(Screen):
         super().__init__(canvas)
         self.last_screen = last_screen
         self.area = area
+        messenger.clear_latest()
 
     def check_events(self, events):
         # Don't let the player do multiple things at once

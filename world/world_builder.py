@@ -15,13 +15,17 @@ class WorldBuilder:
 
     #pylint: disable=line-too-long
     def build_world(self):
-        self.world.areas[0][0] = Area("Forest", (1,1,12,12),
-                                      "Dense shrubs and thorny vines choke the undergrowth, making travel slow and difficult. "
-                                      "The trees here are unremarkable, their bark rough and weathered by years of wind and rain.")
+        area = Area("Forest", (1,1,12,12),
+                    "Dense shrubs and thorny vines choke the undergrowth, making travel slow and difficult. "
+                    "The trees here are unremarkable, their bark rough and weathered by years of wind and rain.")
+        area.is_filler = True
+        self.world.areas[0][0] = area
 
-        self.world.areas[1][0] = Area("Forest", (14,1,12,12),
-                                      "Thin, spindly trees rise from an uneven forest floor covered in dry leaves and small thistles. "
-                                      "The sunlight filters through the sparse canopy, leaving patches of light scattered throughout.")
+        area = Area("Forest", (14,1,12,12),
+                    "Thin, spindly trees rise from an uneven forest floor covered in dry leaves and small thistles. "
+                    "The sunlight filters through the sparse canopy, leaving patches of light scattered throughout.")
+        area.is_filler = True
+        self.world.areas[1][0] = area
 
         area = Area("The Corpse Pile", (27,1,12,12),
                     "Just outside of the wooden palisade walls of the village, a pile of corpses grows with bodies of the shrinking population. "
@@ -47,9 +51,11 @@ class WorldBuilder:
         area.condition = 'known_bloodstone_mine'
         self.world.areas[1][1] = area
 
-        self.world.areas[2][1] = Area("Plains", (27,14,12,12),
-                                      "A flat plain dotted with occasional patches of bare earth and smooth, weathered stones. "
-                                      "The only movement comes from the swaying grass and the distant flight of a bird.")
+        area = Area("Plains", (27,14,12,12),
+                    "A flat plain dotted with occasional patches of bare earth and smooth, weathered stones. "
+                    "The only movement comes from the swaying grass and the distant flight of a bird.")
+        area.is_filler = True
+        self.world.areas[2][1] = area
 
         area = Area("The Starvation Pit", (1,27,12,12),
                     "A grim gathering place where families who can't afford to buy food come to collect leftovers or fight over meager rations. "
@@ -63,7 +69,9 @@ class WorldBuilder:
         area.condition = 'known_garrison'
         self.world.areas[1][2] = area
 
-        self.world.areas[2][2] = Area("Plains", (27,27,12,12),
-                                      "A monotonous expanse of grass punctuated by small, jagged rocks protruding from the ground. "
-                                      "The wind carries a faint whistle, uninterrupted by any sign of trees or shelter.")
+        area = Area("Plains", (27,27,12,12),
+                    "A monotonous expanse of grass punctuated by small, jagged rocks protruding from the ground. "
+                    "The wind carries a faint whistle, uninterrupted by any sign of trees or shelter.")
+        area.is_filler = True
+        self.world.areas[2][2] = area
         return self.world
