@@ -16,21 +16,30 @@ class DialogScreen(Screen):
     def check_events(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                for i in range(len(self.current_node.children)):
+                for i in range(len(self.children)):
                     if event.key == pygame.key.key_code(str(i + 1)):
                         return self.select_child(i)
         return self
 
     def select_node(self, node):
-        self.current_node = node
+        self.current_node: DialogNode = node
+        self.children = self.get_valid_children()
+        self.current_node.call_function()
         messenger.add(node.text)
 
     def select_child(self, index):
-        if self.current_node.children[index][1] is None:
+        if self.children[index][1] is None:
             return self.last_screen
 
-        self.select_node(self.current_node.children[index][1])
+        self.select_node(self.children[index][1])
         return self
+
+    def get_valid_children(self):
+        children = []
+        for child in self.current_node.children:
+            if child[1] is None or child[1].condition_met():
+                children.append(child)
+        return children
 
     def display(self):
         super().display()
@@ -47,7 +56,7 @@ class DialogScreen(Screen):
 
         index = 1
         index_size = FONT_WIDTH * 3 + 6
-        for child in self.current_node.children:
+        for child in self.children:
             self.write(f'[{index}]', (x,y))
             lines = fit_text(child[0], SCREEN_WIDTH - 32 - index_size)
             colour = WHITE if child[1] else GRAY

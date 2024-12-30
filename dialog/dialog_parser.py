@@ -35,4 +35,11 @@ def load_dialog(filename):
     return loaded_nodes
 
 def load_node_initial(node_data):
-    return DialogNode(node_data['name'], node_data['text'], node_data['children'])
+    condition = None
+    if 'condition' in node_data:
+        condition = node_data['condition']
+    func = None
+    if 'function' in node_data:
+        func = node_data['function']
+
+    return DialogNode(node_data['name'], node_data['text'], node_data['children'], condition, func)

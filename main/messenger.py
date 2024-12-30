@@ -54,3 +54,6 @@ class Messenger:
             start = max(self.number - count, 0)
             return self.message_history[start:]
         return self.latest_messages
+
+    def warning(self, message):
+        self.logger.warning(message)

@@ -11,3 +11,8 @@ class Area:
         self.allies: list[Creature] = []
         self.enemies: list[Creature] = []
         self.npcs: list[NPC] = []
+        self.condition: str = None
+
+    # If the player needs to meet a condition to know about this area
+    def set_known_condition(self, condition):
+        self.condition = condition

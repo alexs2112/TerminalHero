@@ -1,0 +1,30 @@
+{
+    "nodes": {
+        "root_node": {
+            "name": "Elder Varik",
+            "text": "Welcome, wanderer, to the Mining Village of Arad. Not many outsiders come through here. What brings you to our humble village?",
+            "children": [
+                ["Hello?", "meet_varik"],
+                ["World!", "None"],
+                ["Illegal", "illegal"]
+            ]
+        },
+        "illegal": {
+            "name": "Elder Varik",
+            "text": "Boy howdy, don't do that",
+            "children": [
+                ["ok", "None"]
+            ],
+            "condition": "met_elder_varik"
+        },
+        "meet_varik": {
+            "name": "Elder Varik",
+            "text": "Eeee",
+            "children": [
+                ["ok", "root_node"]
+            ],
+            "function": "set_met_elder_varik"
+        }
+
+    }
+}
