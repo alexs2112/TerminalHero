@@ -8,5 +8,6 @@ class Area:
         self.sprite_rect: str = sprite_rect
         self.description: str = description
         self.player: Player = None
+        self.allies: list[Creature] = []
         self.enemies: list[Creature] = []
         self.npcs: list[NPC] = []

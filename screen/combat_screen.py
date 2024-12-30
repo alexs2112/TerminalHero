@@ -4,31 +4,19 @@ from screen.game_over_screen import GameOverScreen
 from main.constants import *
 from main.messenger import *
 from main.util import draw_sprite, creature_sprites
-from creature.creature_factory import CreatureFactory
+from world.area import Area
 
 messenger = get_messenger()
 
 ENEMY_KEYS = ['q','w','e','r']
-ALLY_KEYS  = ['a','s','d','f']
+ALLY_KEYS  = ['s','d','f']
+PLAYER_KEY = 'a'
 
 class CombatScreen(Screen):
-    def __init__(self, canvas):
+    def __init__(self, canvas, area: Area, last_screen=None):
         super().__init__(canvas)
-        self.player = None
-        self.allies = []
-        self.enemies = []
-        self.test_setup()
-
-    def test_setup(self):
-        self.creature_factory = CreatureFactory()
-        self.player = self.creature_factory.new_player()
-        self.allies.append(self.player)
-
-        self.enemies = [
-            self.creature_factory.new_goblin(),
-            self.creature_factory.new_kobold(),
-            self.creature_factory.new_harold()
-        ]
+        self.last_screen = last_screen
+        self.area = area
 
     def check_events(self, events):
         # Don't let the player do multiple things at once
@@ -36,16 +24,20 @@ class CombatScreen(Screen):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 messenger.clear_latest()
-                if event.key == pygame.K_ESCAPE:
-                    return None
+                if event.key == pygame.K_RETURN:
+                    if not self.area.player.is_alive():
+                        return GameOverScreen(self.canvas)
 
-                if not self.player.is_alive():
-                    return GameOverScreen(self.canvas)
+                    if not self.area.enemies:
+                        # For now just assume this is an AreaScreen, it needs to refresh
+                        if self.last_screen:
+                            self.last_screen.initialize_area(self.area)
+                        return self.last_screen
 
                 # Attack another creature
                 target = self.get_creature_by_code(event.key)
                 if target:
-                    self.player.attack(target)
+                    self.area.player.attack(target)
                     turn_taken = True
 
         # Enemies take their turns after the player
@@ -54,52 +46,60 @@ class CombatScreen(Screen):
 
         # Remove creatures that have died
         to_remove = []
-        for i in range(len(self.allies)):
-            if not self.allies[i].is_alive():
+        for i in range(len(self.area.allies)):
+            if not self.area.allies[i].is_alive():
                 to_remove.append(i)
         for i in to_remove:
-            self.allies.pop(i)
+            self.area.allies.pop(i)
         to_remove.clear()
-        for i in range(len(self.enemies)):
-            if not self.enemies[i].is_alive():
+        for i in range(len(self.area.enemies)):
+            if not self.area.enemies[i].is_alive():
                 to_remove.append(i)
         for i in to_remove:
-            self.enemies.pop(i)
+            self.area.enemies.pop(i)
+            if not self.area.enemies and self.area.player.is_alive():
+                messenger.add("All enemies have been defeated.")
+                messenger.add("Press [enter] to return.")
 
         return self
 
     def get_creature_by_code(self, event_key):
         for i in range(len(ENEMY_KEYS)):
             if event_key == pygame.key.key_code(ENEMY_KEYS[i]):
-                if i < len(self.enemies):
-                    return self.enemies[i]
+                if i < len(self.area.enemies):
+                    return self.area.enemies[i]
+        if event_key == pygame.key.key_code(PLAYER_KEY):
+            return self.area.player
         for i in range(len(ALLY_KEYS)):
             if event_key == pygame.key.key_code(ALLY_KEYS[i]):
-                if i < len(self.allies):
-                    return self.allies[i]
+                if i < len(self.area.allies):
+                    return self.area.allies[i]
         return None
 
     def enemy_turns(self):
-        for e in self.enemies:
+        for e in self.area.enemies:
             if e.is_alive():
-                e.take_turn(self.allies, self.enemies)
+                e.take_turn(self.area)
 
     def display(self):
         super().display()
-        text = self.font.render('Hello World', True, WHITE)
-        self.canvas.blit(text, (10, 10))
 
-        segment_width = SCREEN_WIDTH / 2 / (len(self.allies) + 1)
+        segment_width = SCREEN_WIDTH / 2 / (len(self.area.allies) + 2) # + 1 for the player
         x = segment_width
         y = SCREEN_HEIGHT / 2 - 72
-        for i in range(len(self.allies)):
-            self.draw_creature(self.allies[i], ALLY_KEYS[i], x, y)
+
+        if self.area.player.is_alive():
+            self.draw_creature(self.area.player, PLAYER_KEY, x, y)
             x += segment_width
 
-        segment_width = SCREEN_WIDTH / 2 / (len(self.enemies) + 1)
+        for i in range(len(self.area.allies)):
+            self.draw_creature(self.area.allies[i], ALLY_KEYS[i], x, y)
+            x += segment_width
+
+        segment_width = SCREEN_WIDTH / 2 / (len(self.area.enemies) + 1)
         x = segment_width + SCREEN_WIDTH / 2
-        for i in range(len(self.enemies)):
-            self.draw_creature(self.enemies[i], ENEMY_KEYS[i], x, y)
+        for i in range(len(self.area.enemies)):
+            self.draw_creature(self.area.enemies[i], ENEMY_KEYS[i], x, y)
             x += segment_width
 
         self.draw_messages()

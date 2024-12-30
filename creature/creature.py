@@ -8,6 +8,8 @@ class Creature:
         self.name = name
         self.sprite_rect = sprite_rect
 
+        self.description = ""
+
         self.max_hp = 0
         self.hp = 0
         self.defense = 0
@@ -20,6 +22,9 @@ class Creature:
         # For NPCs
         self.dialog_function = None
 
+    def set_description(self, description):
+        self.description = description
+
     def set_combat_stats(self, max_hp, defense, armor, damage):
         self.max_hp = max_hp
         self.hp = max_hp
@@ -31,9 +36,9 @@ class Creature:
     def set_ai(self, ai):
         self.ai = ai
 
-    def take_turn(self, allies, enemies):
+    def take_turn(self, area):
         if self.ai:
-            self.ai.take_turn(allies, enemies)
+            self.ai.take_turn(area)
 
     def attack(self, target):
         dam = max(self.damage - target.defense, 0)

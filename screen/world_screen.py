@@ -82,4 +82,14 @@ class WorldScreen(Screen):
             y += FONT_HEIGHT + 2
 
         for npc in tile.npcs:
-            self.write(npc.name, (x+12,y))
+            self.write(npc.name, (x+12,y), GREEN)
+            y += FONT_HEIGHT + 2
+
+        y += 12
+        if tile.enemies:
+            self.write("Hostiles:", (x,y))
+            y += FONT_HEIGHT + 2
+
+        for enemy in tile.enemies:
+            self.write(enemy.name, (x+12, y), RED)
+            y += FONT_HEIGHT + 2

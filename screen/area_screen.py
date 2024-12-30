@@ -1,6 +1,7 @@
 import pygame
 from screen.screen import Screen
 from screen.dialog_screen import DialogScreen
+from screen.combat_screen import CombatScreen
 from world.area import Area
 from world.world import World
 from main.constants import *
@@ -9,16 +10,31 @@ from main.util import fit_text, NUMBERS
 class AreaScreen(Screen):
     def __init__(self, canvas, area: Area, world: World):
         super().__init__(canvas)
+        self.world = world
+        self.index = 0
+        self.initialize_area(area)
+        self.set_player_here()
+
+    def initialize_area(self, area: Area):
         self.area = area
         self.description_lines = fit_text(self.area.description)
-        self.world = world
         self.index = 0
         self.dialog = {} # dict of {index: npc}
         self.options = self.define_options()
 
+    # Not super happy with this here, but when the player enters the Area Screen they
+    # enter the area and when the player leaves this screen they leave the area
+    def set_player_here(self):
+        self.area.player = self.world.player
+    def remove_player(self):
+        self.area.player = None
+
     def define_options(self):
         opts = []
         i = 0
+        if self.area.enemies:
+            opts.append(("Begin combat!", self.begin_combat))
+            i += 1
         for npc in self.area.npcs:
             if npc.has_dialog():
                 self.dialog[i] = npc
@@ -66,7 +82,11 @@ class AreaScreen(Screen):
     def leave_area(self, canvas, _):
         # pylint: disable=import-outside-toplevel
         from screen.world_screen import WorldScreen
+        self.remove_player()
         return WorldScreen(canvas, self.world)
+
+    def begin_combat(self, canvas, _):
+        return CombatScreen(canvas, self.area, self)
 
     def speak_to_npc(self, canvas, index):
         root_node = self.dialog[index].get_dialog_node()
