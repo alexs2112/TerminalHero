@@ -52,7 +52,7 @@ class Game:
         from dialog.dialog_parser import load_dialog
         base_node = load_dialog('resources/dialog/initial_elder_varik.json')
         self.screen = DialogScreen(self.canvas, None, base_node['root_node'])
-    
+
     def combat_test(self):
         # pylint: disable=import-outside-toplevel
         from screen.start_screen import StartScreen
