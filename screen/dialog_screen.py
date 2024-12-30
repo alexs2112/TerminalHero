@@ -1,11 +1,13 @@
 import pygame
 from screen.screen import Screen
 from main.constants import *
-from main.messenger import *
 from main.util import *
+from main.messenger import get_messenger
+from main.player_log import get_player_log
 from dialog.dialog_node import DialogNode
 
 messenger = get_messenger()
+player_log = get_player_log()
 
 class DialogScreen(Screen):
     def __init__(self, canvas, last_screen: Screen, root_node: DialogNode):

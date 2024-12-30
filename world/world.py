@@ -7,7 +7,7 @@ class World:
         self.player_position = (0,0)
         self.width: int = width
         self.height: int = height
-        self.areas: list[Area] = []
+        self.areas: list[list[Area]] = []
         self.initialize_areas()
 
     def initialize_areas(self):

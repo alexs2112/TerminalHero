@@ -53,8 +53,9 @@ class WorldScreen(Screen):
         for x in range(self.world.width):
             draw_y = start_y
             for y in range(self.world.height):
-                sprite_rect = self.world.get_area_sprite_rect(x, y)
-                draw_sprite(self.canvas, world_sprites, sprite_rect, draw_x, draw_y, scale=4)
+                if self.world.areas[x][y].condition_met():
+                    sprite_rect = self.world.get_area_sprite_rect(x, y)
+                    draw_sprite(self.canvas, world_sprites, sprite_rect, draw_x, draw_y, scale=4)
                 draw_y += WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2
             draw_x += WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2
 

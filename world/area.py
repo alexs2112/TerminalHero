@@ -1,6 +1,8 @@
 from creature.creature import Creature
 from creature.npc import NPC
 from creature.player import Player
+from main.player_log import get_player_log
+player_log = get_player_log()
 
 class Area:
     def __init__(self, name, sprite_rect, description):
@@ -11,8 +13,12 @@ class Area:
         self.allies: list[Creature] = []
         self.enemies: list[Creature] = []
         self.npcs: list[NPC] = []
+
+        # If the player needs to meet a condition to know about this area
         self.condition: str = None
 
-    # If the player needs to meet a condition to know about this area
-    def set_known_condition(self, condition):
-        self.condition = condition
+    def condition_met(self):
+        if self.condition:
+            if self.condition in player_log:
+                return player_log[self.condition]
+        return True
