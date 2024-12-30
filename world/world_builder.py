@@ -11,6 +11,7 @@ class WorldBuilder:
     def initialize_world(self):
         self.world = World(self.width, self.height)
 
+    #pylint: disable=line-too-long
     def build_world(self):
         self.world.areas[0][0] = Area("Forest", (1,1,12,12),
                                       "Dense shrubs and thorny vines choke the undergrowth, making travel slow and difficult. "
@@ -23,7 +24,7 @@ class WorldBuilder:
                                       "A growing population of giant vermin feast on the bodies within.")
         self.world.areas[0][1] = Area("Mining Village of Arad", (1,14,12,12),
                                       "The Mining Village of Arad is a harsh, desolate settlement, built around the remnants of a fallen Bloodstone meteorite. "
-                                      "This rare and magical gemstone, prized for its powerful healing properties, is the lifeblood of the village—and its curse. "
+                                      "This rare and magical gemstone, prized for its powerful healing properties, is the lifeblood of the village - and its curse. "
                                       "Life in Arad is bleak, with the villagers, known as Meldspawn, toiling endlessly in the dangerous mines to meet the Capital's unrelenting demands.")
         self.world.areas[1][1] = Area("The Bloodstone Mine", (14,14,12,12),
                                       "The village is built around the remains of a Bloodstone meteorite that had struck the earth a long time ago. "

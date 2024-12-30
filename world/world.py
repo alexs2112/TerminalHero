@@ -16,6 +16,6 @@ class World:
             for _ in range(self.height):
                 column.append(None)
             self.areas.append(column)
-    
+
     def get_area_sprite_rect(self, x, y):
         return self.areas[x][y].sprite_rect

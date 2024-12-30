@@ -26,11 +26,11 @@ class Game:
 
         # This needs to be called after messenger is created or else it will be empty
         # pylint: disable=import-outside-toplevel
-        from screen.start_screen import StartScreen
-        self.screen = StartScreen(self.canvas)
+        # from screen.start_screen import StartScreen
+        # self.screen = StartScreen(self.canvas)
 
-        # from screen.world_screen import WorldScreen
-        # self.screen = WorldScreen(self.canvas, self.world)
+        from screen.world_screen import WorldScreen
+        self.screen = WorldScreen(self.canvas, self.world)
 
     def generate_world(self):
         world_builder = WorldBuilder(3,3)
