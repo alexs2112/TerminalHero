@@ -9,6 +9,7 @@
 ### Population
  - First Generation **Meldspawn**
  - Created through alchemical experiments by the capital, these creatures are amalgamations of human and animal traits (e.g., rat tails, mole claws). They were designed for mining but left to fend for themselves after being deemed failures.
+
 # Sites of Interest
 ### 1. The Bloodstone Mine
  - The village is built around the remains of a Bloodstone meteorite that had struck the earth a long time ago. As it is, it completely encircles the mine of glowing gemstone that has plunged deep into the earth.
@@ -23,7 +24,7 @@
  - A possible quest could involve dealing with a villager who believes that something far more sinister than vermin is consuming the bodies, possibly leading to uncovering dark secrets.
 
 ### 3. The Village Leaders Hut
- - Owned by the unofficial leader of the villagers, Elder [name].
+ - Owned by the unofficial leader of the villagers, Elder Varik.
  - Taken on the responsibility of overseeing daily life in the village. They act as the village's informal governor, making decisions about what little supplies the village has and trying to meet the capitals monthly quota.
  - He is not brave, tries to stick with the status quo as it is keeping people somewhat alive. This will all come crumbling down when the village has their monthly stock of bloodstone stolen.
 
@@ -33,6 +34,6 @@
  - The player can potentially meet a soldier to then befriend or bribe to acquire astral gemstones to help solve some sidequests
 	 - This could also lead to a sidequest to befriend a soldier
 
-### 5. the Starvation Pit
+### 5. The Starvation Pit
  - A grim gathering place where families who can't afford to buy food come to collect leftovers or fight over meager rations. The pit is full of scavengers and desperate people.
  - A sick or injured villager might ask the player to smuggle some Bloodstone to them from the  mine to cure an otherwise fatal illness
