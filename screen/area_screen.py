@@ -13,7 +13,6 @@ class AreaScreen(Screen):
         self.world = world
         self.index = 0
         self.initialize_area(area)
-        self.set_player_here()
 
     def initialize_area(self, area: Area):
         self.area = area
@@ -21,13 +20,6 @@ class AreaScreen(Screen):
         self.index = 0
         self.dialog = {} # dict of {index: npc}
         self.options = self.define_options()
-
-    # Not super happy with this here, but when the player enters the Area Screen they
-    # enter the area and when the player leaves this screen they leave the area
-    def set_player_here(self):
-        self.area.player = self.world.player
-    def remove_player(self):
-        self.area.player = None
 
     def define_options(self):
         opts = []
@@ -82,11 +74,10 @@ class AreaScreen(Screen):
     def leave_area(self, canvas, _):
         # pylint: disable=import-outside-toplevel
         from screen.world_screen import WorldScreen
-        self.remove_player()
         return WorldScreen(canvas, self.world, self.area)
 
     def begin_combat(self, canvas, _):
-        return CombatScreen(canvas, self.area, self)
+        return CombatScreen(canvas, self.area, self.world.player, last_screen=self)
 
     def speak_to_npc(self, canvas, index):
         root_node = self.dialog[index].get_dialog_node()

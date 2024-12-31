@@ -4,19 +4,20 @@ from screen.game_over_screen import GameOverScreen
 from main.constants import *
 from main.messenger import *
 from main.util import draw_sprite, creature_sprites
+from creature.player import Player
 from world.area import Area
 
 messenger = get_messenger()
 
 ENEMY_KEYS = ['q','w','e','r']
-ALLY_KEYS  = ['s','d','f']
-PLAYER_KEY = 'a'
+PARTY_KEYS  = ['a', 's','d','f']
 
 class CombatScreen(Screen):
-    def __init__(self, canvas, area: Area, last_screen=None):
+    def __init__(self, canvas, area: Area, player: Player, last_screen: Screen =None):
         super().__init__(canvas)
         self.last_screen = last_screen
         self.area = area
+        self.player = player
         messenger.clear_latest()
 
     def check_events(self, events):
@@ -26,7 +27,7 @@ class CombatScreen(Screen):
             if event.type == pygame.KEYDOWN:
                 messenger.clear_latest()
                 if event.key == pygame.K_RETURN:
-                    if not self.area.player.is_alive():
+                    if not self.player.is_alive():
                         return GameOverScreen(self.canvas)
 
                     if not self.area.enemies:
@@ -38,7 +39,7 @@ class CombatScreen(Screen):
                 # Attack another creature
                 target = self.get_creature_by_code(event.key)
                 if target:
-                    self.area.player.attack(target)
+                    self.player.attack(target)
                     turn_taken = True
 
         # Enemies take their turns after the player
@@ -47,18 +48,12 @@ class CombatScreen(Screen):
 
         # Remove creatures that have died
         to_remove = []
-        for i in range(len(self.area.allies)):
-            if not self.area.allies[i].is_alive():
-                to_remove.append(i)
-        for i in to_remove:
-            self.area.allies.pop(i)
-        to_remove.clear()
         for i in range(len(self.area.enemies)):
             if not self.area.enemies[i].is_alive():
                 to_remove.append(i)
         for i in to_remove:
             self.area.enemies.pop(i)
-            if not self.area.enemies and self.area.player.is_alive():
+            if not self.area.enemies and self.player.is_alive():
                 messenger.add("All enemies have been defeated.")
                 messenger.add("Press [enter] to return.")
 
@@ -69,33 +64,28 @@ class CombatScreen(Screen):
             if event_key == pygame.key.key_code(ENEMY_KEYS[i]):
                 if i < len(self.area.enemies):
                     return self.area.enemies[i]
-        if event_key == pygame.key.key_code(PLAYER_KEY):
-            return self.area.player
-        for i in range(len(ALLY_KEYS)):
-            if event_key == pygame.key.key_code(ALLY_KEYS[i]):
-                if i < len(self.area.allies):
-                    return self.area.allies[i]
+        for i in range(len(PARTY_KEYS)):
+            if event_key == pygame.key.key_code(PARTY_KEYS[i]):
+                if i < len(self.player.party):
+                    return self.player.party[i]
         return None
 
     def enemy_turns(self):
         for e in self.area.enemies:
             if e.is_alive():
-                e.take_turn(self.area)
+                e.take_turn(self.player, self.area)
 
     def display(self):
         super().display()
 
-        segment_width = SCREEN_WIDTH / 2 / (len(self.area.allies) + 2) # + 1 for the player
+        segment_width = SCREEN_WIDTH / 2 / (len(self.player.party) + 1)
         x = segment_width
         y = SCREEN_HEIGHT / 2 - 72
 
-        if self.area.player.is_alive():
-            self.draw_creature(self.area.player, PLAYER_KEY, x, y)
-            x += segment_width
-
-        for i in range(len(self.area.allies)):
-            self.draw_creature(self.area.allies[i], ALLY_KEYS[i], x, y)
-            x += segment_width
+        for i in range(len(self.player.party)):
+            if self.player.party[i].is_alive():
+                self.draw_creature(self.player.party[i], PARTY_KEYS[i], x, y)
+                x += segment_width
 
         segment_width = SCREEN_WIDTH / 2 / (len(self.area.enemies) + 1)
         x = segment_width + SCREEN_WIDTH / 2

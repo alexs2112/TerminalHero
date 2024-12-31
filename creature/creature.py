@@ -36,9 +36,9 @@ class Creature:
     def set_ai(self, ai):
         self.ai = ai
 
-    def take_turn(self, area):
+    def take_turn(self, player, area):
         if self.ai:
-            self.ai.take_turn(area)
+            self.ai.take_turn(player, area)
 
     def attack(self, target):
         dam = max(self.damage - target.defense, 0)

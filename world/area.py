@@ -1,6 +1,5 @@
 from creature.creature import Creature
 from creature.npc import NPC
-from creature.player import Player
 from main.player_log import get_player_log
 player_log = get_player_log()
 
@@ -9,8 +8,6 @@ class Area:
         self.name: str = name
         self.sprite_rect: str = sprite_rect
         self.description: str = description
-        self.player: Player = None
-        self.allies: list[Creature] = []
         self.enemies: list[Creature] = []
         self.npcs: list[NPC] = []
 
