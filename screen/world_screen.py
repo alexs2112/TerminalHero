@@ -1,16 +1,18 @@
 import pygame
 from main.constants import *
 from main.util import world_sprites, creature_sprites, draw_sprite
+from main.clock import get_clock
 from screen.screen import Screen
 from screen.area_screen import AreaScreen
 from world.world import World
+
+clock = get_clock()
 
 class WorldScreen(Screen):
     def __init__(self, canvas, world: World, start_area=None):
         super().__init__(canvas)
         self.world = world
         self.center_x = SCREEN_WIDTH / 2 + 64
-        self.clock = pygame.time.Clock()
         self.local_time = 0
         self.frame_num = 0
 
@@ -50,7 +52,7 @@ class WorldScreen(Screen):
     def display(self):
         super().display()
 
-        self.local_time += self.clock.tick()
+        self.local_time += clock.get_time()
         if self.local_time >= 500:
             self.local_time = 0
             self.frame_num = 1 - self.frame_num
@@ -88,7 +90,6 @@ class WorldScreen(Screen):
 
     def area_by_index(self, index):
         areas = list(self.known_areas.values())
-        print(areas)
         if index >= 0 and index < len(areas):
             return areas[index]
         return areas[0]

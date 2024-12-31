@@ -4,8 +4,11 @@ import argparse
 import pygame
 from main.constants import *
 from main.messenger import get_messenger
+from main.clock import get_clock
 from world.world_builder import WorldBuilder
 from creature.creature_factory import CreatureFactory
+
+clock = get_clock()
 
 class Game:
     def __init__(self, args_list):
@@ -33,6 +36,7 @@ class Game:
 
     def game_loop(self):
         while True:
+            clock.tick(FRAMERATE)
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:

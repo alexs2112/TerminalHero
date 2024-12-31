@@ -2,13 +2,15 @@ import pygame
 from screen.screen import Screen
 from screen.game_over_screen import GameOverScreen
 from main.constants import *
-from main.messenger import *
-from main.util import draw_sprite, creature_sprites
+from main.messenger import get_messenger
+from main.clock import get_clock
+from main.util import draw_sprite, creature_sprites, interface_sprites, ARROW_DOWN
 from creature.creature import Creature
 from creature.player import Player
 from world.area import Area
 
 messenger = get_messenger()
+clock = get_clock()
 
 ENEMY_KEYS = ['q','w','e','r']
 PARTY_KEYS  = ['a', 's','d','f']
@@ -23,13 +25,35 @@ class CombatScreen(Screen):
         messenger.clear_latest()
 
         self.queue: list[Creature] = []
+        self.last_active_creature: Creature = None
+
+        self.frame_timer = 0
+        self.frame_num = 0
+        self.max_frames = 4
 
     def check_events(self, events):
         if not self.queue:
             self.reset_queue()
+
+        # If the head of the queue is a creature, check if they are alive and take their turn
         c = self.active_creature()
-        if not c.is_alive():
+        if c and not c.is_alive():
             c = None
+            self.queue.pop(0)
+
+        # Change this to use a wrapper class instead of a bunch of isinstance
+        if self.queue:
+            if isinstance(self.queue[0], int):
+                self.queue[0] -= clock.get_time()
+                if self.queue[0] <= 0:
+                    self.queue.pop(0)
+
+        self.frame_timer += clock.get_time()
+        if self.frame_timer >= 250:
+            self.frame_timer = 0
+            self.frame_num += 1
+            if self.frame_num >= self.max_frames:
+                self.frame_num = 0
 
         # Some checks to see if combat should even continue
         if not self.player.is_alive():
@@ -59,6 +83,7 @@ class CombatScreen(Screen):
         elif c:
             c.take_turn(self.player, self.area)
             self.queue.pop(0)
+            self.queue.insert(0, COMBAT_TURN_TIME)
 
         # This check probably doesn't need to happen once per frame
         to_remove = []
@@ -78,7 +103,11 @@ class CombatScreen(Screen):
     def active_creature(self):
         # Get the first queue element
         # Once we add animation handling in the queue, this will need to be changed
-        return self.queue[0]
+        if self.queue:
+            if isinstance(self.queue[0], Creature):
+                self.last_active_creature = self.queue[0]
+                return self.queue[0]
+        return None
 
     def reset_queue(self):
         q = []
@@ -105,6 +134,10 @@ class CombatScreen(Screen):
     def display(self):
         super().display()
 
+        c = self.last_active_creature
+        if c:
+            self.write(f"{c.name} Turn", (16, 16))
+
         segment_width = SCREEN_WIDTH / 2 / (len(self.player.party) + 1)
         x = segment_width
         y = SCREEN_HEIGHT / 2 - 72
@@ -123,6 +156,8 @@ class CombatScreen(Screen):
         self.draw_messages()
 
     def draw_creature(self, creature, letter, x, y):
+        if creature == self.last_active_creature:
+            draw_sprite(self.canvas, interface_sprites, ARROW_DOWN, x - 24, y - 76 + self.frame_num * 4)
         draw_sprite(self.canvas, creature_sprites, creature.sprite_rect, x - 36, y, scale=6)
         y += 100
 

@@ -9,7 +9,7 @@ from creature.ai.basic_ai import BasicAI
 class CreatureFactory:
     def new_player(self):
         player = Player("Player", (1,1,12,12))
-        player.set_combat_stats(10, 2, 5, 5, 0)
+        player.set_combat_stats(10, 2, 5, 5, 5)
         return player
 
     def new_rotfang_widow(self):
