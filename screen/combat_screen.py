@@ -4,6 +4,7 @@ from screen.game_over_screen import GameOverScreen
 from main.constants import *
 from main.messenger import *
 from main.util import draw_sprite, creature_sprites
+from creature.creature import Creature
 from creature.player import Player
 from world.area import Area
 
@@ -18,46 +19,77 @@ class CombatScreen(Screen):
         self.last_screen = last_screen
         self.area = area
         self.player = player
+
         messenger.clear_latest()
 
+        self.queue: list[Creature] = []
+
     def check_events(self, events):
-        # Don't let the player do multiple things at once
-        turn_taken = False
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                messenger.clear_latest()
-                if event.key == pygame.K_RETURN:
-                    if not self.player.is_alive():
-                        return GameOverScreen(self.canvas)
+        if not self.queue:
+            self.reset_queue()
+        c = self.active_creature()
+        if not c.is_alive():
+            c = None
 
-                    if not self.area.enemies:
-                        # For now just assume this is an AreaScreen, it needs to refresh
-                        if self.last_screen:
-                            self.last_screen.initialize_area(self.area)
-                        return self.last_screen
+        # Some checks to see if combat should even continue
+        if not self.player.is_alive():
+            for event in events:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                    return GameOverScreen(self.canvas)
+        elif not self.area.enemies:
+            for event in events:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                    # For now just assume this is an AreaScreen, it needs to refresh
+                    if self.last_screen:
+                        self.last_screen.initialize_area(self.area)
+                    return self.last_screen
 
-                # Attack another creature
-                target = self.get_creature_by_code(event.key)
-                if target:
-                    self.player.attack(target)
-                    turn_taken = True
+        # Player Controlled Turn
+        elif c and c.ai is None:
+            for event in events:
+                if event.type == pygame.KEYDOWN:
+                    # Attack another creature
+                    target = self.get_creature_by_code(event.key)
+                    if target:
+                        messenger.clear_latest()
+                        c.attack(target)
+                        self.queue.pop(0)
 
-        # Enemies take their turns after the player
-        if turn_taken:
-            self.enemy_turns()
+        # AI Controlled Turn
+        elif c:
+            c.take_turn(self.player, self.area)
+            self.queue.pop(0)
 
-        # Remove creatures that have died
+        # This check probably doesn't need to happen once per frame
         to_remove = []
-        for i in range(len(self.area.enemies)):
-            if not self.area.enemies[i].is_alive():
-                to_remove.append(i)
-        for i in to_remove:
-            self.area.enemies.pop(i)
+        for enemy in self.area.enemies:
+            if not enemy.is_alive():
+                to_remove.append(enemy)
+        for enemy in to_remove:
+            self.area.enemies.remove(enemy)
+
+            # This will currently happen more than once if multiple final enemies die simultaneously
             if not self.area.enemies and self.player.is_alive():
                 messenger.add("All enemies have been defeated.")
                 messenger.add("Press [enter] to return.")
 
         return self
+
+    def active_creature(self):
+        # Get the first queue element
+        # Once we add animation handling in the queue, this will need to be changed
+        return self.queue[0]
+
+    def reset_queue(self):
+        q = []
+        for e in self.area.enemies:
+            if e.is_alive():
+                q.append(e)
+        for p in self.player.party:
+            if p.is_alive():
+                q.append(p)
+        q.sort(key=lambda c: c.speed, reverse=True)
+        self.queue = q
 
     def get_creature_by_code(self, event_key):
         for i in range(len(ENEMY_KEYS)):
@@ -69,11 +101,6 @@ class CombatScreen(Screen):
                 if i < len(self.player.party):
                     return self.player.party[i]
         return None
-
-    def enemy_turns(self):
-        for e in self.area.enemies:
-            if e.is_alive():
-                e.take_turn(self.player, self.area)
 
     def display(self):
         super().display()

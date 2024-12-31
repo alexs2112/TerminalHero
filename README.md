@@ -12,5 +12,12 @@ Game design document can be found in [design](design/Act%20I/)
 - Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py)
 
 ### Rough To-Do List
-- Simple test script to read dialogue json files and ensure all children are accounted for
-    - Maybe generate a mermaid diagram for easier visualizations
+- Player can add characters to their party through dialogue
+- Creature combat abilities
+- Status effects on creatures
+- Combat space (?) effects (fire, pools of water, poison gas, etc)
+    - Eventually these effects should interact (poison gas explodes when encountering fire)
+- Attack animations (attacker bumps towards center, target bumps backwards lol)
+- Somehow mark dialogue options that have not been chosen yet
+    - Mark the NPC if they have unread dialogue
+    - Arrow-key control for dialogue options

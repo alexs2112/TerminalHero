@@ -16,6 +16,7 @@ class Creature:
         self.max_armor = 0
         self.armor = 0
         self.damage = 0
+        self.speed = 0
 
         self.ai = None
 
@@ -25,13 +26,14 @@ class Creature:
     def set_description(self, description):
         self.description = description
 
-    def set_combat_stats(self, max_hp, defense, armor, damage):
+    def set_combat_stats(self, max_hp, defense, armor, damage, speed):
         self.max_hp = max_hp
         self.hp = max_hp
         self.defense = defense
         self.max_armor = armor
         self.armor = armor
         self.damage = damage
+        self.speed = speed
 
     def set_ai(self, ai):
         self.ai = ai
