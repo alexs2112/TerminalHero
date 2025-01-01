@@ -8,6 +8,7 @@ from main.util import draw_sprite, creature_sprites, interface_sprites, ARROW_DO
 from creature.creature import Creature
 from creature.player import Player
 from combat.queue_item import *
+from combat.bump_location import BumpLocation
 from world.area import Area
 
 messenger = get_messenger()
@@ -31,6 +32,7 @@ class CombatScreen(Screen):
         self.frame_timer = 0
         self.frame_num = 0
         self.max_frames = 4
+        self.bump_locations: dict[Creature,BumpLocation] = {}
 
     def check_events(self, events):
         if not self.queue:
@@ -54,6 +56,7 @@ class CombatScreen(Screen):
             self.frame_num += 1
             if self.frame_num >= self.max_frames:
                 self.frame_num = 0
+        self.update_bumps(clock.get_time())
 
         # Some checks to see if combat should even continue
         if not self.player.is_alive():
@@ -76,12 +79,17 @@ class CombatScreen(Screen):
                     target = self.get_creature_by_code(event.key)
                     if target:
                         messenger.clear_latest()
+                        self.bump_locations[c] = BumpLocation((COMBAT_BUMP_DISTANCE, 0), 100)
                         c.attack(target)
                         self.queue.pop(0)
 
         # AI Controlled Turn
         elif c:
             c.take_turn(self.player, self.area)
+
+            # For now just assume the enemy is only attacking
+            self.bump_locations[c] = BumpLocation((-COMBAT_BUMP_DISTANCE, 0), 100)
+
             self.queue.pop(0)
             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
 
@@ -131,6 +139,14 @@ class CombatScreen(Screen):
                     return self.player.party[i]
         return None
 
+    def update_bumps(self, time):
+        for c, b in self.bump_locations.items():
+            if b and b.finished():
+                self.bump_locations[c] = None
+        for bump in self.bump_locations.values():
+            if bump:
+                bump.update(time)
+
     def display(self):
         super().display()
 
@@ -158,7 +174,12 @@ class CombatScreen(Screen):
     def draw_creature(self, creature, letter, x, y):
         if creature == self.last_active_creature:
             draw_sprite(self.canvas, interface_sprites, ARROW_DOWN, x - 24, y - 76 + self.frame_num * 4)
-        draw_sprite(self.canvas, creature_sprites, creature.sprite_rect, x - 36, y, scale=6)
+
+        cx, cy = x - 36, y
+        dx, dy = 0, 0
+        if creature in self.bump_locations and self.bump_locations[creature]:
+            dx,dy = self.bump_locations[creature].get_pos_delta()
+        draw_sprite(self.canvas, creature_sprites, creature.sprite_rect, cx + dx, cy + dy, scale=6)
         y += 100
 
         text = self.font.render(f"{letter}:{creature.name}", False, WHITE)

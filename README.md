@@ -42,7 +42,6 @@ options:
 - Status effects on creatures
 - Combat space (?) effects (fire, pools of water, poison gas, etc)
     - Eventually these effects should interact (poison gas explodes when encountering fire)
-- Attack animations (attacker bumps towards center, target bumps backwards lol)
 - Somehow mark dialogue options that have not been chosen yet
     - Mark the NPC if they have unread dialogue
     - Arrow-key control for dialogue options
