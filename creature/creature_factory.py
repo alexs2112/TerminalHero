@@ -12,6 +12,11 @@ class CreatureFactory:
         player.set_combat_stats(10, 2, 5, 5, 5)
         return player
 
+    def new_companion_1(self):
+        c = Creature("Companion", (1,14,12,12))
+        c.set_combat_stats(10,2,5,5,0)
+        return c
+
     def new_rotfang_widow(self):
         rotfang = Creature("Rotfang Widow", (1,66,12,12))
         rotfang.set_description("The Rotfang Widow is known for its grotesque feeding habits, often lingering over decomposing corpses for days. "

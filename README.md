@@ -3,6 +3,31 @@ Simple text-based RPG. Written in Python using the Pygame library.
 
 Game design document can be found in [design](design/Act%20I/)
 
+Running the main game 
+```
+>>> ./game.py -h
+usage: game.py [-h] [-v] [-d] [-a]
+
+options:
+  -h, --help     show this help message and exit
+  -v, --verbose  log debug and info statements
+  -d, --dialog   test dialog
+  -c, --companion  test a companion in the player party
+  -a, --all        enable all player_log fields
+```
+
+Helper script included for visualizing dialog trees:
+```
+>>> dialog/dialog_display.py -h
+usage: dialog_display.py [-h] filename
+
+positional arguments:
+  filename
+
+options:
+  -h, --help  show this help message and exit
+```
+
 ![World.png](resources/screenshots/world.png)
 ![Dialogue.png](resources/screenshots/dialogue.png)
 

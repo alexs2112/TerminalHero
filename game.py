@@ -24,6 +24,7 @@ class Game:
         self.player = self.creature_factory.new_player()
         self.world = self.generate_world()
         self.world.player = self.player
+        self.player.party.append(self.creature_factory.new_companion_1())
 
         # This needs to be called after messenger is created or else it will be empty
         # pylint: disable=import-outside-toplevel
@@ -60,6 +61,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true', help='log debug and info statements')
     parser.add_argument('-d', '--dialog', action='store_true', help='test dialog')
+    parser.add_argument('-c', '--companion', action='store_true', help='test a companion in the player party')
     parser.add_argument('-a', '--all', action='store_true', help='enable all player_log fields')
     args = parser.parse_args()
 
