@@ -36,8 +36,7 @@ options:
 - Using ChatGPT for placeholder dialogue and for fleshing out the game design documents.
 - Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py)
 
-### Rough To-Do List
-- Player can add characters to their party through dialogue
+### Rough To-Do List (Unordered)
 - Creature combat abilities
 - Status effects on creatures
 - Combat space (?) effects (fire, pools of water, poison gas, etc)
@@ -45,3 +44,5 @@ options:
 - Somehow mark dialogue options that have not been chosen yet
     - Mark the NPC if they have unread dialogue
     - Arrow-key control for dialogue options
+- Player can add characters to their party through dialogue
+- Basic quests and quest completion through combat or dialogue

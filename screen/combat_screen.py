@@ -2,6 +2,7 @@ import pygame
 from screen.screen import Screen
 from screen.game_over_screen import GameOverScreen
 from main.constants import *
+from main.util import NUMBERS
 from main.messenger import get_messenger
 from main.clock import get_clock
 from main.util import draw_sprite, creature_sprites, interface_sprites, ARROW_DOWN
@@ -9,6 +10,7 @@ from creature.creature import Creature
 from creature.player import Player
 from combat.queue_item import *
 from combat.bump_location import BumpLocation
+from combat.ability import Ability
 from world.area import Area
 
 messenger = get_messenger()
@@ -28,6 +30,7 @@ class CombatScreen(Screen):
 
         self.queue: list[QueueItem] = []
         self.last_active_creature: Creature = None
+        self.selected_ability: Ability = None
 
         self.frame_timer = 0
         self.frame_num = 0
@@ -75,13 +78,35 @@ class CombatScreen(Screen):
         elif c and c.ai is None:
             for event in events:
                 if event.type == pygame.KEYDOWN:
-                    # Attack another creature
-                    target = self.get_creature_by_code(event.key)
-                    if target:
-                        messenger.clear_latest()
-                        self.bump_locations[c] = BumpLocation((COMBAT_BUMP_DISTANCE, 0), 100)
-                        c.attack(target)
-                        self.queue.pop(0)
+                    # Player selects the ability to use if one is not already selected
+                    if not self.selected_ability:
+                        if event.key in NUMBERS:
+                            i = int(pygame.key.name(event.key)) - 1
+                            if i < len(c.abilities):
+                                if c.abilities[i].is_usable():
+                                    self.selected_ability = c.abilities[i]
+                                    return self
+                                else:
+                                    messenger.add("This ability is still on cooldown.")
+                                    return self
+                        # Skip turn
+                        elif event.key == pygame.K_0:
+                            messenger.add(f"{c.name} skips their turn.")
+                            self.queue.pop(0)
+                    # If the ability to use is already selected:
+                    else:
+                        # Target another creature
+                        target = self.get_creature_by_code(event.key)
+                        if target:
+                            messenger.clear_latest()
+                            self.bump_locations[c] = BumpLocation((COMBAT_BUMP_DISTANCE, 0), 100)
+                            c.use_ability(self.selected_ability, target)
+                            self.selected_ability = None
+                            self.queue.pop(0)
+                            self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
+                        elif event.key == pygame.K_ESCAPE:
+                            self.selected_ability = None
+                            return self
 
         # AI Controlled Turn
         elif c:
@@ -113,6 +138,11 @@ class CombatScreen(Screen):
         # Once we add animation handling in the queue, this will need to be changed
         if self.queue:
             if self.queue[0].is_type('creature'):
+
+                # Not super happy with having this here
+                if self.last_active_creature != self.queue[0].creature:
+                    self.queue[0].creature.start_turn()
+
                 self.last_active_creature = self.queue[0].creature
                 return self.queue[0].creature
         return None
@@ -156,20 +186,30 @@ class CombatScreen(Screen):
 
         segment_width = SCREEN_WIDTH / 2 / (len(self.player.party) + 1)
         x = segment_width
-        y = SCREEN_HEIGHT / 2 - 72
+        y = 124
 
+        # Draw Party
         for i in range(len(self.player.party)):
             if self.player.party[i].is_alive():
                 self.draw_creature(self.player.party[i], PARTY_KEYS[i], x, y)
                 x += segment_width
 
+        # Draw Enemies
         segment_width = SCREEN_WIDTH / 2 / (len(self.area.enemies) + 1)
         x = segment_width + SCREEN_WIDTH / 2
         for i in range(len(self.area.enemies)):
             self.draw_creature(self.area.enemies[i], ENEMY_KEYS[i], x, y)
             x += segment_width
 
+        y += 256
+
         self.draw_messages()
+
+        if c and not c.ai:
+            if not self.selected_ability:
+                y = self.draw_abilities(c, y)
+            else:
+                y = self.draw_targeting_box(y)
 
     def draw_creature(self, creature, letter, x, y):
         if creature == self.last_active_creature:
@@ -198,3 +238,23 @@ class CombatScreen(Screen):
         full_health_rect = (x - 40, y, 80, 8)
         pygame.draw.rect(self.canvas, DIMGRAY, full_health_rect)
         pygame.draw.rect(self.canvas, RED, health_rect)
+
+    def draw_abilities(self, c: Creature, y: int):
+        box_height = (len(c.abilities) + 1) * (FONT_SIZE + 2)
+        self.draw_box((16, y, SCREEN_WIDTH - 32, box_height + 20), 4)
+        y += 10
+        i = 1
+        for a in c.abilities:
+            colour = WHITE if a.is_usable() else GRAY
+            self.write(f"{i}: {a.get_short_desc()}", (24, y), colour)
+            y += FONT_SIZE + 2
+        self.write("0: Skip Turn", (24, y))
+
+        return box_height + y
+
+    def draw_targeting_box(self, y: int):
+        box_height = FONT_SIZE + 2
+        self.draw_box((16, y, SCREEN_WIDTH - 32, box_height + 20), 4)
+        y += 10
+        self.write("Select Target", (36, y), WHITE)
+        return box_height + y
