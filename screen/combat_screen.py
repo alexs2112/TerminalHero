@@ -7,6 +7,7 @@ from main.clock import get_clock
 from main.util import draw_sprite, creature_sprites, interface_sprites, ARROW_DOWN
 from creature.creature import Creature
 from creature.player import Player
+from combat.queue_item import *
 from world.area import Area
 
 messenger = get_messenger()
@@ -24,7 +25,7 @@ class CombatScreen(Screen):
 
         messenger.clear_latest()
 
-        self.queue: list[Creature] = []
+        self.queue: list[QueueItem] = []
         self.last_active_creature: Creature = None
 
         self.frame_timer = 0
@@ -41,11 +42,10 @@ class CombatScreen(Screen):
             c = None
             self.queue.pop(0)
 
-        # Change this to use a wrapper class instead of a bunch of isinstance
         if self.queue:
-            if isinstance(self.queue[0], int):
-                self.queue[0] -= clock.get_time()
-                if self.queue[0] <= 0:
+            if self.queue[0].is_type('wait'):
+                self.queue[0].time -= clock.get_time()
+                if self.queue[0].time <= 0:
                     self.queue.pop(0)
 
         self.frame_timer += clock.get_time()
@@ -83,7 +83,7 @@ class CombatScreen(Screen):
         elif c:
             c.take_turn(self.player, self.area)
             self.queue.pop(0)
-            self.queue.insert(0, COMBAT_TURN_TIME)
+            self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
 
         # This check probably doesn't need to happen once per frame
         to_remove = []
@@ -104,20 +104,20 @@ class CombatScreen(Screen):
         # Get the first queue element
         # Once we add animation handling in the queue, this will need to be changed
         if self.queue:
-            if isinstance(self.queue[0], Creature):
-                self.last_active_creature = self.queue[0]
-                return self.queue[0]
+            if self.queue[0].is_type('creature'):
+                self.last_active_creature = self.queue[0].creature
+                return self.queue[0].creature
         return None
 
     def reset_queue(self):
         q = []
         for e in self.area.enemies:
             if e.is_alive():
-                q.append(e)
+                q.append(QueueCreature(e))
         for p in self.player.party:
             if p.is_alive():
-                q.append(p)
-        q.sort(key=lambda c: c.speed, reverse=True)
+                q.append(QueueCreature(p))
+        q.sort(key=lambda c: c.creature.speed, reverse=True)
         self.queue = q
 
     def get_creature_by_code(self, event_key):
