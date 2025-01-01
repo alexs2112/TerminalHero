@@ -11,4 +11,3 @@ class Player(Creature):
 
     def dies(self):
         messenger.add('You die.')
-        messenger.add('Press [enter] to continue.')

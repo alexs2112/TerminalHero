@@ -37,7 +37,7 @@ options:
 - Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py)
 
 ### Rough To-Do List (Unordered)
-- Creature combat abilities
+- Creature combat abilities show hit chance, damage, and effects in their short description
 - Status effects on creatures
 - Combat space (?) effects (fire, pools of water, poison gas, etc)
     - Eventually these effects should interact (poison gas explodes when encountering fire)

@@ -16,7 +16,7 @@ class CreatureFactory:
         player.set_defensive_stats(max_hp=10, armor=5, dodge=2, will=2, endurance=2)
         player.set_offensive_stats(speed=5, strength=3, dexterity=2, intelligence=1)
         player.add_ability(self.abilities.basic_attack(1, 4))
-        print(player.abilities)
+        player.add_ability(self.abilities.strong_attack(1, 4))
         return player
 
     def new_companion_1(self):

@@ -98,7 +98,6 @@ class CombatScreen(Screen):
                         # Target another creature
                         target = self.get_creature_by_code(event.key)
                         if target:
-                            messenger.clear_latest()
                             self.bump_locations[c] = BumpLocation((COMBAT_BUMP_DISTANCE, 0), 100)
                             c.use_ability(self.selected_ability, target)
                             self.selected_ability = None
@@ -129,7 +128,6 @@ class CombatScreen(Screen):
             # This will currently happen more than once if multiple final enemies die simultaneously
             if not self.area.enemies and self.player.is_alive():
                 messenger.add("All enemies have been defeated.")
-                messenger.add("Press [enter] to return.")
 
         return self
 
@@ -141,6 +139,7 @@ class CombatScreen(Screen):
 
                 # Not super happy with having this here
                 if self.last_active_creature != self.queue[0].creature:
+                    messenger.clear_latest()
                     self.queue[0].creature.start_turn()
 
                 self.last_active_creature = self.queue[0].creature
@@ -201,15 +200,19 @@ class CombatScreen(Screen):
             self.draw_creature(self.area.enemies[i], ENEMY_KEYS[i], x, y)
             x += segment_width
 
-        y += 256
+        y += 156
 
-        self.draw_messages()
-
-        if c and not c.ai:
+        if not self.player.is_alive():
+            y = self.draw_message_box(['You have died.', 'Press [enter] to continue.'], y)
+        elif not self.area.enemies:
+            y = self.draw_message_box(['Victory!', 'Press [enter] to continue.'], y)
+        elif c and not c.ai:
             if not self.selected_ability:
                 y = self.draw_abilities(c, y)
             else:
-                y = self.draw_targeting_box(y)
+                y = self.draw_message_box(['Select Target'], y)
+
+        self.draw_last_message()
 
     def draw_creature(self, creature, letter, x, y):
         if creature == self.last_active_creature:
@@ -252,9 +255,19 @@ class CombatScreen(Screen):
 
         return box_height + y
 
-    def draw_targeting_box(self, y: int):
-        box_height = FONT_SIZE + 2
+    def draw_message_box(self, messages: list[str], y: int):
+        box_height = len(messages) * (FONT_SIZE + 2)
         self.draw_box((16, y, SCREEN_WIDTH - 32, box_height + 20), 4)
         y += 10
-        self.write("Select Target", (36, y), WHITE)
+        for m in messages:
+            self.write_center_x(m, (SCREEN_WIDTH / 2, y), WHITE)
+            y += FONT_HEIGHT + 2
         return box_height + y
+
+    def draw_last_message(self):
+        x, y = SCREEN_WIDTH / 2, SCREEN_HEIGHT - FONT_HEIGHT - 2 - 12
+        messages = messenger.latest_messages.copy()
+        messages.reverse()
+        for m in messages:
+            self.write_center_x(m, (x,y))
+            y -= FONT_HEIGHT - 2

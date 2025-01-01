@@ -1,7 +1,7 @@
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 480
 FRAMERATE = 40
-COMBAT_TURN_TIME = 500      # How long AI turns are in milliseconds
+COMBAT_TURN_TIME = 750      # How long AI turns are in milliseconds
 COMBAT_BUMP_DISTANCE = 24
 
 LOG_NAME = 'game.log'
