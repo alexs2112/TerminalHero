@@ -35,7 +35,7 @@ options:
 - Using a modified version of Urizen 1Bit Tileset: https://vurmux.itch.io/urizen-onebit-tileset
 - Using a modified version of Kenney 1-Big Pack: https://kenney-assets.itch.io/1-bit-pack
 - Using ChatGPT for placeholder dialogue and for fleshing out the game design documents.
-- Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py)
+- Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py). An example of this can be found in [elder_varik.mermaid.md](resources/examples/elder_varik.mermaid.md)
 
 ### Rough To-Do List (Unordered)
 **Combat**

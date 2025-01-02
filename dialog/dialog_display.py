@@ -36,6 +36,7 @@ def write_file(filename, lines):
         for line in lines:
             f.write(f'{line}\n')
         f.write('```\n')
+    print(f"Mermaid diagram can be found in {os.path.join(OUT_DIR, out_file)}")
 
 if __name__==("__main__"):
     parser = argparse.ArgumentParser()
@@ -46,12 +47,13 @@ if __name__==("__main__"):
     lines = setup_mermaid(args.filename)
 
     for node in nodes:
-        lines.append(f"\t{node['id']}[{node['id']}]")
-    lines.append('')
+        for child in node['children']:
+            lines.append(f"\t{node['id']} --> |{child[0]}| {child[1]}")
 
     for node in nodes:
-        for child in node['children']:
-            lines.append(f"\t{node['id']} --> {child[1]}")
+        lines.append(f"\t{node['id']}[{node['text']}]")
+    lines.append("\tNone[Leave Dialogue]")
+    lines.append('')
 
     if not os.path.exists(OUT_DIR):
         os.makedirs(OUT_DIR)
