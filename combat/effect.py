@@ -1,7 +1,10 @@
+from main.constants import WHITE
+
 class Effect:
-    def __init__(self, name: str, duration: int):
+    def __init__(self, name: str, duration: int, colour = WHITE):
         self.name = name
         self.duration = duration
+        self.colour = colour
 
         # Functions that are triggered by this status effect
         self.effect_start_function = None

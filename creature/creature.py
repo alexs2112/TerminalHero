@@ -73,7 +73,7 @@ class Creature:
         self.intelligence = intelligence
 
     def set_resistances(self, **kwargs):
-        for key, value in kwargs:
+        for key, value in kwargs.items():
             self.resistances[key] = value
 
     def add_ability(self, ability: Ability):

@@ -197,18 +197,17 @@ class CombatScreen(Screen):
         if c:
             self.write(f"{c.name} Turn", (16, 16))
 
-        segment_width = SCREEN_WIDTH / 2 / (len(self.player.party) + 1)
+        # Draw Party
+        segment_width = SCREEN_WIDTH / 2 / (len(self.player.party) + 1) + 6
         x = segment_width
         y = 124
-
-        # Draw Party
         for i in range(len(self.player.party)):
             if self.player.party[i].is_alive():
                 self.draw_creature(self.player.party[i], PARTY_KEYS[i], x, y)
                 x += segment_width
 
         # Draw Enemies
-        segment_width = SCREEN_WIDTH / 2 / (len(self.area.enemies) + 1)
+        segment_width = SCREEN_WIDTH / 2 / (len(self.area.enemies) + 1) + 6
         x = segment_width + SCREEN_WIDTH / 2
         for i in range(len(self.area.enemies)):
             self.draw_creature(self.area.enemies[i], ENEMY_KEYS[i], x, y)
@@ -237,12 +236,16 @@ class CombatScreen(Screen):
         if creature in self.bump_locations and self.bump_locations[creature]:
             dx,dy = self.bump_locations[creature].get_pos_delta()
         draw_sprite(self.canvas, creature_sprites, creature.sprite_rect, cx + dx, cy + dy, scale=6)
-        y += 100
 
-        text = self.font.render(f"{letter}:{creature.name}", False, WHITE)
-        self.canvas.blit(text, text.get_rect(center=(x, y)))
+        dy = y - (FONT_HEIGHT + 2)
+        for e in creature.effects:
+            self.write_center_x(f"[{e.name}]", (x, dy), e.colour)
+            dy -= FONT_HEIGHT + 2
+        y += 80
 
-        y += 16
+        self.write_center_x(f"{creature.name}", (x,y))
+
+        y += FONT_HEIGHT + 8
         armor_width = int(80 * (creature.armor / creature.max_armor))
         armor_rect = (x - 40, y, armor_width, 8)
         full_armor_rect = (x - 40, y, 80, 8)
@@ -255,6 +258,9 @@ class CombatScreen(Screen):
         full_health_rect = (x - 40, y, 80, 8)
         pygame.draw.rect(self.canvas, DIMGRAY, full_health_rect)
         pygame.draw.rect(self.canvas, RED, health_rect)
+
+        y += 10
+        self.write(f"[{letter}]", (x - int(FONT_WIDTH * 1.5), y), DIMGRAY)
 
     def draw_abilities(self, c: Creature, y: int):
         box_height = (len(c.abilities) + 1) * (FONT_SIZE + 2)

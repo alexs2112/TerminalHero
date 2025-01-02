@@ -1,10 +1,11 @@
 from combat.effect import *
+from main.constants import *
 from main.messenger import get_messenger
 messenger = get_messenger()
 
 class EffectFactory:
     def create_fire_effect(self, damage, duration):
-        e = Effect('Burning', duration)
+        e = Effect('Burning', duration, ORANGE)
         def start(creature):
             messenger.add(f"{creature.name} catches fire!")
         e.set_effect_start(start)
@@ -18,7 +19,7 @@ class EffectFactory:
         return e
 
     def create_stun_effect(self, duration):
-        e = Effect('stunned', duration)
+        e = Effect('Stunned', duration, CYAN)
         def f(creature):
             messenger.add(f"{creature.name} is stunned.")
             creature.skip_next_turn = True

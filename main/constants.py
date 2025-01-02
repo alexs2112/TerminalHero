@@ -17,11 +17,13 @@ WORLD_TILE_WIDTH = 12
 WORLD_TILE_HEIGHT = 12
 WORLD_TILE_MODIFIER = 4
 
-BLACK       = (0,    0,  0)
+BLACK       = (  0,  0,  0)
 WHITE       = (255,255,255)
 RED         = (255,  0,  0)
-GREEN       = (0,  255,  0)
-BLUE        = (0,    0,255)
+GREEN       = (  0,255,  0)
+BLUE        = (  0,  0,255)
 GRAY        = (128,128,128)
 DIMGRAY     = (105,105,105)
-TURQOISE    = (64, 224,208)
+ORANGE      = (255,128,  0)
+TURQOISE    = ( 64,224,208)
+CYAN        = (  0,255,255)

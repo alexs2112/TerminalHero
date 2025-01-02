@@ -37,17 +37,24 @@ options:
 - Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py)
 
 ### Rough To-Do List (Unordered)
+**Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
 - Don't allow stacking of the same status effect on a single creature
-- Display status effects on enemies in the combat screen
 - Status effects interact with each other (ie. enemy engulfed in poison will explode when dealt fire damage)
+- Screen to inspect creatures, their description and details, when selecting them without an ability active
+- Show health and armor numbers
+- Stagger the sprites and names of creatures so they don't overlap
+
+**Dialogue**
 - Somehow mark dialogue options that have not been chosen yet
     - Mark the NPC if they have unread dialogue
     - Arrow-key control for dialogue options
+- Coloured words in dialogue to highlight important things
 - Player can add characters to their party through dialogue
 - Basic quests and quest completion through combat or dialogue
-- Equipment:
-    - Your equipped weapon should determine some of the abilities each character has
-    - Other abilities related to the class
-    - Weapon should also determine character sprite
-    - Keep equipment rather slim, maybe only a weapon and an armor (and trinket?)
+
+**Equipment**
+- Your equipped weapon should determine some of the abilities each character has
+  - Other abilities related to the class
+- Weapon should also determine character sprite
+- Keep equipment rather slim, maybe only a weapon and an armor (and trinket?)
