@@ -17,6 +17,11 @@ class Messenger:
         self.number = 0
         self.max_messages = 100
 
+    def set_verbose(self):
+        self.logger.setLevel(logging.DEBUG)
+        for h in self.logger.handlers:
+            h.setLevel(logging.DEBUG)
+
     def setup_logger(self, args):
         # https://docs.python.org/3/howto/logging.html#configuring-logging
         if not args or not args.verbose:

@@ -1,6 +1,7 @@
 from main.constants import *
 from main.messenger import *
 from combat.ability import Ability
+from combat.effect import Effect
 
 messenger = get_messenger()
 
@@ -42,6 +43,10 @@ class Creature:
         # For NPCs
         self.dialog_function = None
 
+        # Combat Status effects
+        self.effects: list[Effect] = []
+        self.skip_next_turn = False
+
     def set_description(self, description):
         self.description = description
 
@@ -78,8 +83,18 @@ class Creature:
         self.ai = ai
 
     def start_turn(self):
+        self.skip_next_turn = False
         for a in self.abilities:
             a.cooldown = max(0, a.cooldown - 1)
+
+        to_remove: list[Effect] = []
+        for e in self.effects:
+            e.effect_turn(self)
+            if e.duration <= 0:
+                to_remove.append(e)
+        for e in to_remove:
+            e.effect_end(self)
+            self.effects.remove(e)
 
     def take_turn(self, player, area):
         if self.ai:
@@ -107,3 +122,7 @@ class Creature:
 
     def dies(self):
         messenger.add(f"{self.name} dies.")
+
+    def add_effect(self, effect: Effect):
+        self.effects.append(effect)
+        effect.effect_start(self)

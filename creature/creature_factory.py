@@ -16,14 +16,15 @@ class CreatureFactory:
         player.set_defensive_stats(max_hp=10, armor=5, dodge=2, will=2, endurance=2)
         player.set_offensive_stats(speed=5, strength=3, dexterity=2, intelligence=1)
         player.add_ability(self.abilities.basic_attack(1, 4))
-        player.add_ability(self.abilities.strong_attack(1, 4))
+        player.add_ability(self.abilities.heavy_blow(0, 2))
         return player
 
     def new_companion_1(self):
         c = Creature("Companion", (1,14,12,12))
-        c.set_defensive_stats(max_hp=6, armor=2, dodge=3, will=1, endurance=2)
-        c.set_offensive_stats(speed=5, strength=1, dexterity=2, intelligence=3)
-        c.add_ability(self.abilities.basic_attack(2, 3))
+        c.set_defensive_stats(max_hp=6, armor=2, dodge=3, will=3, endurance=1)
+        c.set_offensive_stats(speed=4, strength=1, dexterity=2, intelligence=3)
+        c.add_ability(self.abilities.basic_attack(1, 2))
+        c.add_ability(self.abilities.flickering_flames(85))
         return c
 
     def new_rotfang_widow(self):

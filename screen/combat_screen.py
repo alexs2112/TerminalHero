@@ -41,7 +41,7 @@ class CombatScreen(Screen):
         if not self.queue:
             self.reset_queue()
 
-        # If the head of the queue is a creature, check if they are alive and take their turn
+        # If the head of the queue is a creature, check if they are still alive and take their turn
         c = self.active_creature()
         if c and not c.is_alive():
             c = None
@@ -140,9 +140,23 @@ class CombatScreen(Screen):
                 # Not super happy with having this here
                 if self.last_active_creature != self.queue[0].creature:
                     messenger.clear_latest()
+                    was_alive = self.queue[0].creature.is_alive()
                     self.queue[0].creature.start_turn()
+                    if self.queue[0].creature.is_alive() != was_alive:
+                        # was_alive is a lazy solution here
+                        # Problem: Enemy dies to effect at the start of their turn, instantly skips to the next turn
+                        self.queue.pop(0)
+                        self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
+                        return None
 
                 self.last_active_creature = self.queue[0].creature
+
+                # This could probably be cleaned up a bit
+                if self.queue[0].creature.skip_next_turn:
+                    self.queue.pop(0)
+                    self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
+                    return None
+
                 return self.queue[0].creature
         return None
 
@@ -251,6 +265,7 @@ class CombatScreen(Screen):
             colour = WHITE if a.is_usable() else GRAY
             self.write(f"{i}: {a.get_short_desc()}", (24, y), colour)
             y += FONT_SIZE + 2
+            i += 1
         self.write("0: Skip Turn", (24, y))
 
         return box_height + y

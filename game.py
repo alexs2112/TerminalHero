@@ -17,8 +17,10 @@ class Game:
         self.canvas = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
         self.args = args_list
-        self.messenger = get_messenger(self.args)
-        self.messenger.clear()
+        messenger = get_messenger(self.args)
+        if self.args.verbose:
+            messenger.set_verbose()
+        messenger.clear()
 
         self.creature_factory = CreatureFactory()
         self.player = self.creature_factory.new_player()
