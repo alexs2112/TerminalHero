@@ -46,3 +46,8 @@ options:
     - Arrow-key control for dialogue options
 - Player can add characters to their party through dialogue
 - Basic quests and quest completion through combat or dialogue
+- Equipment:
+    - Your equipped weapon should determine some of the abilities each character has
+    - Other abilities related to the class
+    - Weapon should also determine character sprite
+    - Keep equipment rather slim, maybe only a weapon and an armor (and trinket?)

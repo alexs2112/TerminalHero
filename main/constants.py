@@ -1,8 +1,9 @@
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 480
 FRAMERATE = 40
-COMBAT_TURN_TIME = 1000      # How long AI turns are in milliseconds
+COMBAT_TURN_TIME = 1000         # How long AI turns are in milliseconds
 COMBAT_BUMP_DISTANCE = 24
+DIALOG_CHAR_TIME = 10          # How long it takes for each letter to appear in dialogue
 
 LOG_NAME = 'game.log'
 
