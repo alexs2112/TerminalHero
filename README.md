@@ -28,6 +28,7 @@ options:
   -h, --help  show this help message and exit
 ```
 
+![Combat.png](resources/screenshots/combat.png)
 ![World.png](resources/screenshots/world.png)
 ![Dialogue.png](resources/screenshots/dialogue.png)
 
@@ -43,7 +44,6 @@ options:
 - Status effects interact with each other (ie. enemy engulfed in poison will explode when dealt fire damage)
 - Screen to inspect creatures, their description and details, when selecting them without an ability active
 - Show health and armor numbers
-- Stagger the sprites and names of creatures so they don't overlap
 
 **Dialogue**
 - Somehow mark dialogue options that have not been chosen yet

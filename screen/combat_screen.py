@@ -203,17 +203,23 @@ class CombatScreen(Screen):
         y = 124
         for i in range(len(self.player.party)):
             if self.player.party[i].is_alive():
-                self.draw_creature(self.player.party[i], PARTY_KEYS[i], x, y)
+                y_offset = FONT_HEIGHT + 2
+                if len(self.player.party) > 2:
+                    y_offset = self.calculate_offset(i)
+                self.draw_creature(self.player.party[i], PARTY_KEYS[i], x, y, y_offset)
                 x += segment_width
 
         # Draw Enemies
         segment_width = SCREEN_WIDTH / 2 / (len(self.area.enemies) + 1) + 6
         x = segment_width + SCREEN_WIDTH / 2
         for i in range(len(self.area.enemies)):
-            self.draw_creature(self.area.enemies[i], ENEMY_KEYS[i], x, y)
+            y_offset = FONT_HEIGHT + 2
+            if len(self.area.enemies) > 2:
+                y_offset = self.calculate_offset(i)
+            self.draw_creature(self.area.enemies[i], ENEMY_KEYS[i], x, y, y_offset)
             x += segment_width
 
-        y += 156
+        y += 184
 
         if not self.player.is_alive():
             y = self.draw_message_box(['You have died.', 'Press [enter] to continue.'], y)
@@ -227,25 +233,29 @@ class CombatScreen(Screen):
 
         self.draw_last_message()
 
-    def draw_creature(self, creature, letter, x, y):
+    def calculate_offset(self, index):
+        return (FONT_HEIGHT + 2) * (index % 2)
+
+    def draw_creature(self, creature, letter, x, y, y_offset):
         if creature == self.last_active_creature:
             draw_sprite(self.canvas, interface_sprites, ARROW_DOWN, x - 24, y - 76 + self.frame_num * 4)
 
+        # Offset is applied to creature sprite, name, effects
         cx, cy = x - 36, y
         dx, dy = 0, 0
         if creature in self.bump_locations and self.bump_locations[creature]:
             dx,dy = self.bump_locations[creature].get_pos_delta()
-        draw_sprite(self.canvas, creature_sprites, creature.sprite_rect, cx + dx, cy + dy, scale=6)
+        draw_sprite(self.canvas, creature_sprites, creature.sprite_rect, cx + dx, cy + dy + y_offset, scale=6)
 
-        dy = y - (FONT_HEIGHT + 2)
+        cy = y - (FONT_HEIGHT + 2)
         for e in creature.effects:
-            self.write_center_x(f"[{e.name}]", (x, dy), e.colour)
-            dy -= FONT_HEIGHT + 2
+            self.write_center_x(f"[{e.name}]", (x, cy + y_offset), e.colour)
+            cy -= FONT_HEIGHT + 2
         y += 80
 
-        self.write_center_x(f"{creature.name}", (x,y))
+        self.write_center_x(f"{creature.name}", (x, y + y_offset))
 
-        y += FONT_HEIGHT + 8
+        y += FONT_HEIGHT * 2 + 8
         armor_width = int(80 * (creature.armor / creature.max_armor))
         armor_rect = (x - 40, y, armor_width, 8)
         full_armor_rect = (x - 40, y, 80, 8)
