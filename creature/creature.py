@@ -96,9 +96,9 @@ class Creature:
             e.effect_end(self)
             self.effects.remove(e)
 
-    def take_turn(self, player, area):
+    def take_turn(self, player, encounter):
         if self.ai:
-            self.ai.take_turn(player, area)
+            self.ai.take_turn(player, encounter)
 
     def use_ability(self, ability: Ability, target):
         ability.set_cooldown()

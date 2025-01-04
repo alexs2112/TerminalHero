@@ -30,10 +30,10 @@ def setup_mermaid(filename):
     ]
     return out
 
-def write_file(filename, lines):
+def write_file(filename, write_lines):
     out_file = f"{os.path.splitext(os.path.basename(filename))[0]}.mermaid.md"
     with open(os.path.join(OUT_DIR, out_file), 'w', encoding='utf-8') as f:
-        for line in lines:
+        for line in write_lines:
             f.write(f'{line}\n')
         f.write('```\n')
     print(f"Mermaid diagram can be found in {os.path.join(OUT_DIR, out_file)}")

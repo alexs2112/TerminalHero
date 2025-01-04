@@ -1,12 +1,14 @@
 from world.world import World
 from world.area import Area
+from world.encounter_factory import EncounterFactory
 from creature.creature_factory import CreatureFactory
 
 class WorldBuilder:
-    def __init__(self, width, height, creature_factory):
+    def __init__(self, width, height):
         self.width: int = width
         self.height: int = height
-        self.creature_factory: CreatureFactory = creature_factory
+        self.creature_factory = CreatureFactory()
+        self.encounter_factory = EncounterFactory()
         self.world: World = None
         self.initialize_world()
 
@@ -30,10 +32,11 @@ class WorldBuilder:
         area = Area("The Corpse Pile", (27,1,12,12),
                     "Just outside of the wooden palisade walls of the village, a pile of corpses grows with bodies of the shrinking population. "
                     "A growing population of giant vermin feast on the bodies within.")
-        area.enemies = [ self.creature_factory.new_rotfang_widow(),
-                         self.creature_factory.new_bonechewer_beetle(),
-                         self.creature_factory.new_deathburrower() ]
-        area.condition = 'known_corpse_pile'
+        area.encounters = [
+            self.encounter_factory.get_cemetery_encounter_1()
+        ]
+        area.condition = 'known_cemetery'
+        area.entry_log_update = 'visit_cemetery'
         self.world.areas[2][0] = area
 
         area = Area("Mining Village of Arad", (1,14,12,12),

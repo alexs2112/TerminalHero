@@ -1,17 +1,11 @@
 {
     "nodes": {
-        "": {
-            "name": "",
-            "text": "",
+        "<node_name>": {
+            "name": "<speaker_name>",
+            "text": "<dialogue_text>",
             "children": [
-                [ "", "" ]
+                [ "<dialogue_option>", "<option_node_name>" ]
             ]
-        },
-
-        "C": {
-            "name": "C",
-            "text": "C_text",
-            "children": [ ]
         }
     }
 }

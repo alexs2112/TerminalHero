@@ -83,6 +83,15 @@ class CreatureFactory:
         return harold
 
     def new_elder_varik(self):
-        varik = NPC("Elder Varik", (14,1,12,12))
+        varik = NPC("Elder Varik", (14,27,12,12))
         varik.dialog_function = elder_varik_dialog
         return varik
+
+    def new_gorren(self):
+        gorren = NPC("Gorren", (1,14,12,12))
+        gorren.set_defensive_stats(max_hp=6, armor=2, dodge=3, will=3, endurance=1)
+        gorren.set_offensive_stats(speed=4, strength=1, dexterity=2, intelligence=3)
+        gorren.add_ability(self.abilities.basic_attack(1, 2))
+        gorren.add_ability(self.abilities.flickering_flames(85))
+        gorren.dialog_function = gorren_dialogue
+        return gorren

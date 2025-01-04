@@ -108,7 +108,4 @@ class WorldScreen(Screen):
                 for npc in area.npcs:
                     self.write(npc.name, (x + FONT_WIDTH * 3, y))
                     y += FONT_HEIGHT + 2
-                for enemy in area.enemies:
-                    self.write(enemy.name, (x + FONT_WIDTH * 3, y), RED)
-                    y += FONT_HEIGHT + 2
             i += 1

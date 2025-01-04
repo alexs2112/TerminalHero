@@ -48,9 +48,10 @@
             "text": "The corpse pile is just what it sounds like. We dispose of the dead there, mostly those who didn't survive the work in the mines. It's a grim reminder of the cost of survival in this place.",
             "children": [
                 ["Thanks, I have some other questions", "village_info"],
+                ["QUEST (temporary text)", "whos_snackin"],
                 ["I'll keep that in mind.", "None"]
             ],
-            "function": "set_known_corpse_pile"
+            "function": "set_known_cemetery"
         },
         "garrison_info": {
             "name": "Elder Varik",
@@ -69,6 +70,14 @@
                 ["I'll avoid that place.", "None"]
             ],
             "function": "set_known_starvation_pit"
+        },
+        "whos_snackin": {
+            "name": "Elder Varik",
+            "text": "Something is eating the corpses in the corpse pile. Kill them.",
+            "children": [
+                ["Will do", "None"]
+            ],
+            "function": "add_quest_visit_corpse_pile"
         }
     }
 }

@@ -11,6 +11,7 @@ from creature.player import Player
 from combat.queue_item import *
 from combat.bump_location import BumpLocation
 from combat.ability import Ability
+from world.encounter import Encounter
 from world.area import Area
 
 messenger = get_messenger()
@@ -20,9 +21,10 @@ ENEMY_KEYS = ['q','w','e','r']
 PARTY_KEYS  = ['a', 's','d','f']
 
 class CombatScreen(Screen):
-    def __init__(self, canvas, area: Area, player: Player, last_screen: Screen =None):
+    def __init__(self, canvas, encounter: Encounter, area: Area, player: Player, last_screen: Screen = None):
         super().__init__(canvas)
         self.last_screen = last_screen
+        self.encounter = encounter
         self.area = area
         self.player = player
 
@@ -42,7 +44,7 @@ class CombatScreen(Screen):
             self.reset_queue()
 
         # If the head of the queue is a creature, check if they are still alive and take their turn
-        c = self.active_creature()
+        c: Creature = self.active_creature()
         if c and not c.is_alive():
             c = None
             self.queue.pop(0)
@@ -66,9 +68,12 @@ class CombatScreen(Screen):
             for event in events:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                     return GameOverScreen(self.canvas)
-        elif not self.area.enemies:
+        elif not self.encounter.enemies:
             for event in events:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                    # Update the area combat trigger
+                    self.area.finish_encounter(self.encounter, self.player)
+
                     # For now just assume this is an AreaScreen, it needs to refresh
                     if self.last_screen:
                         self.last_screen.initialize_area(self.area)
@@ -109,7 +114,7 @@ class CombatScreen(Screen):
 
         # AI Controlled Turn
         elif c:
-            c.take_turn(self.player, self.area)
+            c.take_turn(self.player, self.encounter)
 
             # For now just assume the enemy is only attacking
             self.bump_locations[c] = BumpLocation((-COMBAT_BUMP_DISTANCE, 0), 100)
@@ -119,14 +124,14 @@ class CombatScreen(Screen):
 
         # This check probably doesn't need to happen once per frame
         to_remove = []
-        for enemy in self.area.enemies:
+        for enemy in self.encounter.enemies:
             if not enemy.is_alive():
                 to_remove.append(enemy)
         for enemy in to_remove:
-            self.area.enemies.remove(enemy)
+            self.encounter.enemies.remove(enemy)
 
             # This will currently happen more than once if multiple final enemies die simultaneously
-            if not self.area.enemies and self.player.is_alive():
+            if not self.encounter.enemies and self.player.is_alive():
                 messenger.add("All enemies have been defeated.")
 
         return self
@@ -162,7 +167,7 @@ class CombatScreen(Screen):
 
     def reset_queue(self):
         q = []
-        for e in self.area.enemies:
+        for e in self.encounter.enemies:
             if e.is_alive():
                 q.append(QueueCreature(e))
         for p in self.player.party:
@@ -174,8 +179,8 @@ class CombatScreen(Screen):
     def get_creature_by_code(self, event_key):
         for i in range(len(ENEMY_KEYS)):
             if event_key == pygame.key.key_code(ENEMY_KEYS[i]):
-                if i < len(self.area.enemies):
-                    return self.area.enemies[i]
+                if i < len(self.encounter.enemies):
+                    return self.encounter.enemies[i]
         for i in range(len(PARTY_KEYS)):
             if event_key == pygame.key.key_code(PARTY_KEYS[i]):
                 if i < len(self.player.party):
@@ -210,20 +215,20 @@ class CombatScreen(Screen):
                 x += segment_width
 
         # Draw Enemies
-        segment_width = SCREEN_WIDTH / 2 / (len(self.area.enemies) + 1) + 6
+        segment_width = SCREEN_WIDTH / 2 / (len(self.encounter.enemies) + 1) + 6
         x = segment_width + SCREEN_WIDTH / 2
-        for i in range(len(self.area.enemies)):
+        for i in range(len(self.encounter.enemies)):
             y_offset = FONT_HEIGHT + 2
-            if len(self.area.enemies) > 2:
+            if len(self.encounter.enemies) > 2:
                 y_offset = self.calculate_offset(i)
-            self.draw_creature(self.area.enemies[i], ENEMY_KEYS[i], x, y, y_offset)
+            self.draw_creature(self.encounter.enemies[i], ENEMY_KEYS[i], x, y, y_offset)
             x += segment_width
 
         y += 184
 
         if not self.player.is_alive():
             y = self.draw_message_box(['You have died.', 'Press [enter] to continue.'], y)
-        elif not self.area.enemies:
+        elif not self.encounter.enemies:
             y = self.draw_message_box(['Victory!', 'Press [enter] to continue.'], y)
         elif c and not c.ai:
             if not self.selected_ability:

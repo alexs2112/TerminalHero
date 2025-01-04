@@ -8,6 +8,13 @@ def elder_varik_dialog():
         return load_dialog('resources/dialog/elder_varik.json')['root_node']
     return load_dialog('resources/dialog/elder_varik.json')['initial_node']
 
+def gorren_dialogue():
+    if not player_log['clear_cemetery_1']:
+        return load_dialog('resources/dialog/gorren_questline.json')['start']
+
+    # TODO: Add more dialogue here lol
+    return load_dialog('resources/dialog/gorren_questline.json')['start']
+
 class NPC(Creature):
     def set_dialog_func(self, dialog_function):
         self.dialog_function = dialog_function
@@ -16,4 +23,7 @@ class NPC(Creature):
         return self.dialog_function is not None
 
     def get_dialog_node(self):
+        # The results of this should be stored somewhere for cases where this
+        # gets called multiple times
+        # Could be tricky with branching dialogue functions
         return self.dialog_function()

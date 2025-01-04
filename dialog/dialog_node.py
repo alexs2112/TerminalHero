@@ -21,6 +21,9 @@ class DialogNode:
         # Function called when this option is selected
         self.function_name = function_name
 
+        # For root nodes, what option the player chooses from the area screen
+        self.area_option = ""
+
     def condition_met(self):
         if self.condition:
             if self.condition in player_log:
@@ -28,7 +31,7 @@ class DialogNode:
             messenger.warning(f"Can't find {self.condition} in player_log. Setting as True.")
         return True
 
-    def call_function(self):
+    def call_function(self, player):
         if self.function_name:
             f = getattr(dialog_functions, self.function_name)
-            f()
+            f(player)

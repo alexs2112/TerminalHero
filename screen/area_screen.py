@@ -11,11 +11,15 @@ class AreaScreen(Screen):
     def __init__(self, canvas, area: Area, world: World):
         super().__init__(canvas)
         self.world = world
+        self.player = world.player
         self.index = 0
         self.initialize_area(area)
 
     def initialize_area(self, area: Area):
+        print("INITIALIZING AREA")
         self.area = area
+        self.area.enter_area(self.player)
+        self.encounters = self.area.enabled_encounters()
         self.description_lines = fit_text(self.area.description)
         self.index = 0
         self.dialog = {} # dict of {index: npc}
@@ -24,14 +28,18 @@ class AreaScreen(Screen):
     def define_options(self):
         opts = []
         i = 0
-        if self.area.enemies:
-            opts.append(("Begin combat!", self.begin_combat))
+        for e in self.encounters:
+            opts.append((e.name, self.begin_encounter))
             i += 1
         for npc in self.area.npcs:
             if npc.has_dialog():
                 self.dialog[i] = npc
                 i += 1
-                opts.append((f"Speak to {npc.name}", self.speak_to_npc))
+                node = npc.get_dialog_node()
+                if node.area_option:
+                    opts.append((node.area_option, self.speak_to_npc))
+                else:
+                    opts.append((f"Speak to {npc.name}", self.speak_to_npc))
         opts.append(("Leave Area", self.leave_area))
         return opts
 
@@ -76,9 +84,9 @@ class AreaScreen(Screen):
         from screen.world_screen import WorldScreen
         return WorldScreen(canvas, self.world, self.area)
 
-    def begin_combat(self, canvas, _):
-        return CombatScreen(canvas, self.area, self.world.player, last_screen=self)
+    def begin_encounter(self, canvas, index):
+        return CombatScreen(canvas, self.encounters[index], self.area, self.player, last_screen=self)
 
     def speak_to_npc(self, canvas, index):
         root_node = self.dialog[index].get_dialog_node()
-        return DialogScreen(canvas, self, root_node)
+        return DialogScreen(canvas, self, root_node, self.player)

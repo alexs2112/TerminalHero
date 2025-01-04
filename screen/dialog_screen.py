@@ -6,15 +6,17 @@ from main.messenger import get_messenger
 from main.clock import get_clock
 from main.player_log import get_player_log
 from dialog.dialog_node import DialogNode
+from creature.player import Player
 
 messenger = get_messenger()
 clock = get_clock()
 player_log = get_player_log()
 
 class DialogScreen(Screen):
-    def __init__(self, canvas, last_screen: Screen, root_node: DialogNode):
+    def __init__(self, canvas, last_screen: Screen, root_node: DialogNode, player: Player):
         super().__init__(canvas)
         self.last_screen = last_screen
+        self.player = player
 
         # Keep track of the gradual text
         self.lines = []
@@ -27,7 +29,7 @@ class DialogScreen(Screen):
     def select_node(self, node):
         self.current_node: DialogNode = node
         self.children = self.get_valid_children()
-        self.current_node.call_function()
+        self.current_node.call_function(self.player)
         self.lines = fit_text(self.current_node.text, SCREEN_WIDTH - 32)
         self.char_index = 0
         self.finished = 0

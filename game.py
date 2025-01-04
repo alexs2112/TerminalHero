@@ -34,7 +34,7 @@ class Game:
         self.screen = StartScreen(self.canvas, self.world)
 
     def generate_world(self):
-        world_builder = WorldBuilder(3,3, self.creature_factory)
+        world_builder = WorldBuilder(3,3)
         return world_builder.build_world()
 
     def game_loop(self):
@@ -56,8 +56,8 @@ class Game:
         # pylint: disable=import-outside-toplevel
         from screen.dialog_screen import DialogScreen
         from dialog.dialog_parser import load_dialog
-        base_node = load_dialog('resources/dialog/initial_elder_varik.json')
-        self.screen = DialogScreen(self.canvas, None, base_node['root_node'])
+        base_node = load_dialog('resources/dialog/gorren_questline.json')
+        self.screen = DialogScreen(self.canvas, None, base_node['start'], self.player)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

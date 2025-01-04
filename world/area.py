@@ -1,6 +1,7 @@
-from creature.creature import Creature
+from creature.player import Player
 from creature.npc import NPC
-from main.player_log import get_player_log
+from world.encounter import Encounter
+from main.player_log import get_player_log, update_log
 player_log = get_player_log()
 
 class Area:
@@ -8,8 +9,8 @@ class Area:
         self.name: str = name
         self.sprite_rect: str = sprite_rect
         self.description: str = description
-        self.enemies: list[Creature] = []
         self.npcs: list[NPC] = []
+        self.encounters: list[Encounter] = []
 
         # If the player needs to meet a condition to know about this area
         self.condition: str = None
@@ -18,8 +19,19 @@ class Area:
         # Find a better way to handle this eventually
         self.is_filler: bool = False
 
+        # Entering this area will set this player_log field as true
+        self.entry_log_update: str = None
+
     def condition_met(self):
-        if self.condition:
-            if self.condition in player_log:
-                return player_log[self.condition]
+        if self.condition in player_log:
+            return player_log[self.condition]
         return True
+
+    def enter_area(self, player: Player):
+        update_log(self.entry_log_update, player)
+
+    def finish_encounter(self, encounter: Encounter, player: Player):
+        encounter.complete(player, self)
+
+    def enabled_encounters(self):
+        return [ e for e in self.encounters if e.enabled() ]
