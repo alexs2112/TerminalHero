@@ -38,6 +38,8 @@ class WorldScreen(Screen):
         return 0
 
     def check_events(self, events):
+        if self.check_notifications(events):
+            return self
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
@@ -63,6 +65,7 @@ class WorldScreen(Screen):
 
         self.draw_line((self.center_x, 0), (self.center_x, SCREEN_HEIGHT))
         self.draw_world()
+        self.display_notifications()
 
     def draw_world(self):
         start_x = self.center_x / 2 - ((self.world.width / 2) * (WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2))

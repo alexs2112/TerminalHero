@@ -1,6 +1,7 @@
 import pygame
 from main.constants import *
 from main.messenger import *
+from main.notification import get_notification
 
 messenger = get_messenger()
 
@@ -12,12 +13,24 @@ class Screen:
     def load_resources(self):
         self.font = pygame.font.Font(FONT_PATH, FONT_SIZE)
 
-    def check_events(self, _):
-        return self
+    def check_events(self, events):
+        pass
 
     def display(self):
         self.canvas.fill(BLACK)
         self.draw_border()
+
+    def check_notifications(self, events):
+        notification = get_notification()
+        if notification:
+            notification.check_events(events)
+            return True
+        return False
+
+    def display_notifications(self):
+        notification = get_notification()
+        if notification:
+            notification.display(self)
 
     def write(self, text, location, colour=WHITE):
         t = self.font.render(text, True, colour)

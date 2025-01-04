@@ -36,6 +36,8 @@ class DialogScreen(Screen):
         messenger.add(node.text)
 
     def check_events(self, events):
+        if self.check_notifications(events):
+            return self
         if not self.finished:
             self.frame_timer += clock.get_time()
             if self.frame_timer >= DIALOG_CHAR_TIME:
@@ -62,6 +64,11 @@ class DialogScreen(Screen):
             return self.last_screen
 
         self.select_node(self.children[index][1])
+        if self.current_node.text == "None":
+            # TODO: Get rid of this duplicate code somehow
+            if self.last_screen:
+                self.last_screen.initialize_area(self.player.area)
+            return self.last_screen
         return self
 
     def get_valid_children(self):
@@ -105,3 +112,4 @@ class DialogScreen(Screen):
                     y += FONT_HEIGHT + 2
                 y += 4
                 index += 1
+        self.display_notifications()

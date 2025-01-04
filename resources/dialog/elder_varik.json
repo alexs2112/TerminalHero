@@ -75,8 +75,13 @@
             "name": "Elder Varik",
             "text": "Something is eating the corpses in the corpse pile. Kill them.",
             "children": [
-                ["Will do", "None"]
-            ],
+                ["Will do", "accept_quest"]
+            ]
+        },
+        "accept_quest": {
+            "name": "System",
+            "text": "None",
+            "children": [],
             "function": "add_quest_visit_corpse_pile"
         }
     }

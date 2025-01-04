@@ -1,5 +1,6 @@
 from quests.quest_step import QuestStep
 from main.messenger import get_messenger
+from main.notification import set_notification
 
 messenger = get_messenger()
 
@@ -12,6 +13,9 @@ class Quest:
         # Which steps are required to complete in order for this quest to be completed
         self.required_steps: list[QuestStep] = []
         self.complete = False
+
+        # Text to display as a notification when the quest is complete
+        self.completion_text = self.name
 
     def set_description(self, description: str):
         self.description = description
@@ -34,4 +38,5 @@ class Quest:
                 return False
         self.complete = True
         messenger.add(f"Quest Complete! {self.name}")
+        set_notification(["Quest Complete!", self.completion_text])
         return True

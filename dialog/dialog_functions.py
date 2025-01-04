@@ -1,4 +1,5 @@
 from main.player_log import get_player_log
+from main.notification import set_notification
 from creature.player import Player
 from world.encounter_factory import EncounterFactory
 from quests.quest_factory import *
@@ -21,7 +22,9 @@ def set_known_garrison(_):
 
 def add_quest_visit_corpse_pile(player: Player):
     player_log['accepted_sidequest_1'] = True
-    player.side_quests.append(investigate_corpse_pile())
+    q = investigate_corpse_pile()
+    set_notification(["Quest Received!", q.name])
+    player.side_quests.append(q)
 
 def set_met_gorren(_):
     player_log['met_gorren'] = True

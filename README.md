@@ -40,15 +40,12 @@ options:
 - Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py).
 
 ### Rough To-Do List (Unordered)
-**Quests**
-- A QuestComplete screen/box that pops up when a quest is completed
-  - This should probably just be a general notification screen, that can be called when encounters/dialogues finish
-
 **World**
 - Break up the world sprites a bit to leave some blank space between areas, to make it seem less like a solid grid
 
 **Area**
-- Encounters should have descriptive text that is displayed in the area screen
+- Encounters should have descriptive text that is displayed in the area screen in red
+- NPCs should be shown in cyan
 
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
@@ -65,6 +62,7 @@ options:
 - Coloured words in dialogue to highlight important things
 - Player can add characters to their party through dialogue
 - Basic quests and quest completion through combat or dialogue
+- Add not-if condition so that certain dialogue is not displayed when a log is True
 
 **Equipment**
 - Your equipped weapon should determine some of the abilities each character has

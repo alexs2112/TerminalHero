@@ -45,6 +45,8 @@ class AreaScreen(Screen):
         return opts
 
     def check_events(self, events):
+        if self.check_notifications(events):
+            return self
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
@@ -78,6 +80,8 @@ class AreaScreen(Screen):
                 colour = GREEN
             self.write(f"[{i+1}]: {opt}", (x,y), colour)
             y += FONT_HEIGHT + 2
+
+        self.display_notifications()
 
     def can_leave(self):
         for e in self.encounters:

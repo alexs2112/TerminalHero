@@ -40,6 +40,8 @@ class CombatScreen(Screen):
         self.bump_locations: dict[Creature,BumpLocation] = {}
 
     def check_events(self, events):
+        if self.check_notifications(events):
+            return self
         if not self.queue:
             self.reset_queue()
 
@@ -138,8 +140,6 @@ class CombatScreen(Screen):
         return self
 
     def active_creature(self):
-        # Get the first queue element
-        # Once we add animation handling in the queue, this will need to be changed
         if self.queue:
             if self.queue[0].is_type('creature'):
 
@@ -238,6 +238,7 @@ class CombatScreen(Screen):
                 y = self.draw_message_box(['Select Target'], y)
 
         self.draw_last_message()
+        self.display_notifications()
 
     def calculate_offset(self, index):
         return (FONT_HEIGHT + 2) * (index % 2)
