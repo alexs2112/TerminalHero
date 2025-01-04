@@ -72,6 +72,7 @@ class CombatScreen(Screen):
             for event in events:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                     # Update the area combat trigger
+                    self.player.end_combat()
                     self.area.finish_encounter(self.encounter, self.player)
 
                     # For now just assume this is an AreaScreen, it needs to refresh
@@ -261,11 +262,12 @@ class CombatScreen(Screen):
         self.write_center_x(f"{creature.name}", (x, y + y_offset))
 
         y += FONT_HEIGHT * 2 + 8
-        armor_width = int(80 * (creature.armor / creature.max_armor))
-        armor_rect = (x - 40, y, armor_width, 8)
-        full_armor_rect = (x - 40, y, 80, 8)
-        pygame.draw.rect(self.canvas, DIMGRAY, full_armor_rect)
-        pygame.draw.rect(self.canvas, TURQOISE, armor_rect)
+        if creature.armor > 0:
+            armor_width = int(80 * (creature.armor / creature.max_armor))
+            armor_rect = (x - 40, y, armor_width, 8)
+            full_armor_rect = (x - 40, y, 80, 8)
+            pygame.draw.rect(self.canvas, DIMGRAY, full_armor_rect)
+            pygame.draw.rect(self.canvas, TURQOISE, armor_rect)
 
         y += 8
         health_width = int(80 * (creature.hp / creature.max_hp))

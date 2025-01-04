@@ -26,7 +26,8 @@ class Game:
         self.player = self.creature_factory.new_player()
         self.world = self.generate_world()
         self.world.player = self.player
-        self.player.party.append(self.creature_factory.new_companion_1())
+        if self.args.companion:
+            self.player.party.append(self.creature_factory.new_companion_1())
 
         # This needs to be called after messenger is created or else it will be empty
         # pylint: disable=import-outside-toplevel

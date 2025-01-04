@@ -1,5 +1,6 @@
 from main.player_log import get_player_log
 from creature.player import Player
+from world.encounter_factory import EncounterFactory
 from quests.quest_factory import *
 player_log = get_player_log()
 
@@ -21,3 +22,23 @@ def set_known_garrison(_):
 def add_quest_visit_corpse_pile(player: Player):
     player_log['accepted_sidequest_1'] = True
     player.side_quests.append(investigate_corpse_pile())
+
+def set_met_gorren(_):
+    player_log['met_gorren'] = True
+
+def add_corpse_pile_encounter_2(player: Player):
+    # I hate having a factory here, but I can't think of a better way ATM
+    player.area.encounters.append(EncounterFactory().get_cemetery_encounter_2())
+
+    # Assume there is only Gorren in the area
+    gorren = player.area.npcs[0]
+    player.party.append(gorren)
+
+def add_gorren_to_party(player: Player):
+    # At this point, assume that the only NPC in the area is Gorren
+    if len(player.party) < 2:
+        player.party = [player, player.area.npcs[0]]
+    player.area.npcs.clear()
+
+def reject_gorren(player: Player):
+    player.party = [player]

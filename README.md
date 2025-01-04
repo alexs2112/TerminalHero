@@ -39,6 +39,13 @@ options:
 - Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py).
 
 ### Rough To-Do List (Unordered)
+**Quests**
+- Quest screen to display quest progress
+- Quests should move to a `finished_quests` list once complete
+
+**Area**
+- Encounters should have descriptive text that is displayed in the area screen
+
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
 - Don't allow stacking of the same status effect on a single creature
@@ -59,3 +66,6 @@ options:
   - Other abilities related to the class
 - Weapon should also determine character sprite
 - Keep equipment rather slim, maybe only a weapon and an armor (and trinket?)
+
+**Saving**
+- This is going to be a bit of an issue

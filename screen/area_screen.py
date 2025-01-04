@@ -16,7 +16,6 @@ class AreaScreen(Screen):
         self.initialize_area(area)
 
     def initialize_area(self, area: Area):
-        print("INITIALIZING AREA")
         self.area = area
         self.area.enter_area(self.player)
         self.encounters = self.area.enabled_encounters()
@@ -40,7 +39,9 @@ class AreaScreen(Screen):
                     opts.append((node.area_option, self.speak_to_npc))
                 else:
                     opts.append((f"Speak to {npc.name}", self.speak_to_npc))
-        opts.append(("Leave Area", self.leave_area))
+
+        if self.can_leave():
+            opts.append(("Leave Area", self.leave_area))
         return opts
 
     def check_events(self, events):
@@ -77,6 +78,12 @@ class AreaScreen(Screen):
                 colour = GREEN
             self.write(f"[{i+1}]: {opt}", (x,y), colour)
             y += FONT_HEIGHT + 2
+
+    def can_leave(self):
+        for e in self.encounters:
+            if e.block_exit:
+                return False
+        return True
 
     # Some basic functions that are called by the option the player selects
     def leave_area(self, canvas, _):

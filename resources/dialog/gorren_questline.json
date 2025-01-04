@@ -1,7 +1,7 @@
 {
-    "option": "Examine Crypt",
     "nodes": {
         "start": {
+            "option": "Examine Crypt",
             "name": "System",
             "text": "The air inside the crypt is thick with the scent of damp stone and decay. Flickering torchlight casts long shadows across the walls, revealing broken coffins and scattered bones. In the far corner, a figure huddles behind an overturned sarcophagus, eyes wide with panic. As you step closer, he throws up his hands defensively.",
             "children": [
@@ -15,7 +15,8 @@
                 ["Who are you?", "who_are_you"],
                 ["Explain yourself!", "explain_yourself"],
                 ["Give me one reason not to cut you down.", "threaten"]
-            ]
+            ],
+            "function": "set_met_gorren"
         },
         "who_are_you": {
             "name": "Gorren",
@@ -113,10 +114,164 @@
         },
         "ambush": {
             "name": "System",
-            "text": "Before you can say another word, more Patchwork Dead claw their way out of the ground, groaning hungrily. The fight isn't over yet!",
+            "text": "Before you can say another word, more Patchwork Dead claw their way out of the ground, groaning hungrily. The fighting isn't over yet!",
             "children": [
-                ["Battle", "None"]
+                ["Finish Talking", "None"]
+            ],
+            "function": "add_corpse_pile_encounter_2"
+        },
+
+
+
+        "pre_combat": {
+            "name": "Gorren",
+            "text": "Uh... look, we can chat later, but I think we have bigger problems right now. You *do* hear the groaning, right?",
+            "children": [
+                ["What's the plan?", "plan"],
+                ["Are you sure this was all an accident?", "accident"],
+                ["Stay here. I'll handle this.", "handle_alone"]
             ]
+        },
+        "plan": {
+            "name": "Gorren",
+            "text": "The plan? The plan is not dying! We hold our ground, take them down, and maybe—*maybe*—I figure out how to stop this mess!",
+            "children": [
+                ["Alright, let's do this.", "start_combat"]
+            ]
+        },
+        "accident": {
+            "name": "Gorren",
+            "text": "Yes! Well, mostly! Look, I might have gotten a few incantations wrong, but I wasn't trying to unleash a zombie horde!",
+            "children": [
+                ["We'll deal with this first. Then we talk.", "start_combat"]
+            ]
+        },
+        "handle_alone": {
+            "name": "Gorren",
+            "text": "Oh sure, go ahead! Just leave the guy who *caused* the problem alone in a crypt full of angry corpses. What could go wrong?",
+            "children": [
+                ["Fine, stick close and try not to die.", "start_combat"]
+            ]
+        },
+        "start_combat": {
+            "name": "System",
+            "text": "The Patchwork Dead lurch forward, their groans growing louder.",
+            "children": [
+                ["Finish Talking", "None"]
+            ]
+        },
+
+
+
+        "post_combat": {
+            "name": "Gorren",
+            "text": "Okay... okay... I think that's the last of them. That went *way* better than I expected. Uh, thanks for not letting me die.",
+            "children": [
+                ["You owe me an explanation.", "explanation"],
+                ["So what now?", "so_what_now"],
+                ["This was a disaster. Stay out of my way.", "leave"]
+            ]
+        },
+        "explanation": {
+            "name": "Gorren",
+            "text": "Right! Right. Long story short, I wanted to prove I could handle necromancy. Turns out, I couldn't. But I swear, I can be useful if you give me a chance!",
+            "children": [
+                ["And why should I trust you?", "trust"],
+                ["Alright, you're coming with me.", "recruit"],
+                ["No thanks. Stay here.", "reject"]
+            ]
+        },
+        "so_what_now": {
+            "name": "Gorren",
+            "text": "Well, I'd rather not stick around and wait for more corpses to crawl out of the ground. Maybe I, uh, tag along with you? Safety in numbers, right?",
+            "children": [
+                ["Alright, you're coming with me.", "recruit"],
+                ["No thanks. Stay here.", "reject"]
+            ]
+        },
+        "trust": {
+            "name": "Gorren",
+            "text": "Look, I get it. I messed up *big time.* But I learned my lesson! No more reckless experiments. Just let me prove I can help.",
+            "children": [
+                ["Fine. You can join me.", "recruit"],
+                ["No. I don't need a liability.", "reject"]
+            ]
+        },
+        "recruit": {
+            "name": "System",
+            "text": "Gorren has joined your party! You can keep him as a Necromancer, or reclass him into a Shadowblade or Hexer.",
+            "children": [
+                ["Necromancer", "None"]
+            ],
+            "function": "add_gorren_to_party"
+        },
+        "reject": {
+            "name": "Gorren",
+            "text": "Yeah... yeah, I figured. Guess I'll, uh, find my own way out of this mess. Stay safe, I guess.",
+            "children": [
+                ["Leave", "None"]
+            ],
+            "function": "reject_gorren"
+        },
+        "leave": {
+            "name": "Gorren",
+            "text": "Y-yeah, fair enough. I'll just... get out of your way, then.",
+            "children": [
+                ["Leave", "None"]
+            ],
+            "function": "reject_gorren"
+        },
+
+
+
+        "second_chance": {
+            "name": "Gorren",
+            "text": "Oh. It's you again. Thought you were done with me. Changed your mind, or just here to gloat?",
+            "children": [
+                ["I could use your skills after all.", "reconsider"],
+                ["Don't get your hopes up. Just checking in.", "checking_in"],
+                ["No, I just wanted to make sure you're still alive.", "alive"]
+            ]
+        },
+        "reconsider": {
+            "name": "Gorren",
+            "text": "Really? You mean it? I promise I won't let you down. No more rogue zombies, I swear!",
+            "children": [
+                ["Alright, you're in. Don't make me regret this.", "recruit"],
+                ["On second thought, never mind.", "reject_again"]
+            ]
+        },
+        "checking_in": {
+            "name": "Gorren",
+            "text": "Well, I appreciate the concern. Or maybe you're just making sure I haven't raised another undead army, huh?",
+            "children": [
+                ["I could actually use your help.", "reconsider"],
+                ["Just making sure. See you around.", "leave_2"]
+            ]
+        },
+        "alive": {
+            "name": "Gorren",
+            "text": "Yeah, still breathing. And still regretting *everything* about today.",
+            "children": [
+                ["Actually… maybe you should come with me.", "reconsider"],
+                ["That's all I needed to know. Goodbye.", "leave_2"]
+            ]
+        },
+        "reject_again": {
+            "name": "Gorren",
+            "text": "Wow. Got my hopes up for nothing. Yeah, thanks for that.",
+            "children": [
+                ["Leave", "None"]
+            ],
+            "function": "reject_gorren"
+        },
+        "leave_2": {
+            "name": "Gorren",
+            "text": "Right. Well, take care out there. And if you run into more undead, uh… good luck?",
+            "children": [
+                ["Leave", "None"]
+            ],
+            "function": "reject_gorren"
         }
     }
 }

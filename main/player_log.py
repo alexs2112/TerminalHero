@@ -16,6 +16,7 @@ def initialize_player_log():
         'accepted_sidequest_1': False,
         'visit_cemetery': False,
         'clear_cemetery_1': False,
+        'clear_cemetery_2': False,
         'met_gorren': False
     }
 
@@ -26,4 +27,3 @@ def update_log(field, player=None):
     if player:
         for q in player.get_quests():
             q.check_completion()
-            q.debug_print()

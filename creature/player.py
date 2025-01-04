@@ -8,6 +8,7 @@ messenger = get_messenger()
 class Player(Creature):
     def __init__(self, name, sprite_rect):
         super().__init__(name, sprite_rect)
+        self.area = None
         self.party: list[Creature] = [self]
 
         self.main_quests: list[Quest] = []
@@ -18,3 +19,8 @@ class Player(Creature):
 
     def get_quests(self):
         return self.main_quests + self.side_quests
+
+    def end_combat(self):
+        for c in self.party:
+            c.effects.clear()
+            c.armor = self.max_armor

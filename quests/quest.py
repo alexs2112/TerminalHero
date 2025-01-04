@@ -1,4 +1,7 @@
 from quests.quest_step import QuestStep
+from main.messenger import get_messenger
+
+messenger = get_messenger()
 
 class Quest:
     def __init__(self, name: str):
@@ -30,4 +33,5 @@ class Quest:
             if not step.complete:
                 return False
         self.complete = True
+        messenger.add(f"Quest Complete! {self.name}")
         return True

@@ -15,6 +15,9 @@ class Encounter:
         # Function that is called when the encounter is completed
         self.completed_function = None
 
+        # If True, the player cannot leave the current area until this encounter is dealt with
+        self.block_exit: bool = False
+
     def enabled(self):
         if self.completed:
             return False

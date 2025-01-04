@@ -20,11 +20,6 @@ def load_dialog(filename):
     with open(filename, 'r', encoding='utf-8') as file:
         data = json.load(file)
 
-    # Load the area option if present
-    area_option = ''
-    if 'option' in data:
-        area_option = data['option']
-
     # Load each node initially
     loaded_nodes = {}
     for node_id, node_data in data['nodes'].items():
@@ -32,8 +27,6 @@ def load_dialog(filename):
 
     # Second pass: Structure node children properly
     for node in loaded_nodes.values():
-        if area_option:
-            node.area_option = area_option
         for child in node.children:
             if child[1] == "None":
                 child[1] = None
@@ -48,5 +41,8 @@ def load_node_initial(node_data):
     func = None
     if 'function' in node_data:
         func = node_data['function']
+    area_option = None
+    if 'option' in node_data:
+        area_option = node_data['option']
 
-    return DialogNode(node_data['name'], node_data['text'], node_data['children'], condition, func)
+    return DialogNode(node_data['name'], node_data['text'], node_data['children'], condition, func, area_option)

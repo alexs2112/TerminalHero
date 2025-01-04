@@ -56,6 +56,9 @@ class DialogScreen(Screen):
 
     def select_child(self, index):
         if self.children[index][1] is None:
+            # For now just assume this is an AreaScreen, it needs to refresh
+            if self.last_screen:
+                self.last_screen.initialize_area(self.player.area)
             return self.last_screen
 
         self.select_node(self.children[index][1])

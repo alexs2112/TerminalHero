@@ -11,6 +11,10 @@ def elder_varik_dialog():
 def gorren_dialogue():
     if not player_log['clear_cemetery_1']:
         return load_dialog('resources/dialog/gorren_questline.json')['start']
+    elif player_log['met_gorren'] and not player_log['clear_cemetery_2']:
+        return load_dialog('resources/dialog/gorren_questline.json')['pre_combat']
+    elif player_log['clear_cemetery_2']:
+        return load_dialog('resources/dialog/gorren_questline.json')['post_combat']
 
     # TODO: Add more dialogue here lol
     return load_dialog('resources/dialog/gorren_questline.json')['start']

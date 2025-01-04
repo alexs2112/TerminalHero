@@ -1,4 +1,3 @@
-from creature.player import Player
 from creature.npc import NPC
 from world.encounter import Encounter
 from main.player_log import get_player_log, update_log
@@ -27,10 +26,11 @@ class Area:
             return player_log[self.condition]
         return True
 
-    def enter_area(self, player: Player):
+    def enter_area(self, player):
+        player.area = self
         update_log(self.entry_log_update, player)
 
-    def finish_encounter(self, encounter: Encounter, player: Player):
+    def finish_encounter(self, encounter: Encounter, player):
         encounter.complete(player, self)
 
     def enabled_encounters(self):
