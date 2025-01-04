@@ -32,6 +32,7 @@ options:
 ![Combat.png](resources/screenshots/combat.png)
 ![World.png](resources/screenshots/world.png)
 ![Dialogue.png](resources/screenshots/dialogue.png)
+![Quest_Screen.png](resources/screenshots/quest_screen.png)
 
 - Using a modified version of Urizen 1Bit Tileset: https://vurmux.itch.io/urizen-onebit-tileset
 - Using a modified version of Kenney 1-Big Pack: https://kenney-assets.itch.io/1-bit-pack
@@ -42,6 +43,7 @@ options:
 **Quests**
 - Quests should move to a `finished_quests` list once complete
 - A QuestComplete screen/box that pops up when a quest is completed
+  - This should probably just be a general notification screen, that can be called when encounters/dialogues finish
 
 **World**
 - Break up the world sprites a bit to leave some blank space between areas, to make it seem less like a solid grid

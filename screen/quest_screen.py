@@ -41,6 +41,8 @@ class QuestScreen(Screen):
         y = 16
         y = self.draw_quest_titles("Main Quests", self.player.main_quests, y)
         y = self.draw_quest_titles("Side Quests", self.player.side_quests, y)
+        if self.player.done_quests:
+            y = self.draw_quest_titles("Completed", self.player.done_quests, y)
 
         if self.selected:
             self.draw_quest_details(self.selected)
@@ -58,6 +60,9 @@ class QuestScreen(Screen):
         for j in range(len(self.player.side_quests)):
             if j + len(self.player.main_quests) == self.index:
                 return self.player.side_quests[j]
+        for k in range(len(self.player.done_quests)):
+            if k + len(self.player.side_quests) + len(self.player.main_quests) == self.index:
+                return self.player.done_quests[k]
         return None
 
     def draw_quest_titles(self, header, quests, y):

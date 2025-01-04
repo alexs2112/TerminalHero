@@ -27,3 +27,9 @@ def update_log(field, player=None):
     if player:
         for q in player.get_quests():
             q.check_completion()
+            if q.complete:
+                if q in player.main_quests:
+                    player.main_quests.remove(q)
+                elif q in player.side_quests:
+                    player.side_quests.remove(q)
+                player.done_quests.append(q)

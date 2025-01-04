@@ -13,6 +13,7 @@ class Player(Creature):
 
         self.main_quests: list[Quest] = []
         self.side_quests: list[Quest] = []
+        self.done_quests: list[Quest] = []
 
     def dies(self):
         messenger.add('You die.')
@@ -24,3 +25,5 @@ class Player(Creature):
         for c in self.party:
             c.effects.clear()
             c.armor = self.max_armor
+            for a in c.abilities:
+                a.cooldown = 0
