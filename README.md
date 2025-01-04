@@ -40,8 +40,11 @@ options:
 
 ### Rough To-Do List (Unordered)
 **Quests**
-- Quest screen to display quest progress
 - Quests should move to a `finished_quests` list once complete
+- A QuestComplete screen/box that pops up when a quest is completed
+
+**World**
+- Break up the world sprites a bit to leave some blank space between areas, to make it seem less like a solid grid
 
 **Area**
 - Encounters should have descriptive text that is displayed in the area screen

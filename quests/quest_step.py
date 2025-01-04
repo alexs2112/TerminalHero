@@ -26,3 +26,9 @@ class QuestStep:
             if player_log[self.log_completion]:
                 self.complete = True
         return self.complete
+
+    def is_enabled(self):
+        for q in self.required:
+            if not q.complete:
+                return False
+        return True

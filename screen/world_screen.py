@@ -4,6 +4,7 @@ from main.util import world_sprites, creature_sprites, draw_sprite
 from main.clock import get_clock
 from screen.screen import Screen
 from screen.area_screen import AreaScreen
+from screen.quest_screen import QuestScreen
 from world.world import World
 
 clock = get_clock()
@@ -47,6 +48,9 @@ class WorldScreen(Screen):
                 self.local_time = 0
                 if event.key == pygame.K_RETURN:
                     return AreaScreen(self.canvas, self.area_by_index(self.index), self.world)
+                elif event.key == pygame.K_l:
+                    # Quest Log
+                    return QuestScreen(self.canvas, self.world.player, self)
         return self
 
     def display(self):

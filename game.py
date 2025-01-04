@@ -27,6 +27,7 @@ class Game:
         self.world = self.generate_world()
         self.world.player = self.player
         if self.args.companion:
+            # This will currently break the first quest when you get a second companion
             self.player.party.append(self.creature_factory.new_companion_1())
 
         # This needs to be called after messenger is created or else it will be empty
@@ -72,7 +73,13 @@ if __name__ == "__main__":
         # pylint: disable=import-outside-toplevel,ungrouped-imports
         from main.player_log import get_player_log
         player_log = get_player_log()
-        for key in player_log:
+        for key in [
+            'met_elder_varik',
+            'known_cemetery',
+            'known_bloodstone_mine',
+            'known_starvation_pit',
+            'known_garrison'
+        ]:
             player_log[key] = True
 
     game = Game(args)
