@@ -20,6 +20,9 @@ class Screen:
         self.canvas.fill(BLACK)
         self.draw_border()
 
+    def refresh(self, **kwargs):
+        pass
+
     def check_notifications(self, events):
         notification = get_notification()
         if notification:

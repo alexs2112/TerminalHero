@@ -13,10 +13,10 @@ class AreaScreen(Screen):
         self.world = world
         self.player = world.player
         self.index = 0
-        self.initialize_area(area)
+        self.refresh(area=area)
 
-    def initialize_area(self, area: Area):
-        self.area = area
+    def refresh(self, **kwargs):
+        self.area = kwargs['area']
         self.area.enter_area(self.player)
         self.encounters = self.area.enabled_encounters()
         self.description_lines = fit_text(self.area.description)

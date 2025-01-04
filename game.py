@@ -7,6 +7,7 @@ from main.messenger import get_messenger
 from main.clock import get_clock
 from world.world_builder import WorldBuilder
 from creature.creature_factory import CreatureFactory
+from screen.start_screen import StartScreen
 
 clock = get_clock()
 
@@ -30,9 +31,6 @@ class Game:
             # This will currently break the first quest when you get a second companion
             self.player.party.append(self.creature_factory.new_companion_1())
 
-        # This needs to be called after messenger is created or else it will be empty
-        # pylint: disable=import-outside-toplevel
-        from screen.start_screen import StartScreen
         self.screen = StartScreen(self.canvas, self.world)
 
     def generate_world(self):

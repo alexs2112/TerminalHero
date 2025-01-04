@@ -76,10 +76,7 @@ class CombatScreen(Screen):
                     # Update the area combat trigger
                     self.player.end_combat()
                     self.area.finish_encounter(self.encounter, self.player)
-
-                    # For now just assume this is an AreaScreen, it needs to refresh
-                    if self.last_screen:
-                        self.last_screen.initialize_area(self.area)
+                    self.last_screen.refresh(area=self.area)
                     return self.last_screen
 
         # Player Controlled Turn

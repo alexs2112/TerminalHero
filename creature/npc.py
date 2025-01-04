@@ -16,7 +16,7 @@ def gorren_dialogue():
     elif player_log['clear_cemetery_2']:
         return load_dialog('resources/dialog/gorren_questline.json')['post_combat']
 
-    # TODO: Add more dialogue here lol
+    # Add default dialogue once he is in your party
     return load_dialog('resources/dialog/gorren_questline.json')['start']
 
 class NPC(Creature):
