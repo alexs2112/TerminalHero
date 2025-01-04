@@ -41,7 +41,6 @@ options:
 
 ### Rough To-Do List (Unordered)
 **Quests**
-- Quests should move to a `finished_quests` list once complete
 - A QuestComplete screen/box that pops up when a quest is completed
   - This should probably just be a general notification screen, that can be called when encounters/dialogues finish
 
@@ -57,6 +56,7 @@ options:
 - Status effects interact with each other (ie. enemy engulfed in poison will explode when dealt fire damage)
 - Screen to inspect creatures, their description and details, when selecting them without an ability active
 - Show health and armor numbers
+- Instead of just removing enemies from combat, leave them at 0 HP and show their corpse
 
 **Dialogue**
 - Somehow mark dialogue options that have not been chosen yet
@@ -71,6 +71,9 @@ options:
   - Other abilities related to the class
 - Weapon should also determine character sprite
 - Keep equipment rather slim, maybe only a weapon and an armor (and trinket?)
+
+**Tech Debt**
+- Move all factories to use a pattern like `messenger.py`
 
 **Saving**
 - This is going to be a bit of an issue
