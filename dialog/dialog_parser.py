@@ -38,6 +38,9 @@ def load_node_initial(node_data):
     condition = None
     if 'condition' in node_data:
         condition = node_data['condition']
+    unless = None
+    if 'unless' in node_data:
+        unless = node_data['unless']
     func = None
     if 'function' in node_data:
         func = node_data['function']
@@ -45,4 +48,9 @@ def load_node_initial(node_data):
     if 'option' in node_data:
         area_option = node_data['option']
 
-    return DialogNode(node_data['name'], node_data['text'], node_data['children'], condition, func, area_option)
+    d = DialogNode(node_data['name'], node_data['text'], node_data['children'])
+    d.set_condition(condition)
+    d.set_unless(unless)
+    d.set_function_name(func)
+    d.set_area_option(area_option)
+    return d

@@ -17,6 +17,7 @@ Each node can also have the following options:
 ```
 "function": "<function_name>"
 "condition": "<log_condition>"
+"anti_condition": "<log_anti_condition>"
 ```
 
 Children leading to the node name of `"None"` will exit dialogue when the option is chosen

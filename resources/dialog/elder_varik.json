@@ -76,7 +76,8 @@
             "text": "Something is eating the corpses in the corpse pile. Kill them.",
             "children": [
                 ["Will do", "accept_quest"]
-            ]
+            ],
+            "unless": "accepted_sidequest_1"
         },
         "accept_quest": {
             "name": "System",
