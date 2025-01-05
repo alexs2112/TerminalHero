@@ -40,12 +40,12 @@ options:
 - Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py).
 
 ### Rough To-Do List (Unordered)
-**World**
-- Break up the world sprites a bit to leave some blank space between areas, to make it seem less like a solid grid
-
 **Area**
 - Encounters should have descriptive text that is displayed in the area screen in red
 - NPCs should be shown in cyan
+
+**Quest**
+- Quest Steps should have NPCs and Locations, to show important steps for the player
 
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting

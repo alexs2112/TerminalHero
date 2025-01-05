@@ -24,7 +24,9 @@ class WorldScreen(Screen):
         out = {}
         for x in range(self.world.width):
             for y in range(self.world.height):
-                if self.world.areas[x][y].condition_met() and not self.world.areas[x][y].is_filler:
+                if self.world.areas[x][y] and \
+                   self.world.areas[x][y].condition_met() and \
+                   not self.world.areas[x][y].is_filler:
                     out[(x,y)] = self.world.areas[x][y]
         return out
 
@@ -75,7 +77,7 @@ class WorldScreen(Screen):
         for x in range(self.world.width):
             draw_y = start_y
             for y in range(self.world.height):
-                if self.world.areas[x][y].condition_met():
+                if self.world.areas[x][y] and self.world.areas[x][y].condition_met():
                     sprite_rect = self.world.get_area_sprite_rect(x, y)
                     draw_sprite(self.canvas, world_sprites, sprite_rect, draw_x, draw_y, scale=4)
                 draw_y += WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2

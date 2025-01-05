@@ -34,7 +34,7 @@ class Game:
         self.screen = StartScreen(self.canvas, self.world)
 
     def generate_world(self):
-        world_builder = WorldBuilder(3,3)
+        world_builder = WorldBuilder(9,9)
         return world_builder.build_world()
 
     def game_loop(self):
