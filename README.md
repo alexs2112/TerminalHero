@@ -33,6 +33,7 @@ options:
 ![World.png](resources/screenshots/world.png)
 ![Dialogue.png](resources/screenshots/dialogue.png)
 ![Quest_Screen.png](resources/screenshots/quest_screen.png)
+![Creature_Screen.png](resources/screenshots/creature_screen.png)
 
 - Using a modified version of Urizen 1Bit Tileset: https://vurmux.itch.io/urizen-onebit-tileset
 - Using a modified version of Kenney 1-Big Pack: https://kenney-assets.itch.io/1-bit-pack
@@ -51,7 +52,6 @@ options:
 - Creature combat abilities show hit chance, damage, and effects when targeting
 - Don't allow stacking of the same status effect on a single creature
 - Status effects interact with each other (ie. enemy engulfed in poison will explode when dealt fire damage)
-- Screen to inspect creatures, their description and details, when selecting them without an ability active
 - Show health and armor numbers
 - Instead of just removing enemies from combat, leave them at 0 HP and show their corpse
 
@@ -63,6 +63,7 @@ options:
 - Player can add characters to their party through dialogue
 - Basic quests and quest completion through combat or dialogue
 - Add not-if condition so that certain dialogue is not displayed when a log is True
+- Show the sprite of the NPC you are talking to
 
 **Equipment**
 - Your equipped weapon should determine some of the abilities each character has

@@ -2,6 +2,7 @@ import pygame
 from screen.screen import Screen
 from screen.dialog_screen import DialogScreen
 from screen.combat_screen import CombatScreen
+from screen.quest_screen import QuestScreen
 from world.area import Area
 from world.world import World
 from main.constants import *
@@ -59,6 +60,8 @@ class AreaScreen(Screen):
                     i = int(pygame.key.name(event.key)) - 1
                     if i < len(self.options):
                         return self.options[i][1](self.canvas, i)
+                elif event.key == pygame.K_l:
+                    return QuestScreen(self.canvas, self.player, self)
         return self
 
     def display(self):

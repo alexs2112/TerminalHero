@@ -9,10 +9,12 @@ class Creature:
     def __init__(self, name, sprite_rect):
         self.name = name
         self.sprite_rect = sprite_rect
-        self.description = ""
+        self.description = "placeholder text"
 
+        self.level = 0
         self.abilities: list[Ability] = []
         self.ai = None
+        self.profession = None
 
         # Defensive Stats
         self.max_hp = 0
@@ -49,6 +51,10 @@ class Creature:
 
     def set_description(self, description):
         self.description = description
+
+    def set_profession(self, profession, level):
+        self.profession = profession
+        self.level = level
 
     def set_defensive_stats(self, max_hp, armor, dodge, will, endurance):
         self.max_hp = max_hp

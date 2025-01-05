@@ -51,8 +51,8 @@ class Screen:
         pygame.draw.rect(self.canvas, GRAY, rect)
         pygame.draw.rect(self.canvas, BLACK, (rect[0] + width, rect[1] + width, rect[2] - (width*2), rect[3] - (width*2)))
 
-    def draw_line(self, start, end):
-        pygame.draw.line(self.canvas, GRAY, start, end, width=6)
+    def draw_line(self, start, end, width=6):
+        pygame.draw.line(self.canvas, GRAY, start, end, width=width)
 
     def draw_messages(self, max_messages=8):
         latest = len(messenger.latest_messages)

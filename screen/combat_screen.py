@@ -1,11 +1,11 @@
 import pygame
 from screen.screen import Screen
 from screen.game_over_screen import GameOverScreen
+from screen.creature_screen import CreatureScreen
 from main.constants import *
-from main.util import NUMBERS
 from main.messenger import get_messenger
 from main.clock import get_clock
-from main.util import draw_sprite, creature_sprites, interface_sprites, ARROW_DOWN
+from main.util import draw_sprite, creature_sprites, interface_sprites, ARROW_DOWN, NUMBERS
 from creature.creature import Creature
 from creature.player import Player
 from combat.queue_item import *
@@ -98,6 +98,8 @@ class CombatScreen(Screen):
                         elif event.key == pygame.K_0:
                             messenger.add(f"{c.name} skips their turn.")
                             self.queue.pop(0)
+                        elif self.get_creature_by_code(event.key):
+                            return CreatureScreen(self.canvas, self.get_creature_by_code(event.key), self)
                     # If the ability to use is already selected:
                     else:
                         # Target another creature
