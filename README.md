@@ -46,7 +46,9 @@ options:
 - NPCs should be shown in cyan
 
 **Quest**
-- Quest Steps should have NPCs and Locations, to show important steps for the player
+- Quest Steps should have NPCs and Locations, to highlight important steps for the player
+- Areas should show quest options as yellow (or with an exclamation point or something)
+- World Screen should highlight quest areas
 
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
@@ -60,8 +62,6 @@ options:
     - Mark the NPC if they have unread dialogue
     - Arrow-key control for dialogue options
 - Coloured words in dialogue to highlight important things
-- Player can add characters to their party through dialogue
-- Basic quests and quest completion through combat or dialogue
 - Add not-if condition so that certain dialogue is not displayed when a log is True
 - Show the sprite of the NPC you are talking to
 

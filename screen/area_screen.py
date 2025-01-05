@@ -17,19 +17,19 @@ class AreaScreen(Screen):
         self.refresh(area=area)
 
     def refresh(self, **kwargs):
-        self.area = kwargs['area']
+        self.area: Area = kwargs['area']
         self.area.enter_area(self.player)
         self.encounters = self.area.enabled_encounters()
         self.description_lines = fit_text(self.area.description)
         self.index = 0
-        self.dialog = {} # dict of {index: npc}
-        self.options = self.define_options()
+        self.dialog = {}                        # dict of {index: npc}
+        self.options = self.define_options()    # (text, function, <colour_str>)
 
     def define_options(self):
         opts = []
         i = 0
         for e in self.encounters:
-            opts.append((e.name, self.begin_encounter))
+            opts.append((e.name, self.begin_encounter, 'red'))
             i += 1
         for npc in self.area.npcs:
             if npc.has_dialog():
@@ -37,9 +37,9 @@ class AreaScreen(Screen):
                 i += 1
                 node = npc.get_dialog_node()
                 if node.area_option:
-                    opts.append((node.area_option, self.speak_to_npc))
+                    opts.append((node.area_option, self.speak_to_npc, 'cyan'))
                 else:
-                    opts.append((f"Speak to {npc.name}", self.speak_to_npc))
+                    opts.append((f"Speak to {npc.name}", self.speak_to_npc, 'cyan'))
 
         if self.can_leave():
             opts.append(("Leave Area", self.leave_area))
@@ -78,13 +78,29 @@ class AreaScreen(Screen):
         y += 16
         for i in range(len(self.options)):
             opt = self.options[i][0]
-            colour = WHITE
-            if i == self.index:
-                colour = GREEN
+            colour = self.option_colour(i)
             self.write(f"[{i+1}]: {opt}", (x,y), colour)
             y += FONT_HEIGHT + 2
 
         self.display_notifications()
+
+    def option_colour(self, i):
+        if len(self.options[i]) > 2:
+            c = self.options[i][2]
+            if c == 'cyan':
+                if i == self.index:
+                    return CYAN
+                else:
+                    return LIGHTCYAN
+            elif c == 'red':
+                if i == self.index:
+                    return RED
+                else:
+                    return LIGHTRED
+        if i == self.index:
+            return GREEN
+        else:
+            return WHITE
 
     def can_leave(self):
         for e in self.encounters:
