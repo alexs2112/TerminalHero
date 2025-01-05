@@ -43,15 +43,15 @@ class CreatureScreen(Screen):
     def draw_health(self, x, y):
         rect_x = x + FONT_WIDTH * 12 + 12
         if self.creature.armor > 0:
-            self.write(f"Armor: {self.creature.armor}/{self.creature.max_armor}", (x, y))
-            armor_width = int(120 * (self.creature.armor / self.creature.max_armor))
+            self.write(f"Armor: {self.creature.armor}/{self.creature.max_armor()}", (x, y))
+            armor_width = int(120 * (self.creature.armor / self.creature.max_armor()))
             armor_rect = (rect_x, y, armor_width, FONT_HEIGHT)
             full_armor_rect = (rect_x, y, 120, FONT_HEIGHT)
             pygame.draw.rect(self.canvas, DIMGRAY, full_armor_rect)
             pygame.draw.rect(self.canvas, TURQOISE, armor_rect)
             y += FONT_HEIGHT + 2
-        self.write(f"   HP: {self.creature.hp}/{self.creature.max_hp}", (x, y))
-        health_width = int(120 * (self.creature.hp / self.creature.max_hp))
+        self.write(f"   HP: {self.creature.hp}/{self.creature.max_hp()}", (x, y))
+        health_width = int(120 * (self.creature.hp / self.creature.max_hp()))
         health_rect = (rect_x, y, health_width, FONT_HEIGHT)
         full_health_rect = (rect_x, y, 120, FONT_HEIGHT)
         pygame.draw.rect(self.canvas, DIMGRAY, full_health_rect)
@@ -63,13 +63,13 @@ class CreatureScreen(Screen):
         x += 10
         y += 10
         for stat in [
-            ("Speed", self.creature.speed),
-            ("Strength", self.creature.strength),
-            ("Dexterity", self.creature.dexterity),
-            ("Intelligence", self.creature.intelligence),
-            ("Dodge", self.creature.dodge),
-            ("Will", self.creature.will),
-            ("Endurance", self.creature.endurance)
+            ("Speed", self.creature.stat('speed')),
+            ("Strength", self.creature.stat('strength')),
+            ("Dexterity", self.creature.stat('dexterity')),
+            ("Intelligence", self.creature.stat('intelligence')),
+            ("Dodge", self.creature.stat('dodge')),
+            ("Will", self.creature.stat('will')),
+            ("Endurance", self.creature.stat('endurance'))
         ]:
             self.write(f"{stat[0]}: {stat[1]}", (x, y))
             y += FONT_HEIGHT + 4

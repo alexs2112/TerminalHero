@@ -2,6 +2,7 @@ from main.constants import *
 from main.messenger import *
 from combat.ability import Ability
 from combat.effect import Effect
+from creature.profession import Profession
 
 messenger = get_messenger()
 
@@ -14,22 +15,25 @@ class Creature:
         self.level = 0
         self.abilities: list[Ability] = []
         self.ai = None
-        self.profession = None
+        self.profession: Profession = None
 
-        # Defensive Stats
-        self.max_hp = 0
+        self.base_hp = 0
         self.hp = 0
-        self.max_armor = 0
         self.armor = 0
-        self.dodge = 0
-        self.will = 0
-        self.endurance = 0
 
-        # Offensive Stats
-        self.speed = 0
-        self.strength = 0
-        self.dexterity = 0
-        self.intelligence = 0
+        self.stats = {
+            # Defensive Stats
+            'defense': 0,   # Bonus to max_armor
+            'dodge': 0,
+            'will': 0,
+            'endurance': 0,
+
+            # Offensive Stats
+            'speed': 0,
+            'strength': 0,
+            'dexterity': 0,
+            'intelligence': 0
+        }
 
         # Resistances (as a percentage, can be positive or negative)
         self.resistances = {
@@ -56,27 +60,37 @@ class Creature:
         self.profession = profession
         self.level = level
 
-    def set_defensive_stats(self, max_hp, armor, dodge, will, endurance):
-        self.max_hp = max_hp
-        self.hp = max_hp
+    def set_defensive_stats(self, base_hp, defense, dodge, will, endurance):
+        self.base_hp = base_hp
 
         # Essentially additional health that refreshes at the start of each combat
-        self.max_armor = armor
-        self.armor = armor
+        self.armor = defense
+        self.stats['defense'] = defense
 
         # Ability to resist status effects and certain attacks
-        self.dodge = dodge
-        self.will = will
-        self.endurance = endurance
+        self.stats['dodge'] = dodge
+        self.stats['will'] = will
+        self.stats['endurance'] = endurance
+
+        self.hp = self.max_hp()
 
     def set_offensive_stats(self, speed, strength, dexterity, intelligence):
         # Determines turn order
-        self.speed = speed
+        self.stats['speed'] = speed
 
         # Attributes that benefit abilities
-        self.strength = strength
-        self.dexterity = dexterity
-        self.intelligence = intelligence
+        self.stats['strength'] = strength
+        self.stats['dexterity'] = dexterity
+        self.stats['intelligence'] = intelligence
+
+    def stat(self, stat_name):
+        return self.stats[stat_name]
+
+    def max_hp(self):
+        return self.base_hp + self.stat('endurance') * 2
+
+    def max_armor(self):
+        return self.stat('defense')
 
     def set_resistances(self, **kwargs):
         for key, value in kwargs.items():

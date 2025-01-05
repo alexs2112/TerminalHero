@@ -173,7 +173,7 @@ class CombatScreen(Screen):
         for p in self.player.party:
             if p.is_alive():
                 q.append(QueueCreature(p))
-        q.sort(key=lambda c: c.creature.speed, reverse=True)
+        q.sort(key=lambda c: c.creature.stat('speed'), reverse=True)
         self.queue = q
 
     def get_creature_by_code(self, event_key):
@@ -263,14 +263,14 @@ class CombatScreen(Screen):
 
         y += FONT_HEIGHT * 2 + 8
         if creature.armor > 0:
-            armor_width = int(80 * (creature.armor / creature.max_armor))
+            armor_width = int(80 * (creature.armor / creature.max_armor()))
             armor_rect = (x - 40, y, armor_width, 8)
             full_armor_rect = (x - 40, y, 80, 8)
             pygame.draw.rect(self.canvas, DIMGRAY, full_armor_rect)
             pygame.draw.rect(self.canvas, TURQOISE, armor_rect)
 
         y += 8
-        health_width = int(80 * (creature.hp / creature.max_hp))
+        health_width = int(80 * (creature.hp / creature.max_hp()))
         health_rect = (x - 40, y, health_width, 8)
         full_health_rect = (x - 40, y, 80, 8)
         pygame.draw.rect(self.canvas, DIMGRAY, full_health_rect)
