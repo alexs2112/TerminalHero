@@ -5,11 +5,12 @@ import pygame
 from main.constants import *
 from main.messenger import get_messenger
 from main.clock import get_clock
+from creature.creature_factory import get_creature_factory
 from world.world_builder import WorldBuilder
-from creature.creature_factory import CreatureFactory
 from screen.start_screen import StartScreen
 
 clock = get_clock()
+creature_factory = get_creature_factory()
 
 class Game:
     def __init__(self, args_list):
@@ -23,13 +24,12 @@ class Game:
             messenger.set_verbose()
         messenger.clear()
 
-        self.creature_factory = CreatureFactory()
-        self.player = self.creature_factory.new_player()
+        self.player = creature_factory.new_player()
         self.world = self.generate_world()
         self.world.player = self.player
         if self.args.companion:
             # This will currently break the first quest when you get a second companion
-            self.player.party.append(self.creature_factory.new_companion_1())
+            self.player.party.append(creature_factory.new_companion_1())
 
         self.screen = StartScreen(self.canvas, self.world)
 

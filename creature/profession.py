@@ -9,3 +9,6 @@ class Profession:
 
     def add_ability(self, ability):
         self.abilities.append(ability)
+
+    def set_stats(self, **kwargs):
+        self.stats = kwargs

@@ -70,8 +70,5 @@ options:
 - Weapon should also determine character sprite
 - Keep equipment rather slim, maybe only a weapon and an armor (and trinket?)
 
-**Tech Debt**
-- Move all factories to use a pattern like `messenger.py`
-
 **Saving**
 - This is going to be a bit of an issue

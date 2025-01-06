@@ -1,14 +1,15 @@
 from world.world import World
 from world.area import Area
-from world.encounter_factory import EncounterFactory
-from creature.creature_factory import CreatureFactory
+from world.encounter_factory import get_encounter_factory
+from creature.creature_factory import get_creature_factory
+
+creature_factory = get_creature_factory()
+encounter_factory = get_encounter_factory()
 
 class WorldBuilder:
     def __init__(self, width, height):
         self.width: int = width
         self.height: int = height
-        self.creature_factory = CreatureFactory()
-        self.encounter_factory = EncounterFactory()
         self.world: World = None
         self.initialize_world()
 
@@ -21,14 +22,14 @@ class WorldBuilder:
                     "The Mining Village of Arad is a harsh, desolate settlement, built around the remnants of a fallen Bloodstone meteorite. "
                     "This rare and magical gemstone, prized for its powerful healing properties, is the lifeblood of the village - and its curse. "
                     "Life in Arad is bleak, with the villagers, known as Meldspawn, toiling endlessly in the dangerous mines to meet the Capital's unrelenting demands.")
-        area.npcs = [self.creature_factory.new_elder_varik()]
+        area.npcs = [creature_factory.new_elder_varik()]
         self.world.areas[3][4] = area
 
         area = Area("The Corpse Pile", (27,1,12,12),
                     "Just outside of the wooden palisade walls of the village, a pile of corpses grows with bodies of the shrinking population. "
                     "A growing population of giant vermin feast on the bodies within.")
         area.encounters = [
-            self.encounter_factory.get_cemetery_encounter_1()
+            encounter_factory.get_cemetery_encounter_1()
         ]
         area.condition = 'known_cemetery'
         area.entry_log_update = 'visit_cemetery'

@@ -1,9 +1,10 @@
 from main.player_log import get_player_log
 from main.notification import set_notification
+from world.encounter_factory import get_encounter_factory
 from creature.player import Player
-from world.encounter_factory import EncounterFactory
 from quests.quest_factory import *
 player_log = get_player_log()
+encounter_factory = get_encounter_factory()
 
 def set_met_elder_varik(_):
     player_log['met_elder_varik'] = True
@@ -31,7 +32,7 @@ def set_met_gorren(_):
 
 def add_corpse_pile_encounter_2(player: Player):
     # I hate having a factory here, but I can't think of a better way ATM
-    player.area.encounters.append(EncounterFactory().get_cemetery_encounter_2())
+    player.area.encounters.append(encounter_factory.get_cemetery_encounter_2())
 
     # Assume there is only Gorren in the area
     gorren = player.area.npcs[0]
