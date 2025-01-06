@@ -277,6 +277,8 @@ class CombatScreen(Screen):
         pygame.draw.rect(self.canvas, DIMGRAY, full_health_rect)
         pygame.draw.rect(self.canvas, RED, health_rect)
 
+        self.write_center_x(f"{creature.hp}{f'+{creature.armor}' if creature.armor > 0 else ''}", (x, y - 8))
+
         y += 10
         self.write(f"[{letter}]", (x - int(FONT_WIDTH * 1.5), y), DIMGRAY)
 

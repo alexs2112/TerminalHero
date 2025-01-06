@@ -52,7 +52,6 @@ options:
 
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
-- Show health and armor numbers
 - Instead of just removing enemies from combat, leave them at 0 HP and show their corpse
 
 **Status Effects**
