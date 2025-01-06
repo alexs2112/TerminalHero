@@ -37,7 +37,7 @@ class CreatureScreen(Screen):
         y += FONT_HEIGHT + 2
         prof_string = f"Level {self.creature.level}"
         if self.creature.profession:
-            prof_string += f" {self.creature.profession}"
+            prof_string += f" {self.creature.profession.name}"
         self.write(prof_string, (x, y), LIGHTGRAY)
 
     def draw_health(self, x, y):
@@ -82,7 +82,7 @@ class CreatureScreen(Screen):
             y += FONT_HEIGHT + 2
 
         y += 8
-        for ability in self.creature.abilities:
+        for ability in self.creature.get_abilities():
             self.draw_line((x,y), (SCREEN_WIDTH - 30, y), width=4)
             y += 8
             self.write(ability.name, (x + 10,y))

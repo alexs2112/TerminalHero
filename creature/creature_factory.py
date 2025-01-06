@@ -1,10 +1,12 @@
 from creature.creature import Creature
 from creature.player import Player
 from creature.npc import *
+from creature.profession_factory import get_profession_factory
 from creature.ai.basic_ai import BasicAI
 from combat.ability_factory import get_ability_factory
 
 abilities = get_ability_factory()
+professions = get_profession_factory()
 
 # pylint: disable=invalid-name
 _creature_factory = None
@@ -24,6 +26,7 @@ class CreatureFactory:
         player.set_offensive_stats(speed=5, strength=3, dexterity=2, intelligence=1)
         player.add_ability(abilities.basic_attack(1, 4))
         player.add_ability(abilities.heavy_blow(0, 2))
+        player.set_profession(professions.new_test_wizard(), 1)
         return player
 
     def new_companion_1(self):
@@ -41,6 +44,7 @@ class CreatureFactory:
                           "It takes a step, and something wet and rotten falls from its torso, but it shuffles on undeterred.")
         c.set_defensive_stats(base_hp=4, defense=1, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=1, dexterity=0, intelligence=0)
+        c.set_profession(professions.new_enemy_profession("Shuffler"), 0)
         c.add_ability(abilities.basic_attack(1, 3))
         c.set_ai(BasicAI(c))
         return c
@@ -52,6 +56,7 @@ class CreatureFactory:
                           "Its mouth stretches too far, pulled open by uneven stitches, revealing a grotesque attempt at a snarl.")
         c.set_defensive_stats(base_hp=4, defense=3, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=2, dexterity=0, intelligence=0)
+        c.set_profession(professions.new_enemy_profession("Brute"), 0)
         c.add_ability(abilities.basic_attack(1, 3))
         c.set_ai(BasicAI(c))
         return c
@@ -63,6 +68,7 @@ class CreatureFactory:
                           "Its head is loosely attached, lolling to the side as it groans mindlessly.")
         c.set_defensive_stats(base_hp=4, defense=0, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=1, dexterity=0, intelligence=0)
+        c.set_profession(professions.new_enemy_profession("Shambler"), 0)
         c.add_ability(abilities.basic_attack(1, 3))
         c.set_ai(BasicAI(c))
         return c
@@ -87,7 +93,7 @@ class CreatureFactory:
                                "Gorren was once a gravedigger, but after too many lonely nights among the dead, he became obsessed with mastering necromancy.")
         gorren.set_defensive_stats(base_hp=6, defense=2, dodge=3, will=3, endurance=1)
         gorren.set_offensive_stats(speed=4, strength=1, dexterity=2, intelligence=3)
+        gorren.set_profession(professions.new_test_wizard(), 1)
         gorren.add_ability(abilities.basic_attack(1, 2))
-        gorren.add_ability(abilities.flickering_flames(85))
         gorren.dialog_function = gorren_dialogue
         return gorren

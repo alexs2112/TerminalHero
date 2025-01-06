@@ -87,9 +87,9 @@ class CombatScreen(Screen):
                     if not self.selected_ability:
                         if event.key in NUMBERS:
                             i = int(pygame.key.name(event.key)) - 1
-                            if i < len(c.abilities):
-                                if c.abilities[i].is_usable():
-                                    self.selected_ability = c.abilities[i]
+                            if i < len(c.get_abilities()):
+                                if c.get_abilities()[i].is_usable():
+                                    self.selected_ability = c.get_abilities()[i]
                                     return self
                                 else:
                                     messenger.add("This ability is still on cooldown.")
@@ -280,11 +280,11 @@ class CombatScreen(Screen):
         self.write(f"[{letter}]", (x - int(FONT_WIDTH * 1.5), y), DIMGRAY)
 
     def draw_abilities(self, c: Creature, y: int):
-        box_height = (len(c.abilities) + 1) * (FONT_SIZE + 2)
+        box_height = (len(c.get_abilities()) + 1) * (FONT_SIZE + 2)
         self.draw_box((16, y, SCREEN_WIDTH - 32, box_height + 20), 4)
         y += 10
         i = 1
-        for a in c.abilities:
+        for a in c.get_abilities():
             colour = WHITE if a.is_usable() else GRAY
             self.write(f"{i}: {a.get_short_desc()}", (24, y), colour)
             y += FONT_SIZE + 2

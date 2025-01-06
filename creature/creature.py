@@ -84,7 +84,10 @@ class Creature:
         self.stats['intelligence'] = intelligence
 
     def stat(self, stat_name):
-        return self.stats[stat_name]
+        s = self.stats[stat_name]
+        if self.profession and stat_name in self.profession.stats:
+            s += self.profession.stats[stat_name]
+        return s
 
     def max_hp(self):
         return self.base_hp + self.stat('endurance') * 2
@@ -99,12 +102,18 @@ class Creature:
     def add_ability(self, ability: Ability):
         self.abilities.append(ability)
 
+    def get_abilities(self):
+        a = self.abilities
+        if self.profession:
+            return a + self.profession.abilities
+        return a
+
     def set_ai(self, ai):
         self.ai = ai
 
     def start_turn(self):
         self.skip_next_turn = False
-        for a in self.abilities:
+        for a in self.get_abilities():
             a.cooldown = max(0, a.cooldown - 1)
 
         to_remove: list[Effect] = []

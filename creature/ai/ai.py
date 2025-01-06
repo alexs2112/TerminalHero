@@ -6,7 +6,7 @@ class AI:
         pass
 
     def list_usable_abilities(self):
-        return [ a for a in self.creature.abilities if a.is_usable() ]
+        return [ a for a in self.creature.get_abilities() if a.is_usable() ]
 
     def list_alive_creatures(self, creatures):
         return [ c for c in creatures if c.is_alive() ]

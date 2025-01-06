@@ -25,5 +25,5 @@ class Player(Creature):
         for c in self.party:
             c.effects.clear()
             c.armor = self.max_armor()
-            for a in c.abilities:
+            for a in c.get_abilities():
                 a.cooldown = 0
