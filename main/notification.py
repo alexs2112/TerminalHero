@@ -1,5 +1,6 @@
 import pygame
 from main.constants import *
+from main.colour import *
 from main.util import fit_text
 
 # pylint: disable=invalid-name

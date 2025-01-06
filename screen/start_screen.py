@@ -2,6 +2,7 @@ import pygame
 from screen.screen import Screen
 from screen.world_screen import WorldScreen
 from main.constants import *
+from main.colour import *
 
 class StartScreen(Screen):
     def __init__(self, canvas, world):
@@ -23,7 +24,5 @@ class StartScreen(Screen):
         x = SCREEN_WIDTH / 2
         y = (SCREEN_HEIGHT / 2) - (len(text) * int(FONT_HEIGHT / 2 + 2))
         for line in text:
-            t = self.font.render(line, True, WHITE)
-            r = t.get_rect(center=(x, y))
+            self.write_center_x(line, (x,y), WHITE)
             y += FONT_HEIGHT + 2
-            self.canvas.blit(t, r)

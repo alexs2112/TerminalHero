@@ -1,5 +1,4 @@
 from combat.effect_subclasses import *
-from main.constants import *
 from main.messenger import get_messenger
 messenger = get_messenger()
 

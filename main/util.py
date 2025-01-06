@@ -1,5 +1,6 @@
 import pygame
 from main.constants import *
+from main.colour import *
 
 NUMBERS = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9]
 
@@ -8,12 +9,20 @@ def fit_text(text, width=SCREEN_WIDTH-32):
 
     words = iter(text.split())
     lines, current = [], next(words)
+    current_len = 0
     for word in words:
-        if len(current) + 1 + len(word) > max_char:
+        word_len = len(word)
+        for colour_string in COLOUR_STRINGS:
+            if colour_string in word:
+                word_len -= len(colour_string) * word.count(colour_string)
+
+        if current_len + 1 + word_len > max_char:
             lines.append(current)
             current = word
+            current_len = word_len
         else:
             current += " " + word
+            current_len += word_len + 1
     lines.append(current)
     return lines
 

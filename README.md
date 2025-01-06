@@ -63,7 +63,6 @@ options:
 - Somehow mark dialogue options that have not been chosen yet
     - Mark the NPC if they have unread dialogue
     - Arrow-key control for dialogue options
-- Coloured words in dialogue to highlight important things
 - Show the sprite of the NPC you are talking to
 
 **Equipment**

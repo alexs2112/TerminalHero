@@ -3,6 +3,7 @@ from screen.screen import Screen
 from screen.game_over_screen import GameOverScreen
 from screen.creature_screen import CreatureScreen
 from main.constants import *
+from main.colour import *
 from main.messenger import get_messenger
 from main.clock import get_clock
 from main.util import draw_sprite, creature_sprites, interface_sprites, ARROW_DOWN, NUMBERS

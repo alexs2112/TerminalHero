@@ -2,6 +2,7 @@ import pygame
 from screen.screen import Screen
 from creature.player import Player
 from main.constants import *
+from main.colour import *
 from main.util import fit_text
 
 class QuestScreen(Screen):

@@ -1,5 +1,6 @@
 import pygame
 from main.constants import *
+from main.colour import *
 from screen.screen import Screen
 
 class GameOverScreen(Screen):

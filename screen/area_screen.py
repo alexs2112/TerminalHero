@@ -6,6 +6,7 @@ from screen.quest_screen import QuestScreen
 from world.area import Area
 from world.world import World
 from main.constants import *
+from main.colour import *
 from main.util import fit_text, NUMBERS
 
 class AreaScreen(Screen):

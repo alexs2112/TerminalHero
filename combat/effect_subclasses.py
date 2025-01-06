@@ -1,5 +1,5 @@
 from combat.effect import Effect
-from main.constants import *
+from main.colour import *
 from main.messenger import get_messenger
 messenger = get_messenger()
 

@@ -23,3 +23,6 @@ Each node can also have the following options:
 Children leading to the node name of `"None"` will exit dialogue when the option is chosen
 
 If a node has their `text` as `"None"`, when this node is chosen it will fulfill any function calls and immediately exit dialogue.
+
+Encasing a word in colours defined in [colour.py](/main/colour.py) will colour that word.
+- Example: `"Hello, my name is :RED:World:RED:`

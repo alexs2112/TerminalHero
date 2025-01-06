@@ -2,6 +2,7 @@ import pygame
 from screen.screen import Screen
 from creature.creature import Creature
 from main.constants import *
+from main.colour import *
 from main.util import draw_sprite, creature_sprites, fit_text
 
 class CreatureScreen(Screen):

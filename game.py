@@ -3,6 +3,7 @@
 import argparse
 import pygame
 from main.constants import *
+from main.colour import *
 from main.messenger import get_messenger
 from main.clock import get_clock
 from creature.creature_factory import get_creature_factory

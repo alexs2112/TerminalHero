@@ -1,4 +1,4 @@
-from main.constants import WHITE
+from main.colour import WHITE
 
 class Effect:
     def __init__(self, name: str, duration: int, colour = WHITE):

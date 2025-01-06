@@ -1,4 +1,3 @@
-from main.constants import *
 from main.messenger import *
 from creature.creature import Creature
 from quests.quest import Quest

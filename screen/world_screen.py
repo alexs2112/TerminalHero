@@ -1,5 +1,6 @@
 import pygame
 from main.constants import *
+from main.colour import *
 from main.util import world_sprites, creature_sprites, draw_sprite
 from main.clock import get_clock
 from screen.screen import Screen

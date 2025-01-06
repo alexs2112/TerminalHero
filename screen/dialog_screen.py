@@ -1,6 +1,7 @@
 import pygame
 from screen.screen import Screen
 from main.constants import *
+from main.colour import *
 from main.util import *
 from main.messenger import get_messenger
 from main.clock import get_clock
@@ -30,7 +31,7 @@ class DialogScreen(Screen):
         self.current_node: DialogNode = node
         self.children = self.get_valid_children()
         self.current_node.call_function(self.player)
-        self.lines = fit_text(self.current_node.text, SCREEN_WIDTH - 32)
+        self.lines = fit_text(self.current_node.text, SCREEN_WIDTH - 100)
         self.char_index = 0
         self.finished = 0
         messenger.add(node.text)
@@ -43,7 +44,7 @@ class DialogScreen(Screen):
             if self.frame_timer >= DIALOG_CHAR_TIME:
                 self.frame_timer = 0
                 self.char_index += 1
-            if self.char_index >= len(self.current_node.text):
+            if self.char_index >= self.line_length(self.current_node.text):
                 self.finished = True
 
         for event in events:
@@ -83,17 +84,20 @@ class DialogScreen(Screen):
 
         current = self.char_index
         for line in self.lines:
-            nx = SCREEN_WIDTH / 2 - len(line) * FONT_WIDTH / 2
+            self.write_center_x(line, (SCREEN_WIDTH / 2, y))
 
-            # This sentence is not complete yet
-            if not self.finished and current < len(line):
-                self.write(line[:current], (nx, y))
-                y += FONT_HEIGHT + 2
+            line_len = self.line_length(line)
+            box_start_x = (SCREEN_WIDTH - line_len * FONT_WIDTH) / 2
+            box_start_y = y + (FONT_HEIGHT / 2)
+
+            # Sentence is unfinished, draw a black box over the rendered letters lol
+            if not self.finished and current < line_len:
+                self.draw_line((box_start_x + current * FONT_WIDTH, box_start_y), (SCREEN_WIDTH - 7, box_start_y), width=FONT_HEIGHT, colour=BLACK)
                 break
             else:
-                self.write(line, (nx, y))
-                current -= len(line)
-                y += FONT_HEIGHT + 2
+                current -= line_len
+
+            y += FONT_HEIGHT + 2
         y += 8
 
         if self.finished:

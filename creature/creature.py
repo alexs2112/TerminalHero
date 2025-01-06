@@ -1,4 +1,3 @@
-from main.constants import *
 from main.messenger import *
 from combat.ability import Ability
 from combat.effect import Effect
