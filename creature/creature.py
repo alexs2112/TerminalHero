@@ -121,6 +121,7 @@ class Creature:
             e.effect_turn(self)
             if e.duration <= 0:
                 to_remove.append(e)
+
         for e in to_remove:
             e.effect_end(self)
             self.effects.remove(e)
@@ -153,5 +154,9 @@ class Creature:
         messenger.add(f"{self.name} dies.")
 
     def add_effect(self, effect: Effect):
+        for e in self.effects:
+            # If this new effect successfully combines with a current one, don't apply it
+            if e.combine(effect):
+                return
         self.effects.append(effect)
         effect.effect_start(self)

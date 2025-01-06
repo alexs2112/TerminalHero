@@ -66,5 +66,5 @@ class AbilityFunctionFactory:
     def flickering_flames_effect(self):
         def out(c: Creature, t: Creature):
             messenger.add(f"{c.name} casts Flickering Flames.")
-            t.add_effect(effects.create_fire_effect(c.stat('intelligence'), 2 + c.stat('intelligence')))
+            t.add_effect(effects.create_burning_effect(c.stat('intelligence'), 2 + c.stat('intelligence')))
         return out

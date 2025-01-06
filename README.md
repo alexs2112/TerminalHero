@@ -52,10 +52,12 @@ options:
 
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
-- Don't allow stacking of the same status effect on a single creature
-- Status effects interact with each other (ie. enemy engulfed in poison will explode when dealt fire damage)
 - Show health and armor numbers
 - Instead of just removing enemies from combat, leave them at 0 HP and show their corpse
+
+**Status Effects**
+- Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off
+  - Sort the list by showing currently active ones first
 
 **Dialogue**
 - Somehow mark dialogue options that have not been chosen yet
