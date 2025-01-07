@@ -1,0 +1,2 @@
+- **Description**: A scrawny young man with hollow cheeks, wide eyes, and the scent of damp earth clinging to his tattered robes. Gorren was once a gravedigger, but after too many lonely nights among the dead, he became obsessed with mastering necromancy. Unfortunately, his talent is... lacking. His "creations" are barely stitched together, and he has more enthusiasm than actual ability.
+- **Personality:** Overeager, easily flustered, desperate for validation.

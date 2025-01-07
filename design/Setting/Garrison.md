@@ -1,0 +1,3 @@
+The **Garrison at Arad** is a small but strategic military outpost tasked with protecting the **Mining Village of Arad** and ensuring the steady extraction of **Bloodstone**. A regiment of imperial soldiers is stationed here to maintain order and safeguard the valuable resource from potential threats, be they bandits, rival empires, or rebellious miners. The garrison operates with strict discipline, enforcing the Empire’s interests and ensuring that no one interferes with the mining operation. While the village is a relatively quiet and isolated place, the presence of the garrison serves as a constant reminder of the Empire’s dominance over the region.
+
+The Garrison is led by [[Captain Elira Thornhelm]]
