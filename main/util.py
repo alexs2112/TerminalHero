@@ -9,13 +9,9 @@ def fit_text(text, width=SCREEN_WIDTH-32):
 
     words = iter(text.split())
     lines, current = [], next(words)
-    current_len = 0
+    current_len = get_word_len(current)
     for word in words:
-        word_len = len(word)
-        for colour_string in COLOUR_STRINGS:
-            if colour_string in word:
-                word_len -= len(colour_string) * word.count(colour_string)
-
+        word_len = get_word_len(word)
         if current_len + 1 + word_len > max_char:
             lines.append(current)
             current = word
@@ -25,6 +21,13 @@ def fit_text(text, width=SCREEN_WIDTH-32):
             current_len += word_len + 1
     lines.append(current)
     return lines
+
+def get_word_len(word):
+    word_len = len(word)
+    for colour_string in COLOUR_STRINGS:
+        if colour_string in word:
+            word_len -= len(colour_string) * word.count(colour_string)
+    return word_len
 
 creature_sprites = pygame.image.load('resources/onebit.png')
 corpse_sprites = pygame.image.load('resources/corpses.png')

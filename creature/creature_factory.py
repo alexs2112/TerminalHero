@@ -24,7 +24,7 @@ class CreatureFactory:
         player = Player("Player")
         player.set_description("A fine specimen of an adventurer, if 'fine' means covered in dirt, blood, and questionable life choices.")
         player.set_sprite(CreatureSprite((1,1,12,12), (1,1,12,12)))
-        player.set_defensive_stats(base_hp=1000, defense=5, dodge=2, will=2, endurance=2)
+        player.set_defensive_stats(base_hp=10, defense=5, dodge=2, will=2, endurance=2)
         player.set_offensive_stats(speed=5, strength=3, dexterity=2, intelligence=1)
         player.add_ability(abilities.basic_attack(1, 4))
         player.add_ability(abilities.heavy_blow(0, 2))

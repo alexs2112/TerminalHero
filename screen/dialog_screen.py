@@ -31,7 +31,7 @@ class DialogScreen(Screen):
         self.current_node: DialogNode = node
         self.children = self.get_valid_children()
         self.current_node.call_function(self.player)
-        self.lines = fit_text(self.current_node.text, SCREEN_WIDTH - 100)
+        self.lines = fit_text(self.current_node.text, SCREEN_WIDTH - 32)
         self.char_index = 0
         self.finished = 0
         messenger.add(node.text)
