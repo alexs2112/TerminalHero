@@ -5,8 +5,8 @@ from quests.quest import Quest
 messenger = get_messenger()
 
 class Player(Creature):
-    def __init__(self, name, sprite_rect):
-        super().__init__(name, sprite_rect)
+    def __init__(self, name):
+        super().__init__(name)
         self.area = None
         self.party: list[Creature] = [self]
 

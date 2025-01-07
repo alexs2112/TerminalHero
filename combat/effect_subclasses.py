@@ -10,10 +10,12 @@ class BurningEffect(Effect):
 
     def effect_start(self, creature):
         messenger.add(f"{creature.name} catches fire!")
-        creature.take_damage(self.strength, 'fire')
+        dam = creature.take_damage(self.strength, 'fire')
+        messenger.add(f"{creature.name} burns for {dam} :ORANGE:fire damage:ORANGE:!")
 
     def effect_turn(self, creature):
-        creature.take_damage(self.strength, 'fire')
+        dam = creature.take_damage(self.strength, 'fire')
+        messenger.add(f"{creature.name} burns for {dam} :ORANGE:fire damage:ORANGE:!")
         self.duration -= 1
 
     def effect_end(self, creature):
@@ -32,14 +34,13 @@ class StunEffect(Effect):
         super().__init__("Stunned", duration, CYAN)
 
     def effect_start(self, creature):
-        messenger.add(f"{creature.name} is stunned.")
-        creature.skip_next_turn = True
+        messenger.add(f"{creature.name} is :CYAN:stunned:CYAN:.")
+        # skip_next_turn gets reset at the start of a creatures turn, doesn't need to go here
 
     def effect_turn(self, creature):
-        messenger.add(f"{creature.name} is stunned.")
+        messenger.add(f"{creature.name} is :CYAN:stunned:CYAN:.")
         self.duration -= 1
-        if self.duration > 0:
-            creature.skip_next_turn = True
+        creature.skip_next_turn = True
 
     def effect_end(self, creature):
         messenger.add(f"{creature.name} recovers from the stun.")

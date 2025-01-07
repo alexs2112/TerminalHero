@@ -27,6 +27,7 @@ def fit_text(text, width=SCREEN_WIDTH-32):
     return lines
 
 creature_sprites = pygame.image.load('resources/onebit.png')
+corpse_sprites = pygame.image.load('resources/corpses.png')
 world_sprites = pygame.image.load('resources/world.png')
 interface_sprites = pygame.image.load('resources/interface.png')
 ARROW_UP = (1,1,12,12)

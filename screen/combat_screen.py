@@ -6,7 +6,7 @@ from main.constants import *
 from main.colour import *
 from main.messenger import get_messenger
 from main.clock import get_clock
-from main.util import draw_sprite, creature_sprites, interface_sprites, ARROW_DOWN, NUMBERS
+from main.util import draw_sprite, creature_sprites, corpse_sprites, interface_sprites, ARROW_DOWN, NUMBERS
 from creature.creature import Creature
 from creature.player import Player
 from combat.queue_item import *
@@ -67,11 +67,11 @@ class CombatScreen(Screen):
         self.update_bumps(clock.get_time())
 
         # Some checks to see if combat should even continue
-        if not self.player.is_alive():
+        if self.all_dead(self.player.party):
             for event in events:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                     return GameOverScreen(self.canvas)
-        elif not self.encounter.enemies:
+        elif self.all_dead(self.encounter.enemies):
             for event in events:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                     # Update the area combat trigger
@@ -125,19 +125,13 @@ class CombatScreen(Screen):
             self.queue.pop(0)
             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
 
-        # This check probably doesn't need to happen once per frame
-        to_remove = []
-        for enemy in self.encounter.enemies:
-            if not enemy.is_alive():
-                to_remove.append(enemy)
-        for enemy in to_remove:
-            self.encounter.enemies.remove(enemy)
-
-            # This will currently happen more than once if multiple final enemies die simultaneously
-            if not self.encounter.enemies and self.player.is_alive():
-                messenger.add("All enemies have been defeated.")
-
         return self
+
+    def all_dead(self, creature_list):
+        for creature in creature_list:
+            if creature.is_alive():
+                return False
+        return True
 
     def active_creature(self):
         if self.queue:
@@ -208,12 +202,11 @@ class CombatScreen(Screen):
         x = segment_width
         y = 124
         for i in range(len(self.player.party)):
-            if self.player.party[i].is_alive():
-                y_offset = FONT_HEIGHT + 2
-                if len(self.player.party) > 2:
-                    y_offset = self.calculate_offset(i)
-                self.draw_creature(self.player.party[i], PARTY_KEYS[i], x, y, y_offset)
-                x += segment_width
+            y_offset = FONT_HEIGHT + 2
+            if len(self.player.party) > 2:
+                y_offset = self.calculate_offset(i)
+            self.draw_creature(self.player.party[i], PARTY_KEYS[i], x, y, y_offset)
+            x += segment_width
 
         # Draw Enemies
         segment_width = SCREEN_WIDTH / 2 / (len(self.encounter.enemies) + 1) + 6
@@ -227,9 +220,9 @@ class CombatScreen(Screen):
 
         y += 184
 
-        if not self.player.is_alive():
+        if self.all_dead(self.player.party):
             y = self.draw_message_box(['You have died.', 'Press [enter] to continue.'], y)
-        elif not self.encounter.enemies:
+        elif self.all_dead(self.encounter.enemies):
             y = self.draw_message_box(['Victory!', 'Press [enter] to continue.'], y)
         elif c and not c.ai:
             if not self.selected_ability:
@@ -252,7 +245,8 @@ class CombatScreen(Screen):
         dx, dy = 0, 0
         if creature in self.bump_locations and self.bump_locations[creature]:
             dx,dy = self.bump_locations[creature].get_pos_delta()
-        draw_sprite(self.canvas, creature_sprites, creature.sprite_rect, cx + dx, cy + dy + y_offset, scale=6)
+        sheet = creature_sprites if creature.is_alive() else corpse_sprites
+        draw_sprite(self.canvas, sheet, creature.get_sprite_rect(), cx + dx, cy + dy + y_offset, scale=6)
 
         cy = y - (FONT_HEIGHT + 2)
         for e in creature.effects:
@@ -277,7 +271,7 @@ class CombatScreen(Screen):
         pygame.draw.rect(self.canvas, DIMGRAY, full_health_rect)
         pygame.draw.rect(self.canvas, RED, health_rect)
 
-        self.write_center_x(f"{creature.hp}{f'+{creature.armor}' if creature.armor > 0 else ''}", (x, y - 8))
+        self.write_center_x(f"{creature.hp if creature.hp > 0 else '0'}{f'+{creature.armor}' if creature.armor > 0 else ''}", (x, y - 8))
 
         y += 10
         self.write(f"[{letter}]", (x - int(FONT_WIDTH * 1.5), y), DIMGRAY)

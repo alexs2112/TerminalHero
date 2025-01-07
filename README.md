@@ -72,3 +72,6 @@ options:
 
 **Saving**
 - This is going to be a bit of an issue
+
+**Other**
+- Allow stacking several notifications at once

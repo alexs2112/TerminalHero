@@ -2,14 +2,15 @@ from main.messenger import *
 from combat.ability import Ability
 from combat.effect import Effect
 from creature.profession import Profession
+from creature.creature_sprite import CreatureSprite
 
 messenger = get_messenger()
 
 class Creature:
-    def __init__(self, name, sprite_rect):
+    def __init__(self, name):
         self.name = name
-        self.sprite_rect = sprite_rect
         self.description = "placeholder text"
+        self.sprite: CreatureSprite = None
 
         self.level = 0
         self.abilities: list[Ability] = []
@@ -54,6 +55,12 @@ class Creature:
 
     def set_description(self, description):
         self.description = description
+
+    def set_sprite(self, sprite: CreatureSprite):
+        self.sprite = sprite
+
+    def get_sprite_rect(self):
+        return self.sprite.get(self)
 
     def set_profession(self, profession, level):
         self.profession = profession
@@ -151,6 +158,10 @@ class Creature:
 
     def dies(self):
         messenger.add(f"{self.name} dies.")
+
+        # For now just remove all active effects
+        # We may want to revisit this in the future
+        self.effects.clear()
 
     def add_effect(self, effect: Effect):
         for e in self.effects:

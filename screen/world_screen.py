@@ -88,7 +88,7 @@ class WorldScreen(Screen):
             cx, cy = self.pos_by_index(self.index)
             player_x = start_x + cx * (WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2)
             player_y = start_y + cy * (WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2)
-            draw_sprite(self.canvas, creature_sprites, self.world.player.sprite_rect, player_x, player_y, scale=4)
+            draw_sprite(self.canvas, creature_sprites, self.world.player.get_sprite_rect(), player_x, player_y, scale=4)
 
         self.list_known_areas()
 

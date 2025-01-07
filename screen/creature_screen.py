@@ -30,7 +30,7 @@ class CreatureScreen(Screen):
     def draw_portrait(self, x, y):
         # Character tiles are 12x12, scaled by 6 they are 72x72, +12 for box border, +12 for some extra space
         self.draw_box((x, y, 96, 96))
-        draw_sprite(self.canvas, creature_sprites, self.creature.sprite_rect, x + 12, y + 12, scale=6)
+        draw_sprite(self.canvas, creature_sprites, self.creature.get_sprite_rect(), x + 12, y + 12, scale=6)
 
         # Write name, level, and profession
         x, y = 136, y + 12
