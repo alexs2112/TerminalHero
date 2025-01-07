@@ -19,7 +19,7 @@ class EncounterFactory:
             creature_factory.new_patchwork_dead_1(),
             creature_factory.new_patchwork_dead_3()
         ]
-        e.valid_condition = 'accepted_sidequest_1'
+        e.valid_condition = 'accepted_grave_concerns'
         def complete(player, area):
             area.npcs.append(creature_factory.new_gorren())
             update_log('clear_cemetery_1', player)

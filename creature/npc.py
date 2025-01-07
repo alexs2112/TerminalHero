@@ -5,8 +5,8 @@ player_log = get_player_log()
 
 def elder_varik_dialog():
     if player_log['met_elder_varik']:
-        return load_dialog('resources/dialog/elder_varik.json')['root_node']
-    return load_dialog('resources/dialog/elder_varik.json')['initial_node']
+        return load_dialog('resources/dialog/elder_varik.json')['start']
+    return load_dialog('resources/dialog/elder_varik.json')['first_contact']
 
 def gorren_dialogue():
     if not player_log['clear_cemetery_1']:

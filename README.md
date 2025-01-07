@@ -1,7 +1,7 @@
 ### Terminal Hero (name to be revised)
 Simple text-based RPG. Written in Python using the Pygame library.
 
-Game design document can be found in [design](design/Act%20I/)
+Game design document can be found in [design](design/)
 
 Running the main game 
 ```
@@ -44,15 +44,23 @@ options:
 **Area**
 - Encounters should have descriptive text that is displayed in the area screen in red
 - NPCs should be shown in cyan
+- Dynamic area descriptions based on the player log
 
 **Quest**
 - Quest Steps should have NPCs and Locations, to highlight important steps for the player
 - Areas should show quest options as yellow (or with an exclamation point or something)
 - World Screen should highlight quest areas
+- Quest Log icon at the bottom of the world screen that highlights if changes have been made to the quest log
 
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
 - Instead of just removing enemies from combat, leave them at 0 HP and show their corpse
+
+**Dungeons**
+- Specialized areas, the player will move around a series of rooms laid out on a grid and must explore the area to complete it.
+- Entering a room with an encounter will automatically trigger it
+- Otherwise entering rooms can open an area screen of the room with various interactions
+  - Room as subclass of Area?
 
 **Status Effects**
 - Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off
@@ -75,3 +83,4 @@ options:
 
 **Other**
 - Allow stacking several notifications at once
+- A screen to store known lore ([J]ournal?)

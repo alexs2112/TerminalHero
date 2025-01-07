@@ -25,9 +25,10 @@ class WorldBuilder:
         area.npcs = [creature_factory.new_elder_varik()]
         self.world.areas[3][4] = area
 
-        area = Area("The Corpse Pile", (27,1,12,12),
-                    "Just outside of the wooden palisade walls of the village, a pile of corpses grows with bodies of the shrinking population. "
-                    "A growing population of giant vermin feast on the bodies within.")
+        area = Area("The Cemetery", (27,1,12,12),
+                    "The cemetery outside the Mining Village of Arad is a desolate expanse of crooked headstones and crumbling crypts, shrouded in an eerie mist that clings to the ground like grasping fingers. "
+                    "The air is thick with the scent of damp earth and decay, and the faint sound of something shifting beneath the soil sends a chill down the spine. "
+                    "Scattered among the graves are signs of recent disturbances: open plots, shattered coffins, and deep claw marks carved into the stone.")
         area.encounters = [
             encounter_factory.get_cemetery_encounter_1()
         ]
@@ -43,17 +44,18 @@ class WorldBuilder:
         area.condition = 'known_bloodstone_mine'
         self.world.areas[4][4] = area
 
-        area = Area("The Starvation Pit", (1,27,12,12),
-                    "A grim gathering place where families who can't afford to buy food come to collect leftovers or fight over meager rations. "
-                    "The pit is full of scavengers and desperate people.")
-        area.condition = 'known_starvation_pit'
-        self.world.areas[3][6] = area
-
         area = Area("The Garrison", (14,27,12,12),
                     "A heavily guarded compound outside of the city stationed by Capital soldiers. "
                     "Only concerned with the mining and Bloodstone shipments, otherwise they do not care about the villagers well-being and don't seek to govern them directly.")
         area.condition = 'known_garrison'
         self.world.areas[7][7] = area
+
+        area = Area("The Lifeblood Tavern", (1,27,12,12),
+                    "A modest but sturdy establishment, it serves as both a gathering place and a rare source of comfort for the village's inhabitants. "
+                    "The tavern is dimly lit, with flickering lanterns casting long shadows across its rough-hewn wooden walls. "
+                    "The air smells faintly of iron, dust, and the hearty meals often served to miners and travelers alike.")
+        area.condition = 'known_tavern'
+        self.world.areas[3][5] = area
 
         area = Area("Plains", (27,27,12,12),
                     "A monotonous expanse of grass punctuated by small, jagged rocks protruding from the ground. "

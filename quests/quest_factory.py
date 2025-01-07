@@ -2,8 +2,8 @@ from quests.quest import Quest
 from quests.quest_step import QuestStep
 
 #pylint: disable=line-too-long
-def investigate_corpse_pile():
-    q = Quest("Where are my corpses?")
+def grave_concerns():
+    q = Quest("Grave Concerns?")
     q.set_description("Elder Varik has asked you to investigate the nearby cemetery to find out what is happening to the dug-up graves.")
     step1 = QuestStep("Visit the Cemetery")
     step1.set_description("The cemetery is located to the North-East of the Village of Arad.")

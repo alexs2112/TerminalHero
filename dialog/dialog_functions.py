@@ -9,21 +9,16 @@ encounter_factory = get_encounter_factory()
 def set_met_elder_varik(_):
     player_log['met_elder_varik'] = True
 
-def set_known_cemetery(_):
+def set_initial_village(_):
     player_log['known_cemetery'] = True
-
-def set_known_bloodstone_mine(_):
     player_log['known_bloodstone_mine'] = True
-
-def set_known_starvation_pit(_):
-    player_log['known_starvation_pit'] = True
-
-def set_known_garrison(_):
     player_log['known_garrison'] = True
+    player_log['known_tavern'] = True
 
-def add_quest_visit_corpse_pile(player: Player):
-    player_log['accepted_sidequest_1'] = True
-    q = investigate_corpse_pile()
+def add_quest_grave_concerns(player: Player):
+    player_log['known_cemetery'] = True
+    player_log['accepted_grave_concerns'] = True
+    q = grave_concerns()
     set_notification(["Quest Received!", q.name])
     player.side_quests.append(q)
 
