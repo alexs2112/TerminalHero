@@ -34,6 +34,9 @@ class Game:
 
         self.screen = StartScreen(self.canvas, self.world)
 
+        if args_list.dungeon:
+            self.dungeon_test(args_list.dungeon, args_list.revealed)
+
     def generate_world(self):
         world_builder = WorldBuilder(9,9)
         return world_builder.build_world()
@@ -60,12 +63,29 @@ class Game:
         base_node = load_dialog('resources/dialog/gorren_questline.json')
         self.screen = DialogScreen(self.canvas, None, base_node['start'], self.player)
 
+    def dungeon_test(self, dungeon_name, set_revealed):
+        # pylint: disable=import-outside-toplevel
+        from world.dungeon_builder import DungeonBuilder
+        from screen.dungeon_screen import DungeonScreen
+        if dungeon_name == 'crypt':
+            d = DungeonBuilder().new_crypt()
+        else:
+            print(f"Error: Could not find dungeon {dungeon_name}")
+            exit(1)
+
+        if set_revealed:
+            for r in d.get_rooms():
+                r.revealed = True
+        self.screen = DungeonScreen(self.canvas, d, self.player)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true', help='log debug and info statements')
     parser.add_argument('-d', '--dialog', action='store_true', help='test dialog')
     parser.add_argument('-c', '--companion', action='store_true', help='test a companion in the player party')
     parser.add_argument('-a', '--all', action='store_true', help='enable all player_log fields')
+    parser.add_argument('-u', '--dungeon', help='test dungeon display by name')
+    parser.add_argument('-r', '--revealed', help='for dungeon mode, set all rooms as revealed')
     args = parser.parse_args()
 
     if args.all:

@@ -16,3 +16,6 @@ FONT_WIDTH = 10
 WORLD_TILE_WIDTH = 12
 WORLD_TILE_HEIGHT = 12
 WORLD_TILE_MODIFIER = 4
+
+# How large sprites are scaled by in the dungeons creen
+DUNGEON_SCALE = 4

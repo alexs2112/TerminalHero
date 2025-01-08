@@ -60,7 +60,7 @@ options:
 - Specialized areas, the player will move around a series of rooms laid out on a grid and must explore the area to complete it.
 - Entering a room with an encounter will automatically trigger it
 - Otherwise entering rooms can open an area screen of the room with various interactions
-  - Room as subclass of Area?
+- I'm unsure if there is a simple way to handle placing dungeon rooms on screen that is better than merging the rooms in aseprite and manually hardcoding their positions?
 
 **Status Effects**
 - Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off
@@ -84,3 +84,4 @@ options:
 **Other**
 - Allow stacking several notifications at once
 - A screen to store known lore ([J]ournal?)
+- New constant of `FONT_HEIGHT + 2`
