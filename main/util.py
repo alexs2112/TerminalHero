@@ -29,19 +29,18 @@ def get_word_len(word):
             word_len -= len(colour_string) * word.count(colour_string)
     return word_len
 
-creature_sprites = pygame.image.load('resources/onebit.png')
-corpse_sprites = pygame.image.load('resources/corpses.png')
+creature_sprites = pygame.image.load('resources/creatures.png')
 world_sprites = pygame.image.load('resources/world.png')
 interface_sprites = pygame.image.load('resources/interface.png')
 dungeon_sprites = pygame.image.load('resources/dungeons.png')
-ARROW_UP = (1,1,12,12)
-ARROW_RIGHT = (14,1,12,12)
-ARROW_DOWN = (27,1,12,12)
-ARROW_LEFT = (40,1,12,12)
+ARROW_UP = (0,0,12,12)
+ARROW_RIGHT = (12,0,12,12)
+ARROW_DOWN = (24,0,12,12)
+ARROW_LEFT = (36,0,12,12)
 def draw_sprite(surface, sprite_sheet, sprite_rect, x, y, scale=4):
     # This seems terribly inefficient
     width, height = sprite_rect[2], sprite_rect[3]
-    cropped = pygame.Surface((width, height))
+    cropped = pygame.Surface((width, height), pygame.SRCALPHA)
     cropped.blit(sprite_sheet, (0,0), sprite_rect)
     scaled = pygame.transform.scale(cropped, (width * scale, height * scale))
     surface.blit(scaled, (x,y))
