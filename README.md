@@ -34,6 +34,7 @@ options:
 ![Dialogue.png](resources/screenshots/dialogue.png)
 ![Quest_Screen.png](resources/screenshots/quest_screen.png)
 ![Creature_Screen.png](resources/screenshots/creature_screen.png)
+![Dungeon.png](resources/screenshots/dungeon.png)
 
 - Using a modified version of Urizen 1Bit Tileset: https://vurmux.itch.io/urizen-onebit-tileset
 - Using a modified version of Kenney 1-Big Pack: https://kenney-assets.itch.io/1-bit-pack

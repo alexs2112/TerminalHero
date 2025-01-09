@@ -68,7 +68,7 @@ class Game:
         from world.dungeon_builder import DungeonBuilder
         from screen.dungeon_screen import DungeonScreen
         if dungeon_name == 'crypt':
-            d = DungeonBuilder().new_vaelthorne_crypt()
+            d = DungeonBuilder().new_vaelthorne_crypt(None)
         else:
             print(f"Error: Could not find dungeon {dungeon_name}")
             exit(1)
@@ -76,7 +76,11 @@ class Game:
         if set_revealed:
             for r in d.get_rooms():
                 r.revealed = True
-        self.screen = DungeonScreen(self.canvas, d, self.player)
+
+        for a in d.room_list:
+            for e in a.encounters:
+                e.completed = True
+        self.screen = DungeonScreen(self.canvas, d, self.player, None)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -85,7 +89,7 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--companion', action='store_true', help='test a companion in the player party')
     parser.add_argument('-a', '--all', action='store_true', help='enable all player_log fields')
     parser.add_argument('-u', '--dungeon', help='test dungeon display by name')
-    parser.add_argument('-r', '--revealed', help='for dungeon mode, set all rooms as revealed')
+    parser.add_argument('-r', '--revealed', action='store_true', help='for dungeon mode, set all rooms as revealed')
     args = parser.parse_args()
 
     if args.all:
