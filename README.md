@@ -56,12 +56,13 @@ options:
 - For now, get rid of main + side quests, just have "Quests" and "Complete"
 
 **Combat**
-- Creature combat abilities show hit chance, damage, and effects when targeting
-- Instead of just removing enemies from combat, leave them at 0 HP and show their corpse
+- Get rid of the funny `qwerasdf` targeting. Instead use arrow keys and highlight targeted enemies (possibly multiples).
+  - This also allows showing hit chance, damage, and status effects
+  - And allows preventing illegal targeting, etc
 - Flee combat? Or just reload previous save lol
-- Get rid of ability_function_factory.py, move those to inline functions in ability_factory.py
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
 - Figure out a concise way to let party members know that their allies are the players party
+- When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
@@ -69,6 +70,7 @@ options:
   - Not that the tavern is a thing yet lol
 - Dungeon features that the player can actually interact with, the text describing them should be coloured
 - Only show the big dungeon entrance notification the very first time that dungeon is entered
+- No longer go into AreaScreens using Rooms, just do combat and all room interacts directly from the DungeonScreen
 
 **Status Effects**
 - Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off
@@ -85,10 +87,8 @@ options:
   - This is similar to the pet checks, however those will not be shown if the player does not have the required pet
 
 **Equipment**
-- Your equipped weapon should determine some of the abilities each character has
-  - Other abilities related to the class
 - Weapon should also determine character sprite
-- Keep equipment rather slim, maybe only a weapon and an armor (and trinket?)
+- Magic weapons buff damage of a particular type?
 
 **Saving**
 - This is going to be a bit of an issue

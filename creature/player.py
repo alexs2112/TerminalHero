@@ -14,17 +14,22 @@ class Player(Creature):
         self.side_quests: list[Quest] = []
         self.done_quests: list[Quest] = []
 
+        self.inventory = []
+
     def dies(self):
         messenger.add('You die.')
 
     def get_quests(self):
         return self.main_quests + self.side_quests
 
+    def start_combat(self):
+        for c in self.party:
+            c.armor = c.max_armor()
+            for a in c.get_abilities():
+                a.cooldown = 0
+
     def end_combat(self):
         for c in self.party:
             if not c.is_alive():
                 pass
             c.effects.clear()
-            c.armor = c.max_armor()
-            for a in c.get_abilities():
-                a.cooldown = 0

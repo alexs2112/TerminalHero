@@ -20,5 +20,5 @@ class Effect:
 
     # If the player is affected by another effect while this is active, trigger this
     # If return True, the other effect is not applied
-    def combine(self, other_effect):
+    def combine(self, creature, other_effect):
         pass

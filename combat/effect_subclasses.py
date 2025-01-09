@@ -21,13 +21,33 @@ class BurningEffect(Effect):
     def effect_end(self, creature):
         messenger.add(f"{creature.name} puts out the flames.")
 
-    def combine(self, other_effect):
+    def combine(self, _, other_effect):
         if other_effect.name == self.name:
             self.duration = max(other_effect.duration, self.duration)
             self.strength = max(other_effect.strength, self.strength)
             messenger.add("The flames burn brighter!")
             return True
         return False
+
+class DisarmedEffect(Effect):
+    def __init__(self, duration, strength):
+        super().__init__("Disarmed", duration, DIMGRAY)
+        self.strength = strength
+
+    def effect_start(self, creature):
+        creature.add_temp_stats(accuracy=-self.strength)
+
+    def effect_turn(self, _):
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        creature.add_temp_stats(accuracy=self.strength)
+
+    def combine(self, creature, other_effect):
+        if other_effect.name == self.name:
+            self.effect_end(creature)
+            self.strength = max(self.strength, other_effect.strength)
+            self.effect_start(creature)
 
 class StunEffect(Effect):
     def __init__(self, duration):
@@ -45,7 +65,7 @@ class StunEffect(Effect):
     def effect_end(self, creature):
         messenger.add(f"{creature.name} recovers from the stun.")
 
-    def combine(self, other_effect):
+    def combine(self, _, other_effect):
         if other_effect.name == self.name:
             self.duration += other_effect.duration
             return True
@@ -53,7 +73,7 @@ class StunEffect(Effect):
 
 class DecayingEffect(Effect):
     def __init__(self, duration, strength):
-        super().__init__("Decaying", duration, DIMGRAY)
+        super().__init__("Decaying", duration, BLUEVIOLET)
         self.strength = strength
         self.total = 0
 
@@ -86,7 +106,7 @@ class DecayingEffect(Effect):
             dark=self.total
         )
 
-    def combine(self, other_effect):
+    def combine(self, _, other_effect):
         if other_effect.name == self.name:
             self.duration = max(self.duration, other_effect.duration)
             self.strength = max(self.strength, other_effect.strength)

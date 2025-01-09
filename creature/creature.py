@@ -3,6 +3,7 @@ from combat.ability import Ability
 from combat.effect import Effect
 from creature.profession import Profession
 from creature.creature_sprite import CreatureSprite
+from creature.item import *
 
 messenger = get_messenger()
 
@@ -30,6 +31,7 @@ class Creature:
 
             # Offensive Stats
             'speed': 0,
+            'accuracy': 0,
             'strength': 0,
             'dexterity': 0,
             'intelligence': 0
@@ -47,6 +49,10 @@ class Creature:
             'dark' : 0
         }
         self.temporary_resistances = {}
+
+        self.equipment: dict[str, Item] = {}
+        for slot in ITEM_SLOTS:
+            self.equipment[slot] = None
 
         # For NPCs
         self.dialog_function = None
@@ -105,6 +111,9 @@ class Creature:
             s += self.profession.stats[stat_name]
         if stat_name in self.temporary_stats:
             s += self.temporary_stats[stat_name]
+        for item in self.equipment.values():
+            if item and stat_name in item.stats:
+                s += item.stats[stat_name]
         return s
 
     def max_hp(self):
@@ -136,16 +145,29 @@ class Creature:
             r += self.profession.resistances[resistance]
         if resistance in self.temporary_resistances:
             r += self.temporary_resistances[resistance]
+        for item in self.equipment.values():
+            if item and resistance in item.resistances:
+                r += item.resistances[resistance]
         return r
 
     def add_ability(self, ability: Ability):
         self.abilities.append(ability)
 
     def get_abilities(self):
-        a = self.abilities
+        a = self.abilities.copy()
+        for item in self.equipment.values():
+            if item and item.abilities:
+                a += item.abilities
         if self.profession:
-            return a + self.profession.abilities
+            a += self.profession.abilities
         return a
+
+    def equip_item(self, item: Item):
+        old = None
+        if self.equipment[item.slot]:
+            old = self.equipment[item.slot]
+        self.equipment[item.slot] = item
+        return old
 
     def set_ai(self, ai):
         self.ai = ai
@@ -154,10 +176,12 @@ class Creature:
         self.skip_next_turn = False
         for a in self.get_abilities():
             a.cooldown = max(0, a.cooldown - 1)
-
-        to_remove: list[Effect] = []
         for e in self.effects:
             e.effect_turn(self)
+
+    def end_turn(self):
+        to_remove: list[Effect] = []
+        for e in self.effects:
             if e.duration <= 0:
                 to_remove.append(e)
 
@@ -199,7 +223,7 @@ class Creature:
     def add_effect(self, effect: Effect):
         for e in self.effects:
             # If this new effect successfully combines with a current one, don't apply it
-            if e.combine(effect):
+            if e.combine(effect, self):
                 return
         self.effects.append(effect)
         effect.effect_start(self)

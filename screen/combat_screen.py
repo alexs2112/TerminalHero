@@ -28,6 +28,7 @@ class CombatScreen(Screen):
         self.encounter = encounter
         self.area = area
         self.player = player
+        self.player.start_combat()
 
         messenger.clear_latest()
 
@@ -98,7 +99,9 @@ class CombatScreen(Screen):
                         # Skip turn
                         elif event.key == pygame.K_0:
                             messenger.add(f"{c.name} skips their turn.")
+                            c.end_turn()
                             self.queue.pop(0)
+                            self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
                         elif self.get_creature_by_code(event.key):
                             return CreatureScreen(self.canvas, self.get_creature_by_code(event.key), self)
                     # If the ability to use is already selected:
@@ -109,6 +112,7 @@ class CombatScreen(Screen):
                             self.bump_locations[c] = BumpLocation((COMBAT_BUMP_DISTANCE, 0), 100)
                             c.use_ability(self.selected_ability, target, self.area)
                             self.selected_ability = None
+                            c.end_turn()
                             self.queue.pop(0)
                             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
                         elif event.key == pygame.K_ESCAPE:
@@ -117,11 +121,13 @@ class CombatScreen(Screen):
 
         # AI Controlled Turn
         elif c:
-            c.take_turn(self.player, self.area)
+            if not c.skip_next_turn:
+                c.take_turn(self.player, self.area)
 
-            # For now just assume the enemy is only attacking
-            self.bump_locations[c] = BumpLocation((-COMBAT_BUMP_DISTANCE, 0), 100)
+                # For now just assume the enemy is only attacking
+                self.bump_locations[c] = BumpLocation((-COMBAT_BUMP_DISTANCE, 0), 100)
 
+            c.end_turn()
             self.queue.pop(0)
             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
 
@@ -152,10 +158,11 @@ class CombatScreen(Screen):
                 self.last_active_creature = self.queue[0].creature
 
                 # This could probably be cleaned up a bit
-                if self.queue[0].creature.skip_next_turn:
-                    self.queue.pop(0)
-                    self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
-                    return None
+                # if self.queue[0].creature.skip_next_turn:
+                #     self.queue[0].creature.end_turn()
+                #     self.queue.pop(0)
+                #     self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
+                #     return None
 
                 return self.queue[0].creature
         return None

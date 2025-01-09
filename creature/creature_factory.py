@@ -3,11 +3,13 @@ from creature.player import Player
 from creature.npc import *
 from creature.creature_sprite import CreatureSprite
 from creature.profession_factory import get_profession_factory
+from creature.item_factory import get_item_factory
 from creature.ai.basic_ai import BasicAI
 from combat.ability_factory import get_ability_factory
 
 abilities = get_ability_factory()
 professions = get_profession_factory()
+items = get_item_factory()
 
 # pylint: disable=invalid-name
 _creature_factory = None
@@ -23,11 +25,13 @@ class CreatureFactory:
     def new_player(self):
         player = Player("Player")
         player.set_description("A fine specimen of an adventurer, if 'fine' means covered in dirt, blood, and questionable life choices.")
-        player.set_sprite(CreatureSprite((0,24,12,12), (0,0,12,12)))
-        player.set_defensive_stats(base_hp=100, defense=5, dodge=2, will=2, endurance=2)
+        player.set_sprite(CreatureSprite(-1, (0,0,12,12)))
+        player.set_defensive_stats(base_hp=10, defense=0, dodge=2, will=2, endurance=2)
         player.set_offensive_stats(speed=5, strength=3, dexterity=2, intelligence=1)
-        player.add_ability(abilities.basic_attack(1, 4))
-        player.add_ability(abilities.heavy_blow(0, 2))
+        #player.equip_item(items.new_sword())
+        player.equip_item(items.new_hammer())
+        #player.equip_item(items.new_axe())
+        player.equip_item(items.new_leather_armor())
         player.set_profession(professions.new_test_wizard(), 1)
         return player
 
@@ -97,12 +101,14 @@ class CreatureFactory:
 
     def new_gorren(self):
         gorren = NPC("Gorren")
-        gorren.set_sprite(CreatureSprite((12,24,12,12), (0,0,12,12)))
+        gorren.set_sprite(CreatureSprite(-1, (0,0,12,12)))
         gorren.set_description("A scrawny young man with hollow cheeks, wide eyes, and the scent of damp earth clinging to his tattered robes. "
                                "Gorren was once a gravedigger, but after too many lonely nights among the dead, he became obsessed with mastering necromancy.")
-        gorren.set_defensive_stats(base_hp=6, defense=2, dodge=3, will=3, endurance=1)
-        gorren.set_offensive_stats(speed=4, strength=2, dexterity=2, intelligence=2)
-        gorren.add_ability(abilities.basic_attack(1, 2))
+        gorren.set_defensive_stats(base_hp=7, defense=0, dodge=2, will=3, endurance=1)
+        gorren.set_offensive_stats(speed=3, strength=2, dexterity=2, intelligence=2)
+        gorren.equip_item(items.new_staff())
+        gorren.equip_item(items.new_robe())
         gorren.set_profession(professions.new_necromancer(), 1)
         gorren.dialog_function = gorren_dialogue
+        gorren.hp = gorren.max_hp()
         return gorren
