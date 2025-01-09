@@ -24,6 +24,9 @@ class Room(Area):
         # A list of exits available to this room
         self.exits = []
 
+        # The direction in which to leave the dungeon
+        self.exit_dungeon_direction = None
+
         # A list of features that the player can interact with (chests, locked doors, etc)
         # For now, just a list of strings, to be expanded upon
         self.features = []

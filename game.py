@@ -68,7 +68,7 @@ class Game:
         from world.dungeon_builder import DungeonBuilder
         from screen.dungeon_screen import DungeonScreen
         if dungeon_name == 'crypt':
-            d = DungeonBuilder().new_crypt()
+            d = DungeonBuilder().new_vaelthorne_crypt()
         else:
             print(f"Error: Could not find dungeon {dungeon_name}")
             exit(1)

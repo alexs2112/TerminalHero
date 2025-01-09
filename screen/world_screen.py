@@ -52,7 +52,7 @@ class WorldScreen(Screen):
                 self.frame_num = 0
                 self.local_time = 0
                 if event.key == pygame.K_RETURN:
-                    return AreaScreen(self.canvas, self.area_by_index(self.index), self.world)
+                    return AreaScreen(self.canvas, self.area_by_index(self.index), self.world.player, self)
                 elif event.key == pygame.K_l:
                     # Quest Log
                     return QuestScreen(self.canvas, self.world.player, self)

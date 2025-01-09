@@ -1,7 +1,10 @@
 from world.room import Room
 
 class Dungeon:
-    def __init__(self, width, height):
+    def __init__(self, name, description, area, width, height):
+        self.name = name
+        self.description = description
+        self.area = area
         self.width = width
         self.height = height
         self.rooms: list[list[Room]] = [[None for y in range(height)] for x in range(width)]

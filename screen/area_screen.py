@@ -4,16 +4,15 @@ from screen.dialog_screen import DialogScreen
 from screen.combat_screen import CombatScreen
 from screen.quest_screen import QuestScreen
 from world.area import Area
-from world.world import World
 from main.constants import *
 from main.colour import *
 from main.util import fit_text, NUMBERS
 
 class AreaScreen(Screen):
-    def __init__(self, canvas, area: Area, world: World):
+    def __init__(self, canvas, area: Area, player, prev_screen: Screen):
         super().__init__(canvas)
-        self.world = world
-        self.player = world.player
+        self.prev_screen = prev_screen
+        self.player = player
         self.index = 0
         self.refresh(area=area)
 
@@ -32,6 +31,7 @@ class AreaScreen(Screen):
         for e in self.encounters:
             opts.append((e.name, self.begin_encounter, 'red'))
             i += 1
+
         for npc in self.area.npcs:
             if npc.has_dialog():
                 self.dialog[i] = npc
@@ -41,6 +41,9 @@ class AreaScreen(Screen):
                     opts.append((node.area_option, self.speak_to_npc, 'cyan'))
                 else:
                     opts.append((f"Speak to {npc.name}", self.speak_to_npc, 'cyan'))
+
+        if self.area.dungeon:
+            opts.append((f"Enter {self.area.dungeon.name}", self.enter_dungeon))
 
         if self.can_leave():
             opts.append(("Leave Area", self.leave_area))
@@ -110,10 +113,8 @@ class AreaScreen(Screen):
         return True
 
     # Some basic functions that are called by the option the player selects
-    def leave_area(self, canvas, _):
-        # pylint: disable=import-outside-toplevel
-        from screen.world_screen import WorldScreen
-        return WorldScreen(canvas, self.world, self.area)
+    def leave_area(self, *_):
+        return self.prev_screen
 
     def begin_encounter(self, canvas, index):
         return CombatScreen(canvas, self.encounters[index], self.area, self.player, last_screen=self)
@@ -121,3 +122,8 @@ class AreaScreen(Screen):
     def speak_to_npc(self, canvas, index):
         root_node = self.dialog[index].get_dialog_node()
         return DialogScreen(canvas, self, root_node, self.player)
+
+    def enter_dungeon(self, canvas, _):
+        # pylint: disable=import-outside-toplevel
+        from screen.dungeon_screen import DungeonScreen
+        return DungeonScreen(canvas, self.area.dungeon, self.player, self)

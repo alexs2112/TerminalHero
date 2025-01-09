@@ -55,12 +55,13 @@ options:
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
 - Instead of just removing enemies from combat, leave them at 0 HP and show their corpse
+- Flee combat? Or just reload previous save lol
 
 **Dungeons**
-- Specialized areas, the player will move around a series of rooms laid out on a grid and must explore the area to complete it.
-- Entering a room with an encounter will automatically trigger it
-- Otherwise entering rooms can open an area screen of the room with various interactions
-- I'm unsure if there is a simple way to handle placing dungeon rooms on screen that is better than merging the rooms in aseprite and manually hardcoding their positions?
+- Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
+  - Prevents pseudo save-scumming by finishing each encounter and returning to tavern to full heal before coming back
+  - Not that the tavern is a thing yet lol
+- Dungeon features that the player can actually interact with, the text describing them should be coloured
 
 **Status Effects**
 - Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off

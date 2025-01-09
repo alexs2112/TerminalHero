@@ -10,6 +10,7 @@ class Area:
         self.description: str = description
         self.npcs: list[NPC] = []
         self.encounters: list[Encounter] = []
+        self.dungeon = None
 
         # If the player needs to meet a condition to know about this area
         self.condition: str = None

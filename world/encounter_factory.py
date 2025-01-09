@@ -39,3 +39,24 @@ class EncounterFactory:
         e.completed_function = complete
         e.block_exit = True
         return e
+
+    def get_crypt_encounter_1(self):
+        e = Encounter("Attack Patchwork Dead")
+        e.enemies = [
+            creature_factory.new_patchwork_dead_1(),
+            creature_factory.new_patchwork_dead_2(),
+            creature_factory.new_patchwork_dead_3()
+        ]
+        e.block_exit = True
+        return e
+
+    def get_crypt_encounter_2(self):
+        e = Encounter("Attack Patchwork Dead")
+        e.enemies = [
+            creature_factory.new_patchwork_dead_1(),
+            creature_factory.new_patchwork_dead_2(),
+            creature_factory.new_patchwork_dead_3(),
+            creature_factory.new_patchwork_dead_2()
+        ]
+        e.block_exit = True
+        return e
