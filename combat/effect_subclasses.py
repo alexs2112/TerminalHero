@@ -39,8 +39,8 @@ class StunEffect(Effect):
 
     def effect_turn(self, creature):
         messenger.add(f"{creature.name} is :CYAN:stunned:CYAN:.")
-        self.duration -= 1
         creature.skip_next_turn = True
+        self.duration -= 1
 
     def effect_end(self, creature):
         messenger.add(f"{creature.name} recovers from the stun.")
@@ -48,5 +48,47 @@ class StunEffect(Effect):
     def combine(self, other_effect):
         if other_effect.name == self.name:
             self.duration += other_effect.duration
+            return True
+        return False
+
+class DecayingEffect(Effect):
+    def __init__(self, duration, strength):
+        super().__init__("Decaying", duration, DIMGRAY)
+        self.strength = strength
+        self.total = 0
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} is :BLUEVIOLET:Decaying:BLUEVIOLET:.")
+
+    def effect_turn(self, creature):
+        messenger.add(f"{creature.name} :BLUEVIOLET:Decays:BLUEVIOLET:.")
+        self.total += self.strength
+        creature.add_temp_resistances(
+            physical=-self.strength,
+            fire=-self.strength,
+            cold=-self.strength,
+            air=-self.strength,
+            poison=-self.strength,
+            holy=-self.strength,
+            dark=-self.strength
+        )
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        messenger.add(f"{creature.name} recovers from :BLUEVIOLET:Decaying:BLUEVIOLET:.")
+        creature.add_temp_resistances(
+            physical=self.total,
+            fire=self.total,
+            cold=self.total,
+            air=self.total,
+            poison=self.total,
+            holy=self.total,
+            dark=self.total
+        )
+
+    def combine(self, other_effect):
+        if other_effect.name == self.name:
+            self.duration = max(self.duration, other_effect.duration)
+            self.strength = max(self.strength, other_effect.strength)
             return True
         return False

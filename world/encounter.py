@@ -32,3 +32,9 @@ class Encounter:
         self.completed = True
         if self.completed_function:
             self.completed_function(player, area)
+
+    def add_enemies(self, *enemies):
+        for e in enemies:
+            self.enemies.append(e)
+        for e in self.enemies:
+            e.allies = self.enemies

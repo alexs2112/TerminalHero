@@ -22,6 +22,8 @@ class Player(Creature):
 
     def end_combat(self):
         for c in self.party:
+            if not c.is_alive():
+                pass
             c.effects.clear()
             c.armor = c.max_armor()
             for a in c.get_abilities():

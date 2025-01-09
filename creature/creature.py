@@ -34,6 +34,7 @@ class Creature:
             'dexterity': 0,
             'intelligence': 0
         }
+        self.temporary_stats = {}
 
         # Resistances (as a percentage, can be positive or negative)
         self.resistances = {
@@ -45,6 +46,7 @@ class Creature:
             'holy' : 0,
             'dark' : 0
         }
+        self.temporary_resistances = {}
 
         # For NPCs
         self.dialog_function = None
@@ -52,6 +54,7 @@ class Creature:
         # Combat Status effects
         self.effects: list[Effect] = []
         self.skip_next_turn = False
+        self.has_corpse = True
 
     def set_description(self, description):
         self.description = description
@@ -89,10 +92,19 @@ class Creature:
         self.stats['dexterity'] = dexterity
         self.stats['intelligence'] = intelligence
 
+    def add_temp_stats(self, **kwargs):
+        for stat, value in kwargs.items():
+            if stat in self.temporary_stats:
+                self.temporary_stats[stat] += value
+            else:
+                self.temporary_stats[stat] = value
+
     def stat(self, stat_name):
         s = self.stats[stat_name]
         if self.profession and stat_name in self.profession.stats:
             s += self.profession.stats[stat_name]
+        if stat_name in self.temporary_stats:
+            s += self.temporary_stats[stat_name]
         return s
 
     def max_hp(self):
@@ -101,9 +113,30 @@ class Creature:
     def max_armor(self):
         return self.stat('defense')
 
+    def gain_hp(self, num):
+        self.hp = min(self.hp + num, self.max_hp())
+
+    def gain_armor(self, num):
+        self.armor = min(self.armor + num, self.max_armor())
+
     def set_resistances(self, **kwargs):
         for key, value in kwargs.items():
             self.resistances[key] = value
+
+    def add_temp_resistances(self, **kwargs):
+        for resist, value in kwargs.items():
+            if resist in self.temporary_resistances:
+                self.temporary_resistances[resist] += value
+            else:
+                self.temporary_resistances[resist] = value
+
+    def get_resistance(self, resistance):
+        r = self.resistances[resistance]
+        if self.profession and resistance in self.profession.resistances:
+            r += self.profession.resistances[resistance]
+        if resistance in self.temporary_resistances:
+            r += self.temporary_resistances[resistance]
+        return r
 
     def add_ability(self, ability: Ability):
         self.abilities.append(ability)
@@ -132,17 +165,17 @@ class Creature:
             e.effect_end(self)
             self.effects.remove(e)
 
-    def take_turn(self, player, encounter):
+    def take_turn(self, player, area):
         if self.ai:
-            self.ai.take_turn(player, encounter)
+            self.ai.take_turn(player, area)
 
-    def use_ability(self, ability: Ability, target):
+    def use_ability(self, ability: Ability, target, area):
         ability.set_cooldown()
-        if ability.success(self, target):
-            ability.apply(self, target)
+        if ability.success(self, target, area):
+            ability.apply(self, target, area)
 
     def take_damage(self, damage: int, dam_type: str):
-        dam = int(damage * (100 - self.resistances[dam_type]) / 100)
+        dam = int(damage * (100 - self.get_resistance(dam_type)) / 100)
         total_dam = dam
         if self.armor > 0:
             armor_dam = min(self.armor, dam)

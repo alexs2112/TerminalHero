@@ -16,3 +16,6 @@ class EffectFactory:
 
     def create_stun_effect(self, duration):
         return StunEffect(duration)
+
+    def create_decaying_effect(self, duration, strength):
+        return DecayingEffect(duration, strength)

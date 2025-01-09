@@ -53,11 +53,15 @@ options:
 - World Screen should highlight quest areas
 - Quest Log icon at the bottom of the world screen that highlights if changes have been made to the quest log
 - Quest log will probably require scrolling
+- For now, get rid of main + side quests, just have "Quests" and "Complete"
 
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
 - Instead of just removing enemies from combat, leave them at 0 HP and show their corpse
 - Flee combat? Or just reload previous save lol
+- Get rid of ability_function_factory.py, move those to inline functions in ability_factory.py
+- Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
+- Figure out a concise way to let party members know that their allies are the players party
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
@@ -92,4 +96,5 @@ options:
 **Other**
 - Allow stacking several notifications at once
 - A screen to store known lore ([J]ournal?)
+- Creature screen rapidly overflows with abilities, add new ability screen that can be accessed from creature screen (or straight from combat)
 - New constant of `FONT_HEIGHT + 2`

@@ -6,7 +6,7 @@ from main.constants import *
 from main.colour import *
 from main.messenger import get_messenger
 from main.clock import get_clock
-from main.util import draw_sprite, creature_sprites, interface_sprites, ARROW_DOWN, NUMBERS
+from main.util import *
 from creature.creature import Creature
 from creature.player import Player
 from combat.queue_item import *
@@ -107,7 +107,7 @@ class CombatScreen(Screen):
                         target = self.get_creature_by_code(event.key)
                         if target:
                             self.bump_locations[c] = BumpLocation((COMBAT_BUMP_DISTANCE, 0), 100)
-                            c.use_ability(self.selected_ability, target)
+                            c.use_ability(self.selected_ability, target, self.area)
                             self.selected_ability = None
                             self.queue.pop(0)
                             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
@@ -117,7 +117,7 @@ class CombatScreen(Screen):
 
         # AI Controlled Turn
         elif c:
-            c.take_turn(self.player, self.encounter)
+            c.take_turn(self.player, self.area)
 
             # For now just assume the enemy is only attacking
             self.bump_locations[c] = BumpLocation((-COMBAT_BUMP_DISTANCE, 0), 100)
@@ -245,7 +245,10 @@ class CombatScreen(Screen):
         dx, dy = 0, 0
         if creature in self.bump_locations and self.bump_locations[creature]:
             dx,dy = self.bump_locations[creature].get_pos_delta()
-        draw_sprite(self.canvas, creature_sprites, creature.get_sprite_rect(), cx + dx, cy + dy + y_offset, scale=6)
+        cr = creature.get_sprite_rect()
+        if not creature.is_alive() and creature.has_corpse == False:
+            cr = EXPLODED_CORPSE
+        draw_sprite(self.canvas, creature_sprites, cr, cx + dx, cy + dy + y_offset, scale=6)
 
         cy = y - (FONT_HEIGHT + 2)
         for e in creature.effects:

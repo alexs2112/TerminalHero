@@ -21,11 +21,11 @@ class Ability:
     def set_effect(self, effect_function):
         self.effect = effect_function
 
-    def success(self, creature, target):
-        return self.to_hit(creature, target)
+    def success(self, creature, target, area):
+        return self.to_hit(creature, target, area)
 
-    def apply(self, creature, target):
-        return self.effect(creature, target)
+    def apply(self, creature, target, area):
+        return self.effect(creature, target, area)
 
     def set_cooldown(self):
         self.cooldown = self.max_cooldown

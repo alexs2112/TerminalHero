@@ -37,3 +37,6 @@ class Area:
 
     def enabled_encounters(self):
         return [ e for e in self.encounters if e.enabled() ]
+
+    def get_encounter(self):
+        return self.enabled_encounters()[0]

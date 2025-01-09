@@ -37,6 +37,7 @@ ARROW_UP = (0,0,12,12)
 ARROW_RIGHT = (12,0,12,12)
 ARROW_DOWN = (24,0,12,12)
 ARROW_LEFT = (36,0,12,12)
+EXPLODED_CORPSE = (12,12,12,12)
 def draw_sprite(surface, sprite_sheet, sprite_rect, x, y, scale=4):
     # This seems terribly inefficient
     width, height = sprite_rect[2], sprite_rect[3]
