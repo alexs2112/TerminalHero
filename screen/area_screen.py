@@ -46,7 +46,7 @@ class AreaScreen(Screen):
             opts.append((f"Enter {self.area.dungeon.name}", self.enter_dungeon))
 
         if self.can_leave():
-            opts.append(("Leave Area", self.leave_area))
+            opts.append((f"Leave {self.area.type}", self.leave_area))
         return opts
 
     def check_events(self, events):
@@ -114,6 +114,7 @@ class AreaScreen(Screen):
 
     # Some basic functions that are called by the option the player selects
     def leave_area(self, *_):
+        self.prev_screen.refresh()
         return self.prev_screen
 
     def begin_encounter(self, canvas, index):

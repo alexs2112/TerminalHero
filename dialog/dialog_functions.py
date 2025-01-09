@@ -1,4 +1,4 @@
-from main.player_log import get_player_log
+from main.player_log import get_player_log, update_log
 from main.notification import set_notification
 from world.encounter_factory import get_encounter_factory
 from creature.player import Player
@@ -19,14 +19,13 @@ def add_quest_grave_concerns(player: Player):
     player_log['known_cemetery'] = True
     player_log['accepted_grave_concerns'] = True
     q = grave_concerns()
-    set_notification(["Quest Received!", q.name])
+    set_notification([":YELLOW:Quest Received!:YELLOW:", q.name])
     player.side_quests.append(q)
 
 def set_met_gorren(_):
     player_log['met_gorren'] = True
 
 def add_corpse_pile_encounter_2(player: Player):
-    # I hate having a factory here, but I can't think of a better way ATM
     player.area.encounters.append(encounter_factory.get_cemetery_encounter_2())
 
     # Assume there is only Gorren in the area
@@ -38,6 +37,12 @@ def add_gorren_to_party(player: Player):
     if len(player.party) < 2:
         player.party = [player, player.area.npcs[0]]
     player.area.npcs.clear()
+    update_log('tavern_open')
+    update_log('known_crypt')
+    set_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
 
 def reject_gorren(player: Player):
     player.party = [player]
+    update_log('tavern_open')
+    update_log('known_crypt')
+    set_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])

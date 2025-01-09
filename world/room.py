@@ -8,6 +8,7 @@ EXIT_LEFT = 3
 class Room(Area):
     def __init__(self, name, sprite_rect, description):
         super().__init__(name, sprite_rect, description)
+        self.type = 'Room'
 
         # Where this room should be drawn
         # (0,0) is the top left of the whole dungeon sprite which will be centered in the dungeon screen

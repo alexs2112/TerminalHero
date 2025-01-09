@@ -9,15 +9,22 @@ def get_player_log():
 def initialize_player_log():
     return {
         'met_elder_varik': False,
+        'met_gorren': False,
         'known_cemetery': False,
         'known_bloodstone_mine': False,
         'known_garrison': False,
         'known_tavern': False,
+        'known_crypt': False,
+
+        'tavern_open': False,       # Currently does nothing
+
         'accepted_grave_concerns': False,
+
         'visit_cemetery': False,
+        'visit_crypt': False,
+
         'clear_cemetery_1': False,
         'clear_cemetery_2': False,
-        'met_gorren': False
     }
 
 def update_log(field, player=None):

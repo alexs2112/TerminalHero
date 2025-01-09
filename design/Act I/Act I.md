@@ -14,7 +14,7 @@ When talking to [[Bartender Doran the Red]] of [[The Lifeblood Tavern]], they ca
 - ??? (Cold)
 - ??? (Air) (This one requires the player to have completed two sidequests already)
 
-Once the player has completed two sidequests, they will receive a summons notification from [[Captain Elira Thornhelm]]. She will have an additional quests that provides a companion.
+Once the player has completed two sidequests, they will receive a summons notification from [[Captain Elira Thornhelm]]. She will have an additional quest that provides a companion.
 - ??? (Holy)
 
 A final companion can be found after speaking to [[Zibber the Hooded]] of [[The Mystical Menagerie]].
@@ -25,6 +25,6 @@ Once the player has acquired a certain number of companions, different breakpoin
 Any additional companions will be left behind in [[The Lifeblood Tavern]], such that the player can reorganize their party when they need.
 
 ### Companion Breakpoints
-- 1 Sidequest: [[The Lifeblood Tavern]] is unlocked
-- 2 Sidequests: [[An Unexpected Summons]]. This will unlock a new place in the world called [[The Mystical Menagerie]].
-- 3 Sidequests: they gain an additional quest to return to Elder Varik. Thus ends Act 1 now that the player has access to a full party.
+- 1 Companion: [[The Lifeblood Tavern]] is unlocked
+- 2 Companions and at least 1 Sidequest Completed: [[An Unexpected Summons]]. This will unlock a new place in the world called [[The Mystical Menagerie]].
+- 3 Sidequests Completed: they gain an additional quest to return to Elder Varik. Thus ends Act 1 now that the player has access to a full party.

@@ -3,7 +3,7 @@
         "start": {
             "option": "Examine Crypt",
             "name": "System",
-            "text": "The air inside the crypt is thick with the scent of damp stone and decay. Flickering torchlight casts long shadows across the walls, revealing broken coffins and scattered bones. In the far corner, a figure huddles behind an overturned sarcophagus, eyes wide with panic. As you step closer, he throws up his hands defensively.",
+            "text": "The crypt is damp and eerie. A :CYAN:figure:CYAN: huddles in the corner, eyes wide with panic. As you approach, he raises his hands defensively.",
             "children": [
                 ["Approach the figure", "meet_gorren"]
             ]
@@ -13,108 +13,72 @@
             "text": "Ah! Wait, don't attack! I-I'm not one of them!",
             "children": [
                 ["Who are you?", "who_are_you"],
-                ["Explain yourself!", "explain_yourself"],
-                ["Give me one reason not to cut you down.", "threaten"]
+                ["Explain yourself!", "explain_yourself"]
             ],
             "function": "set_met_gorren"
         },
         "who_are_you": {
             "name": "Gorren",
-            "text": "I'm Gorren. Gorren the... uh, Grave-Touched. Listen, I know how this looks, but I didn't mean for any of this to happen!",
+            "text": "I'm :CYAN:Gorren:CYAN:, Gorren the... uh, Grave-Touched. This wasn't supposed to happen!",
             "children": [
-                ["What do you mean?", "what_happened"],
-                ["Grave-Touched? What kind of title is that?", "title"]
+                ["What happened?", "what_happened"],
+                ["Grave-Touched? Really?", "title"]
             ]
         },
         "explain_yourself": {
             "name": "Gorren",
-            "text": "Alright! Just-just hear me out. I was trying to... well, practice a bit of necromancy. And it sort of went horribly wrong. But I didn't mean for them to attack anyone!",
+            "text": "I was practicing :BLUE:Necromancy:BLUE:, but it went horribly wrong. Now I'm just trying to survive.",
             "children": [
                 ["You're a necromancer?", "necromancer"],
                 ["So this is your fault?", "blame"]
             ]
         },
-        "threaten": {
-            "name": "Gorren",
-            "text": "W-wait! I'm not your enemy! I was just trying to practice necromancy, and things got out of hand! I swear I wasn't trying to hurt anyone!",
-            "children": [
-                ["So this is your fault?", "blame"],
-                ["Start explaining.", "explain_yourself"]
-            ]
-        },
         "what_happened": {
             "name": "Gorren",
-            "text": "I tried to raise a few corpses-nothing major! But the spells went wild, and now these things don't listen to me. I had to run before they tore me apart!",
+            "text": "I tried to raise some corpses, but the spell got out of hand. Now they're out of control.",
             "children": [
-                ["You tried to raise the dead and lost control?", "blame"],
-                ["How long have you been at this?", "how_long"]
+                ["You raised the dead and lost control?", "blame"],
+                ["How long have you been doing this?", "how_long"]
             ]
         },
         "title": {
             "name": "Gorren",
-            "text": "It's, uh, a work-in-progress title. Makes me sound more mysterious, doesn't it? Well, it would if I wasn't hiding in a crypt...",
+            "text": "It's a work-in-progress! But, uh, not so great when you're hiding in a crypt...",
             "children": [
-                ["What exactly happened here?", "what_happened"],
-                ["So you admit you're a fraud?", "fraud"]
+                ["What happened?", "what_happened"]
             ]
         },
         "necromancer": {
             "name": "Gorren",
-            "text": "Sort of! An aspiring one, really. Just trying to make a name for myself. But, uh, clearly I have some learning to do.",
+            "text": "Sort of! I'm still learning. I didn't mean for any of this to happen.",
             "children": [
-                ["You tried to raise the dead and lost control?", "blame"],
-                ["How long have you been at this?", "how_long"]
+                ["You lost control?", "blame"]
             ]
         },
         "blame": {
             "name": "Gorren",
-            "text": "Alright, yes! It's my fault! But I didn't mean for it to go this way. I just wanted to prove I could do it, you know? Now everything's a mess...",
+            "text": "Okay, yes! But I didn't want this. It's a mess, and I need help.",
             "children": [
-                ["And what were you trying to prove?", "prove"],
-                ["So what do we do now?", "what_now"]
+                ["What do we do now?", "what_now"]
             ]
         },
         "how_long": {
             "name": "Gorren",
-            "text": "A while! Well... alright, not that long. Maybe a few months? But I've read plenty of books, and I thought I had it under control!",
+            "text": "A few months. I thought I could handle it... but I was wrong.",
             "children": [
-                ["Clearly, you didn't.", "mock"],
-                ["So what do we do now?", "what_now"]
-            ]
-        },
-        "fraud": {
-            "name": "Gorren",
-            "text": "Hey! I'm *trying*, alright? Necromancy isn't exactly something you can just practice in broad daylight. I've had to learn in secret.",
-            "children": [
-                ["And what were you trying to prove?", "prove"],
-                ["So what do we do now?", "what_now"]
-            ]
-        },
-        "prove": {
-            "name": "Gorren",
-            "text": "I just... wanted to show that I could do something special. Something powerful. Everyone thinks necromancy is all doom and gloom, but I think it has potential!",
-            "children": [
-                ["Potential? You're raising the dead!", "mock"],
-                ["And what now?", "what_now"]
-            ]
-        },
-        "mock": {
-            "name": "Gorren",
-            "text": "Yeah, yeah, I get it. I messed up. No need to rub it in. Can we focus on not getting eaten, please?",
-            "children": [
-                ["Fair enough. What now?", "what_now"]
+                ["What now?", "what_now"]
             ]
         },
         "what_now": {
             "name": "Gorren",
-            "text": "Uh... we might want to stop talking and start preparing. Because I hear more of them coming. And this time, I don't think they'll just stumble around...",
+            "text": "We should prepare. More are coming, I can feel them.",
             "children": [
-                ["Great. Get ready.", "ambush"]
+                ["Get ready.", "ambush"]
             ]
         },
         "ambush": {
             "name": "System",
-            "text": "Before you can say another word, more Patchwork Dead claw their way out of the ground, groaning hungrily. The fighting isn't over yet!",
+            "text": "Before you can say another word, more :RED:Patchwork Dead:RED: lurch through the entrance of the crypt. The fighting isn't over yet!",
             "children": [
                 ["Finish Talking", "None"]
             ],
@@ -125,7 +89,7 @@
 
         "pre_combat": {
             "name": "Gorren",
-            "text": "Uh... look, we can chat later, but I think we have bigger problems right now. You *do* hear the groaning, right?",
+            "text": "Uh... look, we can chat later, but I think we have bigger problems right now.",
             "children": [
                 ["What's the plan?", "plan"],
                 ["Are you sure this was all an accident?", "accident"],
@@ -167,34 +131,46 @@
             "name": "Gorren",
             "text": "Okay... okay... I think that's the last of them. That went *way* better than I expected. Uh, thanks for not letting me die.",
             "children": [
-                ["You owe me an explanation.", "explanation"],
-                ["So what now?", "so_what_now"],
-                ["This was a disaster. Stay out of my way.", "leave"]
+                ["You did well, Gorren.", "compliment"],
+                ["So what now?", "so_what_now"]
             ]
         },
-        "explanation": {
+        "compliment": {
             "name": "Gorren",
-            "text": "Right! Right. Long story short, I wanted to prove I could handle necromancy. Turns out, I couldn't. But I swear, I can be useful if you give me a chance!",
+            "text": "Thanks! I-I was a bit worried there, but... guess necromancy can be useful sometimes!",
             "children": [
-                ["And why should I trust you?", "trust"],
-                ["Alright, you're coming with me.", "recruit"],
-                ["No thanks. Stay here.", "reject"]
+                ["What happens next?", "so_what_now"]
             ]
         },
         "so_what_now": {
             "name": "Gorren",
-            "text": "Well, I'd rather not stick around and wait for more corpses to crawl out of the ground. Maybe I, uh, tag along with you? Safety in numbers, right?",
+            "text": "Right, well, there's still something else. There's a :CYAN:Crypt:CYAN: nearby that is filled with necromantic energy. It's what drew me here. I think that there is... something... down there, I can feel it growing in power.",
             "children": [
-                ["Alright, you're coming with me.", "recruit"],
-                ["No thanks. Stay here.", "reject"]
+                ["What do you need from me?", "help_needed"]
+            ]
+        },
+        "help_needed": {
+            "name": "Gorren",
+            "text": "I don't know how to get past the entrance hall. If you're willing to help, I'll lead you there and... well, maybe stick around afterward. Could use some better company than these wandering corpses.",
+            "children": [
+                ["You want to join me?", "join_offer"],
+                ["Why should I trust you?", "trust"]
+            ]
+        },
+        "join_offer": {
+            "name": "Gorren",
+            "text": "Well, yeah. If you'll have me! I'm not great at combat, but I can help with... the dead stuff. And, you know, :BLUE:Necromancy:BLUE:. Maybe I can learn some more with you around.",
+            "children": [
+                ["Alright, join me.", "recruit"],
+                ["I'm not sure about this.", "reject_join"]
             ]
         },
         "trust": {
             "name": "Gorren",
-            "text": "Look, I get it. I messed up *big time.* But I learned my lesson! No more reckless experiments. Just let me prove I can help.",
+            "text": "Fair enough. I might have messed up, but I'm not a bad person - just a bit inexperienced. I'll prove I can be useful.",
             "children": [
-                ["Fine. You can join me.", "recruit"],
-                ["No. I don't need a liability.", "reject"]
+                ["Alright, join me.", "recruit"],
+                ["I'm still not sure.", "reject_join"]
             ]
         },
         "recruit": {
@@ -205,71 +181,11 @@
             ],
             "function": "add_gorren_to_party"
         },
-        "reject": {
+        "reject_join": {
             "name": "Gorren",
-            "text": "Yeah... yeah, I figured. Guess I'll, uh, find my own way out of this mess. Stay safe, I guess.",
+            "text": "I understand. If you change your mind, I'll be around. I could use a little backup...",
             "children": [
-                ["Leave", "None"]
-            ],
-            "function": "reject_gorren"
-        },
-        "leave": {
-            "name": "Gorren",
-            "text": "Y-yeah, fair enough. I'll just... get out of your way, then.",
-            "children": [
-                ["Leave", "None"]
-            ],
-            "function": "reject_gorren"
-        },
-
-
-
-        "second_chance": {
-            "name": "Gorren",
-            "text": "Oh. It's you again. Thought you were done with me. Changed your mind, or just here to gloat?",
-            "children": [
-                ["I could use your skills after all.", "reconsider"],
-                ["Don't get your hopes up. Just checking in.", "checking_in"],
-                ["No, I just wanted to make sure you're still alive.", "alive"]
-            ]
-        },
-        "reconsider": {
-            "name": "Gorren",
-            "text": "Really? You mean it? I promise I won't let you down. No more rogue zombies, I swear!",
-            "children": [
-                ["Alright, you're in. Don't make me regret this.", "recruit"],
-                ["On second thought, never mind.", "reject_again"]
-            ]
-        },
-        "checking_in": {
-            "name": "Gorren",
-            "text": "Well, I appreciate the concern. Or maybe you're just making sure I haven't raised another undead army, huh?",
-            "children": [
-                ["I could actually use your help.", "reconsider"],
-                ["Just making sure. See you around.", "leave_2"]
-            ]
-        },
-        "alive": {
-            "name": "Gorren",
-            "text": "Yeah, still breathing. And still regretting *everything* about today.",
-            "children": [
-                ["Actually… maybe you should come with me.", "reconsider"],
-                ["That's all I needed to know. Goodbye.", "leave_2"]
-            ]
-        },
-        "reject_again": {
-            "name": "Gorren",
-            "text": "Wow. Got my hopes up for nothing. Yeah, thanks for that.",
-            "children": [
-                ["Leave", "None"]
-            ],
-            "function": "reject_gorren"
-        },
-        "leave_2": {
-            "name": "Gorren",
-            "text": "Right. Well, take care out there. And if you run into more undead, uh… good luck?",
-            "children": [
-                ["Leave", "None"]
+                ["Goodbye, Gorren.", "None"]
             ],
             "function": "reject_gorren"
         }

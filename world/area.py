@@ -5,6 +5,7 @@ player_log = get_player_log()
 
 class Area:
     def __init__(self, name, sprite_rect, description):
+        self.type = 'Area'
         self.name: str = name
         self.sprite_rect: str = sprite_rect
         self.description: str = description

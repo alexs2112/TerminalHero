@@ -21,6 +21,9 @@ class WorldScreen(Screen):
         self.known_areas = self.initialize_areas()
         self.index = self.index_by_area(start_area)
 
+    def refresh(self, **kwargs):
+        self.known_areas = self.initialize_areas()
+
     def initialize_areas(self):
         out = {}
         for x in range(self.world.width):
@@ -68,6 +71,7 @@ class WorldScreen(Screen):
 
         self.draw_line((self.center_x, 0), (self.center_x, SCREEN_HEIGHT))
         self.draw_world()
+        self.list_known_areas()
         self.display_notifications()
 
     def draw_world(self):
@@ -89,8 +93,6 @@ class WorldScreen(Screen):
             player_x = start_x + cx * (WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2)
             player_y = start_y + cy * (WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2)
             draw_sprite(self.canvas, creature_sprites, self.world.player.get_sprite_rect(), player_x, player_y, scale=4)
-
-        self.list_known_areas()
 
     def pos_by_index(self, index):
         areas = list(self.known_areas)

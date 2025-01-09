@@ -1,0 +1,1 @@
+A family of imperial industrialists who were among the first to experiment with Bloodstone’s regenerative properties. They were granted investment to found the Mining Village of Arad in order to continue their experiments. Over the years, the entire family has died out through mysterious circumstances, leaving Arad as a simple mining colony for the Auric Empire.

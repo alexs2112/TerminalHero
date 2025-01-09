@@ -28,6 +28,12 @@ class Game:
         self.player = creature_factory.new_player()
         self.world = self.generate_world()
         self.world.player = self.player
+        if self.args.stats:
+            for s in self.player.stats:
+                self.player.stats[s] += 30
+            self.player.hp = self.player.max_hp()
+            self.player.armor = self.player.max_armor()
+
         if self.args.companion:
             # This will currently break the first quest when you get a second companion
             self.player.party.append(creature_factory.new_companion_1())
@@ -90,6 +96,7 @@ if __name__ == "__main__":
     parser.add_argument('-a', '--all', action='store_true', help='enable all player_log fields')
     parser.add_argument('-u', '--dungeon', help='test dungeon display by name')
     parser.add_argument('-r', '--revealed', action='store_true', help='for dungeon mode, set all rooms as revealed')
+    parser.add_argument('-s', '--stats', action='store_true', help='gives the player massively enhanced stats')
     args = parser.parse_args()
 
     if args.all:

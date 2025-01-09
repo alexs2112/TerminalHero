@@ -52,6 +52,7 @@ options:
 - Areas should show quest options as yellow (or with an exclamation point or something)
 - World Screen should highlight quest areas
 - Quest Log icon at the bottom of the world screen that highlights if changes have been made to the quest log
+- Quest log will probably require scrolling
 
 **Combat**
 - Creature combat abilities show hit chance, damage, and effects when targeting
@@ -63,6 +64,7 @@ options:
   - Prevents pseudo save-scumming by finishing each encounter and returning to tavern to full heal before coming back
   - Not that the tavern is a thing yet lol
 - Dungeon features that the player can actually interact with, the text describing them should be coloured
+- Only show the big dungeon entrance notification the very first time that dungeon is entered
 
 **Status Effects**
 - Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off
@@ -73,6 +75,10 @@ options:
     - Mark the NPC if they have unread dialogue
     - Arrow-key control for dialogue options
 - Show the sprite of the NPC you are talking to
+- Some dialogue options are locked behind skill-checks
+  - If it is locked, it simply shows like `[strength 12]` in greyed out text.
+  - Otherwise it shows `<option text> [strength 12 - <companion name>]`, where companion name is only shown if the skill is met by a companion and not the player
+  - This is similar to the pet checks, however those will not be shown if the player does not have the required pet
 
 **Equipment**
 - Your equipped weapon should determine some of the abilities each character has

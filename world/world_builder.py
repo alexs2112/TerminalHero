@@ -38,11 +38,13 @@ class WorldBuilder:
         area.entry_log_update = 'visit_cemetery'
         self.world.areas[6][2] = area
 
-        area = Area("Vaelthorne Mausoleum", (36,0,12,12),
+        area = Area("Vaelthorne Crypt", (36,0,12,12),
                     "The mausoleum looms at the far edge of the cemetery, a solemn monument of dark stone weathered by time. "
                     "Its towering, iron-bound doors bear the sigil of founding family Vaelthorne, now chipped and faded, while creeping vines and patches of moss cling to the cracks in its walls. "
                     "A cold, unnatural stillness lingers around the structure, and the faint scent of decay seeps from the narrow seams of the sealed entrance.")
         area.dungeon = dungeon_builder.new_vaelthorne_crypt(area)
+        area.condition = 'known_crypt'
+        area.entry_log_update = 'visit_crypt'
         self.world.areas[7][2] = area
 
         area = Area("The Bloodstone Mine", (12,12,12,12),
