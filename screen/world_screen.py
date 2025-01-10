@@ -6,6 +6,8 @@ from main.clock import get_clock
 from screen.screen import Screen
 from screen.area_screen import AreaScreen
 from screen.quest_screen import QuestScreen
+from screen.inventory_screen import InventoryScreen
+from screen.creature_screen import CreatureScreen
 from world.world import World
 
 clock = get_clock()
@@ -48,17 +50,20 @@ class WorldScreen(Screen):
             return self
         for event in events:
             if event.type == pygame.KEYDOWN:
+                self.frame_num = 0
+                self.local_time = 0
                 if event.key == pygame.K_DOWN:
                     self.index = min(self.index + 1, len(self.known_areas) - 1)
                 elif event.key == pygame.K_UP:
                     self.index = max(self.index - 1, 0)
-                self.frame_num = 0
-                self.local_time = 0
-                if event.key == pygame.K_RETURN:
+                elif event.key == pygame.K_RETURN:
                     return AreaScreen(self.canvas, self.area_by_index(self.index), self.world.player, self)
                 elif event.key == pygame.K_l:
-                    # Quest Log
                     return QuestScreen(self.canvas, self.world.player, self)
+                elif event.key == pygame.K_i:
+                    return InventoryScreen(self.canvas, self.world.player, self)
+                elif event.key == pygame.K_c:
+                    return CreatureScreen(self.canvas, self.world.player, self)
         return self
 
     def display(self):

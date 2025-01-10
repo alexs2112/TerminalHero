@@ -88,9 +88,7 @@ options:
 
 **Equipment**
 - Magic weapons buff damage of a particular type?
-- Inventory screen
-- Somehow handle companions unequipping items as the only one with an inventory is the Player
-  - Maybe allow creatures to also have inventory? When you go to inventory screen it merges them all together in Player?
+- Get rid of key items? I feel like these as a separate list arent useful, just flag them and border them in blue or something in the inventory screen
 
 **Saving**
 - This is going to be a bit of an issue
@@ -99,4 +97,5 @@ options:
 - Allow stacking several notifications at once
 - A screen to store known lore ([J]ournal?)
 - Creature screen rapidly overflows with abilities, add new ability screen that can be accessed from creature screen (or straight from combat)
+- Party Screen to view party members
 - New constant of `FONT_HEIGHT + 2`

@@ -15,6 +15,8 @@ class Player(Creature):
         self.side_quests: list[Quest] = []
         self.done_quests: list[Quest] = []
 
+        # Inventory also defined in Creature
+        # Might want to get rid of key_items and just mark the item differently if its key?
         self.key_items: list[Item] = []
         self.inventory: list[Item] = []
 

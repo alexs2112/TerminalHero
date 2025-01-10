@@ -17,6 +17,7 @@ class Creature:
         self.abilities: list[Ability] = []
         self.ai = None
         self.profession: Profession = None
+        self.inventory: list[Item] = []
 
         self.base_hp = 0
         self.hp = 0

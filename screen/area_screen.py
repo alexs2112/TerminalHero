@@ -3,6 +3,8 @@ from screen.screen import Screen
 from screen.dialog_screen import DialogScreen
 from screen.combat_screen import CombatScreen
 from screen.quest_screen import QuestScreen
+from screen.inventory_screen import InventoryScreen
+from screen.creature_screen import CreatureScreen
 from world.area import Area
 from main.constants import *
 from main.colour import *
@@ -66,6 +68,10 @@ class AreaScreen(Screen):
                         return self.options[i][1](self.canvas, i)
                 elif event.key == pygame.K_l:
                     return QuestScreen(self.canvas, self.player, self)
+                elif event.key == pygame.K_i:
+                    return InventoryScreen(self.canvas, self.player, self)
+                elif event.key == pygame.K_c:
+                    return CreatureScreen(self.canvas, self.player, self)
         return self
 
     def display(self):

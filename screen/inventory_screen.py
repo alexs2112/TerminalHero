@@ -2,17 +2,27 @@ from math import ceil
 from main.constants import *
 from main.util import *
 from screen.screen import Screen
+from screen.equip_item_screen import EquipItemScreen
 from creature.player import Player
 from creature.item import Item
 
 class InventoryScreen(Screen):
-    def __init__(self, canvas, player: Player):
+    def __init__(self, canvas, player: Player, last_screen: Screen):
         super().__init__(canvas)
         self.player = player
+        self.last_screen = last_screen
 
         # This really doesn't like odd numbers for some reason
         self.items_per_row = 6
         self.center_x = self.items_per_row * 76 - 4
+
+        self.row = 0
+        self.column = 0
+        self.item = None
+        self.num_rows = 0
+        self.refresh()
+
+    def refresh(self, **kwargs):
         self.row = 0
         self.column = 0
         self.item = self.selected_item()
@@ -24,7 +34,11 @@ class InventoryScreen(Screen):
             return self
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RETURN:
+                    return EquipItemScreen(self.canvas, self.item, self.player, self)
+                elif event.key == pygame.K_ESCAPE:
+                    return self.last_screen
+                elif event.key == pygame.K_RIGHT:
                     self.move_cursor(1,0)
                 elif event.key == pygame.K_LEFT:
                     self.move_cursor(-1,0)

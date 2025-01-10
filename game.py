@@ -105,7 +105,7 @@ class Game:
         self.player.inventory = [ i.new_axe(), i.new_hammer(), i.new_leather_armor(), i.new_robe(), i.new_axe(),
                                   i.new_hammer(), i.new_axe(), i.new_hammer(), i.new_axe(), i.new_hammer() ]
         self.player.key_items = [ i.new_sword(), i.new_staff(), i.new_staff(), i.new_staff(), i.new_staff() ]
-        self.screen = InventoryScreen(self.canvas, self.player)
+        self.screen = InventoryScreen(self.canvas, self.player, None)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
