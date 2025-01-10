@@ -38,10 +38,19 @@ class Game:
             # This will currently break the first quest when you get a second companion
             self.player.party.append(creature_factory.new_companion_1())
 
+        if args_list.all:
+            # pylint: disable=import-outside-toplevel,ungrouped-imports
+            from dialog.dialog_functions import set_initial_village, add_quest_grave_concerns
+            set_initial_village(None)
+            add_quest_grave_concerns(self.player)
+
         self.screen = StartScreen(self.canvas, self.world)
 
         if args_list.dungeon:
             self.dungeon_test(args_list.dungeon, args_list.revealed)
+
+        if args_list.inventory:
+            self.inventory_test()
 
     def generate_world(self):
         world_builder = WorldBuilder(9,9)
@@ -88,6 +97,16 @@ class Game:
                 e.completed = True
         self.screen = DungeonScreen(self.canvas, d, self.player, None)
 
+    def inventory_test(self):
+        # pylint: disable=import-outside-toplevel
+        from screen.inventory_screen import InventoryScreen
+        from creature.item_factory import get_item_factory
+        i = get_item_factory()
+        self.player.inventory = [ i.new_axe(), i.new_hammer(), i.new_leather_armor(), i.new_robe(), i.new_axe(),
+                                  i.new_hammer(), i.new_axe(), i.new_hammer(), i.new_axe(), i.new_hammer() ]
+        self.player.key_items = [ i.new_sword(), i.new_staff(), i.new_staff(), i.new_staff(), i.new_staff() ]
+        self.screen = InventoryScreen(self.canvas, self.player)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true', help='log debug and info statements')
@@ -97,20 +116,8 @@ if __name__ == "__main__":
     parser.add_argument('-u', '--dungeon', help='test dungeon display by name')
     parser.add_argument('-r', '--revealed', action='store_true', help='for dungeon mode, set all rooms as revealed')
     parser.add_argument('-s', '--stats', action='store_true', help='gives the player massively enhanced stats')
+    parser.add_argument('-i', '--inventory', action='store_true', help='show the inventory test screen')
     args = parser.parse_args()
-
-    if args.all:
-        # pylint: disable=import-outside-toplevel,ungrouped-imports
-        from main.player_log import get_player_log
-        player_log = get_player_log()
-        for key in [
-            'met_elder_varik',
-            'known_cemetery',
-            'known_bloodstone_mine',
-            'known_starvation_pit',
-            'known_garrison'
-        ]:
-            player_log[key] = True
 
     game = Game(args)
     if args.dialog:

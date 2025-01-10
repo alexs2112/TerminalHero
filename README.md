@@ -87,8 +87,10 @@ options:
   - This is similar to the pet checks, however those will not be shown if the player does not have the required pet
 
 **Equipment**
-- Weapon should also determine character sprite
 - Magic weapons buff damage of a particular type?
+- Inventory screen
+- Somehow handle companions unequipping items as the only one with an inventory is the Player
+  - Maybe allow creatures to also have inventory? When you go to inventory screen it merges them all together in Player?
 
 **Saving**
 - This is going to be a bit of an issue

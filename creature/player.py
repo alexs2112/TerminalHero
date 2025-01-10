@@ -1,5 +1,6 @@
 from main.messenger import *
 from creature.creature import Creature
+from creature.item import Item
 from quests.quest import Quest
 
 messenger = get_messenger()
@@ -14,7 +15,8 @@ class Player(Creature):
         self.side_quests: list[Quest] = []
         self.done_quests: list[Quest] = []
 
-        self.inventory = []
+        self.key_items: list[Item] = []
+        self.inventory: list[Item] = []
 
     def dies(self):
         messenger.add('You die.')

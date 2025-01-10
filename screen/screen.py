@@ -73,8 +73,8 @@ class Screen:
     def draw_border(self):
         self.draw_box((0,0,SCREEN_WIDTH,SCREEN_HEIGHT))
 
-    def draw_box(self, rect, width=6):
-        pygame.draw.rect(self.canvas, GRAY, rect)
+    def draw_box(self, rect, width=6, colour=GRAY):
+        pygame.draw.rect(self.canvas, colour, rect)
         pygame.draw.rect(self.canvas, BLACK, (rect[0] + width, rect[1] + width, rect[2] - (width*2), rect[3] - (width*2)))
 
     def draw_line(self, start, end, width=6, colour=GRAY):
