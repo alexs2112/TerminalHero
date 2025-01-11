@@ -26,6 +26,10 @@ class DialogNode:
         # For root nodes, what option the player chooses from the area screen
         self.area_option = None
 
+        # Stat requirement to show this node, else just greyed out requirement
+        # A dict of stats
+        self.stat_requirement = None
+
     def set_condition(self, condition: str):
         self.condition = condition
 
@@ -37,6 +41,23 @@ class DialogNode:
 
     def set_area_option(self, area_option: str):
         self.area_option = area_option
+
+    def set_stat_requirement(self, stat_requirement):
+        self.stat_requirement = stat_requirement
+
+    def meet_stat_requirement(self, player):
+        if self.stat_requirement:
+            for stat, value in self.stat_requirement.items():
+                if player.party_stat(stat) < value:
+                    return False
+        return True
+
+    def stat_requirement_string(self):
+        s = '[ requires '
+        for stat, value in self.stat_requirement.items():
+            s += f" {stat}={value} "
+        s += ']'
+        return s
 
     def condition_met(self):
         if self.unless:

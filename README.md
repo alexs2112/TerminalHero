@@ -81,10 +81,6 @@ options:
     - Mark the NPC if they have unread dialogue
     - Arrow-key control for dialogue options
 - Show the sprite of the NPC you are talking to
-- Some dialogue options are locked behind skill-checks
-  - If it is locked, it simply shows like `[strength 12]` in greyed out text.
-  - Otherwise it shows `<option text> [strength 12 - <companion name>]`, where companion name is only shown if the skill is met by a companion and not the player
-  - This is similar to the pet checks, however those will not be shown if the player does not have the required pet
 
 **Equipment**
 - Magic weapons buff damage of a particular type?
@@ -98,4 +94,6 @@ options:
 - A screen to store known lore ([J]ournal?)
 - Creature screen rapidly overflows with abilities, add new ability screen that can be accessed from creature screen (or straight from combat)
 - Party Screen to view party members
+  - Show max of each stat for dialogue skill checks
+- Character screen to view self, [tab] to swap to next character in party
 - New constant of `FONT_HEIGHT + 2`

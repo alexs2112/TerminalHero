@@ -58,6 +58,9 @@ class DialogScreen(Screen):
         return self
 
     def select_child(self, index):
+        if self.children[index][1] and not self.children[index][1].meet_stat_requirement(self.player):
+            return self
+
         if self.children[index][1] is None:
             self.last_screen.refresh(area=self.player.area)
             return self.last_screen
@@ -105,8 +108,13 @@ class DialogScreen(Screen):
             index_size = FONT_WIDTH * 3 + 6
             for child in self.children:
                 self.write(f'[{index}]', (x,y))
-                lines = fit_text(child[0], SCREEN_WIDTH - 32 - index_size)
-                colour = WHITE if child[1] else GRAY
+                if child[1] and not child[1].meet_stat_requirement(self.player):
+                    lines = [ child[1].stat_requirement_string() ]
+                    colour = GRAY
+                else:
+                    lines = fit_text(child[0], SCREEN_WIDTH - 32 - index_size)
+                    colour = WHITE if child[1] else GRAY
+
                 for line in lines:
                     self.write(line, (x + index_size, y), colour)
                     y += FONT_HEIGHT + 2

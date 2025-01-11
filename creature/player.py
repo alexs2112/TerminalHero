@@ -37,3 +37,11 @@ class Player(Creature):
             if not c.is_alive():
                 pass
             c.effects.clear()
+
+    def party_stat(self, stat):
+        s = 0
+        for c in self.party:
+            s2 = c.stat(stat)
+            if s2 > s:
+                s = s2
+        return s

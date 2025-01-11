@@ -4,7 +4,8 @@
             "name": "Elder Varik",
             "text": "Welcome, wanderer, to the Mining Village of Arad. Not many outsiders come through here. What brings you to our humble village?",
             "children": [
-                ["I'm just passing through. What's this place like?", "village_info"]
+                ["I'm just passing through. What's this place like?", "village_info"],
+                ["TEST", "test_int_5"]
             ],
             "function": "set_met_elder_varik"
         },
@@ -12,9 +13,20 @@
             "name": "Elder Varik",
             "text": "Greetings again, wanderer. Is there anything I can help you with?",
             "children": [
-                ["Can you tell me about the village?", "village_info"]
+                ["Can you tell me about the village?", "village_info"],
+                ["TEST", "test_int_5"]
             ],
             "condition": "met_elder_varik"
+        },
+        "test_int_5": {
+            "name": "System",
+            "text": "You Win!",
+            "children": [
+                ["Yeet", "village_info"]
+            ],
+            "stats": {
+                "intelligence": 5
+            }
         },
         "village_info": {
             "name": "Elder Varik",

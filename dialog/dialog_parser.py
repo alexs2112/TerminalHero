@@ -47,10 +47,14 @@ def load_node_initial(node_data):
     area_option = None
     if 'option' in node_data:
         area_option = node_data['option']
+    stat_requirement = None
+    if 'stats' in node_data:
+        stat_requirement = node_data['stats']
 
     d = DialogNode(node_data['name'], node_data['text'], node_data['children'])
     d.set_condition(condition)
     d.set_unless(unless)
     d.set_function_name(func)
     d.set_area_option(area_option)
+    d.set_stat_requirement(stat_requirement)
     return d
