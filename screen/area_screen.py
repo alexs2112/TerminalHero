@@ -22,9 +22,10 @@ class AreaScreen(Screen):
         self.area: Area = kwargs['area']
         self.area.enter_area(self.player)
         self.encounters = self.area.enabled_encounters()
+        self.features = self.area.enabled_features()
         self.description_lines = fit_text(self.area.description)
         self.index = 0
-        self.dialog = {}                        # dict of {index: npc}
+        self.dialog = {}                        # dict of {index: npc/dialog_feature}
         self.options = self.define_options()    # (text, function, <colour_str>)
 
     def define_options(self):
@@ -34,15 +35,24 @@ class AreaScreen(Screen):
             opts.append((e.name, self.begin_encounter, 'red'))
             i += 1
 
+        for f in self.area.get_dialog_features():
+            self.dialog[i] = f
+            i += 1
+            node = f.get_dialog_node()
+            if node.area_option:
+                opts.append((node.area_option, self.start_dialog, 'yellow'))
+            else:
+                opts.append((f.name, self.start_dialog, 'yellow'))
+
         for npc in self.area.npcs:
             if npc.has_dialog():
                 self.dialog[i] = npc
                 i += 1
                 node = npc.get_dialog_node()
                 if node.area_option:
-                    opts.append((node.area_option, self.speak_to_npc, 'cyan'))
+                    opts.append((node.area_option, self.start_dialog, 'cyan'))
                 else:
-                    opts.append((f"Speak to {npc.name}", self.speak_to_npc, 'cyan'))
+                    opts.append((f"Speak to {npc.name}", self.start_dialog, 'cyan'))
 
         if self.area.dungeon:
             opts.append((f"Enter {self.area.dungeon.name}", self.enter_dungeon))
@@ -107,6 +117,11 @@ class AreaScreen(Screen):
                     return RED
                 else:
                     return LIGHTRED
+            elif c == 'yellow':
+                if i == self.index:
+                    return YELLOW
+                else:
+                    return LIGHTYELLOW
         if i == self.index:
             return GREEN
         else:
@@ -126,7 +141,7 @@ class AreaScreen(Screen):
     def begin_encounter(self, canvas, index):
         return CombatScreen(canvas, self.encounters[index], self.area, self.player, last_screen=self)
 
-    def speak_to_npc(self, canvas, index):
+    def start_dialog(self, canvas, index):
         root_node = self.dialog[index].get_dialog_node()
         return DialogScreen(canvas, self, root_node, self.player)
 

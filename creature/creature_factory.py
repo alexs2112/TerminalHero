@@ -1,11 +1,12 @@
 from creature.creature import Creature
 from creature.player import Player
-from creature.npc import *
+from creature.npc import NPC
 from creature.creature_sprite import CreatureSprite
 from creature.profession_factory import get_profession_factory
 from creature.item_factory import get_item_factory
 from creature.ai.basic_ai import BasicAI
 from combat.ability_factory import get_ability_factory
+from dialog.dialog_loader import *
 
 abilities = get_ability_factory()
 professions = get_profession_factory()

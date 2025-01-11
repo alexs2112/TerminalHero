@@ -1,5 +1,6 @@
 from creature.npc import NPC
 from world.encounter import Encounter
+from world.feature import *
 from main.player_log import get_player_log, update_log
 player_log = get_player_log()
 
@@ -11,6 +12,7 @@ class Area:
         self.description: str = description
         self.npcs: list[NPC] = []
         self.encounters: list[Encounter] = []
+        self.features: list[Feature] = []
         self.dungeon = None
 
         # If the player needs to meet a condition to know about this area
@@ -40,3 +42,9 @@ class Area:
 
     def get_encounter(self):
         return self.enabled_encounters()[0]
+
+    def enabled_features(self):
+        return [ f for f in self.features if f.enabled() ]
+
+    def get_dialog_features(self):
+        return [ f for f in self.features if f.enabled() and f.type == DIALOG ]

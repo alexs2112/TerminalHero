@@ -2,11 +2,13 @@ from world.world import World
 from world.area import Area
 from world.encounter_factory import get_encounter_factory
 from world.dungeon_builder import get_dungeon_builder
+from world.feature_factory import get_feature_factory
 from creature.creature_factory import get_creature_factory
 
 creature_factory = get_creature_factory()
 encounter_factory = get_encounter_factory()
 dungeon_builder = get_dungeon_builder()
+feature_factory = get_feature_factory()
 
 class WorldBuilder:
     def __init__(self, width, height):
@@ -25,6 +27,7 @@ class WorldBuilder:
                     "This rare and magical gemstone, prized for its powerful healing properties, is the lifeblood of the village - and its curse. "
                     "Life in Arad is bleak, with the villagers, known as Meldspawn, toiling endlessly in the dangerous mines to meet the Capital's unrelenting demands.")
         area.npcs = [creature_factory.new_elder_varik()]
+        area.features = [ feature_factory.test_dialog() ]
         self.world.areas[3][4] = area
 
         area = Area("The Cemetery", (24,0,12,12),
