@@ -9,9 +9,15 @@ class Feature:
     def __init__(self, name):
         self.name = name
         self.type = FEATURE
+        self.enabled_function = None
+
+    def set_enabled_function(self, function):
+        self.enabled_function = function
 
     # Potentially useful later
     def enabled(self):
+        if self.enabled_function:
+            return self.enabled_function()
         return True
 
 # Currently not implemented
@@ -36,9 +42,3 @@ class DialogFeature(Feature):
 
     def get_dialog_node(self):
         return self.dialog_function()
-
-# Interact with in Rooms
-# Interact with in Areas
-# Subclasses
-#   - Chest
-#   - Dialog

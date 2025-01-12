@@ -1,0 +1,48 @@
+{
+    "nodes": {
+        "start": {
+            "option": "Examine Rune Pillar",
+            "name": "System",
+            "text": "You lean in to inspect the :YELLOW:Runic Pillar:YELLOW: more closely.",
+            "children": [
+                ["Reach out to the Runes", "runes"],
+                ["Smash the Pillar", "smash"],
+                ["Search the Pillar for an Opening", "opening"],
+                ["Leave", "None"]
+            ]
+        },
+        "runes": {
+            "stats": { "intelligence": 6 },
+            "name": "System",
+            "text": "Reaching out to the runes, you feel faint :BLUEVIOLET:Astral Energy:BLUEVIOLET: emanating from them. Your power surges out of your control and the runes organize themselves into arcane symbols. The pillar lets out a loud crack, and then shatters as if made of glass.",
+            "children": [
+                ["Continue", "broken"]
+            ]
+        },
+        "smash": {
+            "stats": { "strength": 6 },
+            "name": "System",
+            "text": "Not being able to understand the runes enrages you. You swing a mighty blow towards the :YELLOW:Runic Pillar:YELLOW: and it shatters into millions of tiny pieces that flicker lightly on the ground of the shrine.",
+            "children": [
+                ["Continue", "broken"]
+            ]
+        },
+        "opening": {
+            "stats": { "dexterity": 6 },
+            "name": "System",
+            "text": "Feeling around the outside of the :YELLOW:Runic Pillar:YELLOW: reveals a slight crack around the base. As your fingers trace the opening it seems to grow in size, rapidly spiralling around the outside of the pillar. With a loud crack, it shatters into millions of tiny pieces.",
+            "children": [
+                ["Continue", "broken"]
+            ]
+        },
+        "broken": {
+            "name": "System",
+            "text": "The pieces of the now shattered shrine let out a keening wail. Sparks jump between them, forming a maelstrom of :BLUEVIOLET:Astral Energy:BLUEVIOLET: in the center of the room. From it steps out a massive four-armed creature wrapped in runic chains. It wears a mask bearing the crest of the :CYAN:Vaelthorne Family:CYAN:, and cracks within it's body reveal many shifting eyes.",
+            "children": [
+                ["Prepare for Combat", "None"]
+            ],
+            "function": "runebound_stalker"
+        }
+
+    }
+}

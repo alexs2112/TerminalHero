@@ -9,6 +9,7 @@ class Player(Creature):
     def __init__(self, name):
         super().__init__(name)
         self.area = None
+        self.type = 'player'
         self.party: list[Creature] = [self]
 
         self.main_quests: list[Quest] = []

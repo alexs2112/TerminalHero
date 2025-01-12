@@ -18,6 +18,8 @@ class EquipItemScreen(Screen):
 
         # Move all inventory items to the player
         for c in self.party:
+            if c.type == 'player':
+                continue
             if c.inventory:
                 for item in c.inventory:
                     self.player.inventory.append(item)

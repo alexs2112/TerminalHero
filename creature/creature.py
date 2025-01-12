@@ -11,6 +11,7 @@ class Creature:
     def __init__(self, name):
         self.name = name
         self.description = "placeholder text"
+        self.type = 'creature'
         self.sprite: CreatureSprite = None
 
         self.level = 0

@@ -178,3 +178,33 @@ class AbilityFactory:
             t.add_effect(effects.create_decaying_effect(4, c.stat('intelligence') * 3))
         a.set_effect(effect)
         return a
+
+    # Runebound Stalker
+    def astral_lightning(self):
+        a = Ability("Astral Lightning", cooldown=2)
+        a.set_description("Astral lightning jumps from your target to several others.")
+        def to_hit(c: Creature, t: Creature, a: Area):
+            return True
+        a.set_to_hit(to_hit)
+        def effect(c: Creature, t: Creature, a: Area):
+            messenger.add(f"{c.name} conjurs :CYAN:Astral Lightning:CYAN:.")
+            for target in a.player.party:
+                if target.is_alive():
+                    success = attack_roll(c) > (target.stat('dexterity') + target.stat('endurance')) * 5
+                    if success:
+                        dam = randint(c.stat('intelligence'), c.stat('intelligence') + 2)
+                        messenger.add(f"{target.name} is struck for {dam} damage.")
+                        target.take_damage(dam, 'air')
+        a.set_effect(effect)
+        return a
+
+    def runic_chains(self):
+        a = Ability("Runic Chains", cooldown=3)
+        a.set_description("Lash out with your chains, binding your target.")
+        def to_hit(c: Creature, t: Creature, a: Area):
+            success = attack_roll(c) > t.stat('dexterity') * 5
+            if not success:
+                messenger.add(f"{c.name} lashes out with :CYAN:Runic Chains:CYAN: but misses {t.name}")
+            return success
+        a.set_to_hit(to_hit)
+        return a

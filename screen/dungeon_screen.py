@@ -141,8 +141,8 @@ class DungeonScreen(Screen):
             y += FONT_HEIGHT + 2
         y += 8
         x += 16
-        for f in room.features:
-            self.write(f, (x,y), YELLOW)
+        for f in room.enabled_features():
+            self.write(f.name, (x,y), YELLOW)
             y += FONT_HEIGHT + 2
 
         y += 8

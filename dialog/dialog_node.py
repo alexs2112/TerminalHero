@@ -53,7 +53,7 @@ class DialogNode:
         return True
 
     def stat_requirement_string(self):
-        s = '[ requires '
+        s = '[ requires'
         for stat, value in self.stat_requirement.items():
             s += f" {stat}={value} "
         s += ']'

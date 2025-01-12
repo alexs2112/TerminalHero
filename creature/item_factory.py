@@ -51,3 +51,15 @@ class ItemFactory:
         i = Item("Robe", ARMOR, (0,84,12,12))
         i.set_stats(defense=3, dodge=3, speed=1)
         return i
+
+    # KEY ITEMS
+    def new_vaelthorne_seal(self):
+        i = Item("Vaelthorne Seal", TRINKET, (0,120,12,12))
+        i.set_resistances(
+            fire=20,
+            cold=20,
+            air=20,
+            poison=20,
+        )
+        # Heal wearer at the end of each combat
+        return i

@@ -10,6 +10,7 @@ class Area:
         self.name: str = name
         self.sprite_rect: str = sprite_rect
         self.description: str = description
+        self.player = None
         self.npcs: list[NPC] = []
         self.encounters: list[Encounter] = []
         self.features: list[Feature] = []
@@ -32,6 +33,7 @@ class Area:
 
     def enter_area(self, player):
         player.area = self
+        self.player = player
         update_log(self.entry_log_update, player)
 
     def finish_encounter(self, encounter: Encounter, player):

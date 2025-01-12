@@ -20,3 +20,9 @@ def gorren_dialogue():
 
     # Add default dialogue once he is in your party
     return load_dialog('resources/dialog/gorren_questline.json')['start']
+
+def vaelthorne_rune_pillar():
+    return load_dialog('resources/dialog/vaelthorne_rune_pillar.json')['start']
+
+def vaelthorne_crypt_entrance():
+    return load_dialog('resources/dialog/vaelthorne_crypt_entrance.json')['start']

@@ -46,6 +46,7 @@ options:
 - Encounters should have descriptive text that is displayed in the area screen in red
 - NPCs should be shown in cyan
 - Dynamic area descriptions based on the player log
+- Each world area should have a priority or something, sort the areas in the world screen by priority rather than location
 
 **Quest**
 - Quest Steps should have NPCs and Locations, to highlight important steps for the player
@@ -63,6 +64,7 @@ options:
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
 - Figure out a concise way to let party members know that their allies are the players party
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
+- Allow certain boss enemies act several times in a row
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)

@@ -1,6 +1,7 @@
 from main.player_log import get_player_log, update_log
 from main.notification import set_notification
 from world.encounter_factory import get_encounter_factory
+from world.dungeon_builder import EXIT_RIGHT
 from creature.player import Player
 from quests.quest_factory import *
 player_log = get_player_log()
@@ -41,8 +42,18 @@ def add_gorren_to_party(player: Player):
     update_log('known_crypt')
     set_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
 
+    # Temporary, this knowledge should be shared by the tavern keeper
+    update_log('known_shrine')
+
 def reject_gorren(player: Player):
     player.party = [player]
     update_log('tavern_open')
     update_log('known_crypt')
     set_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
+
+def runebound_stalker(_):
+    update_log('shrine_opened')
+
+def unlock_vaelthorne_crypt(player: Player):
+    player.area.exits.append(EXIT_RIGHT)
+    update_log('crypt_unlocked')

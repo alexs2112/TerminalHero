@@ -1,0 +1,22 @@
+{
+    "nodes": {
+        "start": {
+            "option": "Examine Locked Door",
+            "name": "System",
+            "text": "The door to the crypt is extremely elaborate, with artistic swirls of bronze and silver that seem to converge upon an :CYAN:Octagonal Slot:CYAN: set in the center.",
+            "children": [
+                ["Use Vaelthorne Seal", "open"],
+                ["Leave", "None"]
+            ]
+        },
+        "open": {
+            "name": "System",
+            "text": "The :YELLOW:Vaelthorne Seal:YELLOW: is a perfect fit to the door. With a hiss, the door trembles open.",
+            "children": [
+                ["Leave", "None"]
+            ],
+            "condition": "runebound_stalker_defeated",
+            "function": "unlock_vaelthorne_crypt"
+        }
+    }
+}

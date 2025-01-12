@@ -50,6 +50,16 @@ class WorldBuilder:
         area.entry_log_update = 'visit_crypt'
         self.world.areas[7][2] = area
 
+        area = Area("Vaelthorne Shrine", (36,12,12,12),
+                    "Moss-covered statues of robed figures stand in solemn rows, their features worn smooth by time. "
+                    "At the heart of the shrine stands a towering :YELLOW:Pillar of:YELLOW: :YELLOW:Dark Stone:YELLOW:, its surface etched with faintly glowing runes that spiral upward in intricate patterns. "
+                    "The inscriptions pulse gently, flickering as though responding to an unseen force.")
+        area.condition = 'known_shrine'
+        area.entry_log_update = 'visit_shrine'
+        area.features = [ feature_factory.vaelthorne_shrine() ]
+        area.encounters = [ encounter_factory.runebound_stalker() ]
+        self.world.areas[2][1] = area
+
         area = Area("The Bloodstone Mine", (12,12,12,12),
                     "The village is built around the remains of a Bloodstone meteorite that had struck the earth a long time ago. "
                     "It's an unstable and treacherous place, prone to cave-ins and the occasional appearance of strange, magical creatures drawn to the Bloodstone. "

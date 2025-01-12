@@ -1,8 +1,10 @@
 from world.dungeon import Dungeon
 from world.room import *
 from world.encounter_factory import get_encounter_factory
+from world.feature_factory import get_feature_factory
 
 encounter_factory = get_encounter_factory()
+feature_factory = get_feature_factory()
 
 # pylint: disable=invalid-name
 _dungeon_builder = None
@@ -28,8 +30,8 @@ class DungeonBuilder:
                         "A faint, unnatural whisper echoes through the chamber. The dead do not rest easily here.")
         entrance.set_unscaled_position(0,32)
         entrance.set_player_position(15,15)
-        entrance.features = [ 'Locked Door' ]
-        entrance.exits = [ EXIT_RIGHT ]
+        entrance.features = [ feature_factory.vaelthorne_crypt_entrance() ]
+        entrance.exits = [ ] # EXIT_RIGHT is set by the dialog function: unlock_vaelthorne_crypt
         entrance.exit_dungeon_direction = EXIT_LEFT
         d.add_room((0,1), entrance)
 
@@ -59,7 +61,7 @@ class DungeonBuilder:
                          "At the far end, an :YELLOW:Ancient Chest:YELLOW: rests in the gloom, its ornate design hinting at something long forgotten.")
         pool_room.set_unscaled_position(16,63)
         pool_room.set_player_position(19,14)
-        pool_room.features = [ 'Treasure Chest' ]
+        pool_room.features = [ ] # Treasure Chest
         pool_room.exits = [ EXIT_UP ]
         d.add_room((1,2), pool_room)
 

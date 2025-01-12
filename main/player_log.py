@@ -15,16 +15,19 @@ def initialize_player_log():
         'known_garrison': False,
         'known_tavern': False,
         'known_crypt': False,
+        'known_shrine': False,
 
         'tavern_open': False,       # Currently does nothing
 
         'accepted_grave_concerns': False,
-
         'visit_cemetery': False,
-        'visit_crypt': False,
-
         'clear_cemetery_1': False,
         'clear_cemetery_2': False,
+        'visit_crypt': False,
+        'visit_shrine': False,
+        'shrine_opened': False,
+        'runebound_stalker_defeated': False,
+        'crypt_unlocked': False,
     }
 
 def update_log(field, player=None):
