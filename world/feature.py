@@ -2,6 +2,7 @@ from main.colour import *
 
 # Feature Types
 FEATURE = 'Feature'
+FUNCTION = 'Function'
 CHEST = 'Chest'
 DIALOG = 'Dialog'
 
@@ -19,6 +20,18 @@ class Feature:
         if self.enabled_function:
             return self.enabled_function()
         return True
+
+class FunctionFeature(Feature):
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = FUNCTION
+        self.function_call = None
+
+    def set_function(self, function):
+        self.function_call = function
+
+    def call_function(self, player, area):
+        self.function_call(player, area)
 
 # Currently not implemented
 class ChestFeature(Feature):

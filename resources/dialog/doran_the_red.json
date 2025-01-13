@@ -1,0 +1,63 @@
+{
+    "nodes": {
+        "start": {
+            "name": "Doran the Red",
+            "text": "Welcome, traveler. It's not often we get new faces around here. Rest your feet. If you're in Arad, you've likely had a long road behind you.",
+            "children": [
+                [ "What do you have for food and drink?", "tavern_store" ],
+                [ "I'm looking for a place to rest.", "tavern_room" ],
+                [ "Your skin, it's stained red. Is that from Bloodstone?", "bloodstone_stains" ],
+                [ "I have been to the Vaelthorne Crypt and found it locked. Any idea what might open it?", "vaelthorne_crypt" ],
+                [ "Leave", "None" ]
+            ]
+        },
+        "tavern_store": {
+            "name": "Doran the Red",
+            "text": "A hot meal and a strong drink can do wonders for the weary. Feel free to peruse our menu, I'll make sure you're well fed.",
+            "function": "unlock_tavern_store",
+            "unless": "tavern_store_unlocked",
+            "children": [
+                [ "Back to other matters.", "start" ],
+                [ "Thanks, Doran. I'll be off.", "None" ]
+            ]
+        },
+        "tavern_room": {
+            "name": "Doran the Red",
+            "text": "A bed, four walls, and a locked door. Not much, but it's warm and yours for the night. Here - take the key free of charge, nobody else is using it so it may as well go to someone who will.",
+            "function": "unlock_tavern_room",
+            "unless": "tavern_room_unlocked",
+            "children": [
+                [ "Back to other matters.", "start" ],
+                [ "I appreciate it, Doran.", "None" ]
+            ]
+        },
+        "bloodstone_stains": {
+            "name": "Doran the Red",
+            "text": "Aye, you've got a sharp eye. Bloodstone kept me standing through more battles than I care to count. It heals the body, but it leaves its mark in more ways than one.",
+            "stats": { "intelligence": 6 },
+            "children": [
+                [ "Sounds like you've been through a lot.", "mercenary_past" ],
+                [ "Back to other matters.", "start" ]
+            ]
+        },
+        "mercenary_past": {
+            "name": "Doran the Red",
+            "text": "That I have. The Red Legion - our wounds bled red, our armor was stained red, and Bloodstone kept us fighting when we should've been dead. A hard life, but it was mine.",
+            "children": [
+                [ "Back to other matters.", "start" ],
+                [ "Leave", "None" ]
+            ]
+        },
+        "vaelthorne_crypt": {
+            "name": "Doran the Red",
+            "text": "The old Vaelthorne Crypt? Sealed up tight, always has been. But I remember hearing the Vaelthornes built a shrine up north. Might be worth a look if you're set on finding a way in.",
+            "condition": "visit_crypt",
+            "unless": "visit_shrine",
+            "function": "unlock_shrine",
+            "children": [
+                [ "Back to other matters.", "start" ],
+                [ "That's good to know. Thanks, Doran.", "None" ]
+            ]
+        }
+    }
+}

@@ -32,6 +32,7 @@ class Player(Creature):
             c.armor = c.max_armor()
             for a in c.get_abilities():
                 a.cooldown = 0
+            c.has_corpse = True
 
     def end_combat(self):
         for c in self.party:

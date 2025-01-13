@@ -73,3 +73,6 @@ class Area:
 
     def get_dialog_features(self):
         return [ f for f in self.features if f.enabled() and f.type == DIALOG ]
+
+    def get_function_features(self):
+        return [ f for f in self.features if f.enabled() and f.type == FUNCTION ]

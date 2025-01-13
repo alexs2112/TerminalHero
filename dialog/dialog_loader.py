@@ -26,3 +26,6 @@ def vaelthorne_rune_pillar():
 
 def vaelthorne_crypt_entrance():
     return load_dialog('resources/dialog/vaelthorne_crypt_entrance.json')['start']
+
+def doran_dialogue():
+    return load_dialog('resources/dialog/doran_the_red.json')['start']

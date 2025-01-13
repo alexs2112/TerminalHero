@@ -26,6 +26,7 @@ class AreaScreen(Screen):
         self.description_lines = fit_text(self.area.get_description())
         self.index = 0
         self.dialog = {}                        # dict of {index: npc/dialog_feature}
+        self.features = {}                      # dict of {index: function_feature}
         self.options = self.define_options()    # (text, function, <colour_str>)
 
     def define_options(self):
@@ -53,6 +54,11 @@ class AreaScreen(Screen):
                     opts.append((node.area_option, self.start_dialog, 'cyan'))
                 else:
                     opts.append((f"Speak to {npc.name}", self.start_dialog, 'cyan'))
+
+        for f in self.area.get_function_features():
+            self.features[i] = f
+            i += 1
+            opts.append((f.name, self.call_feature))
 
         if self.area.dungeon:
             opts.append((f"Enter {self.area.dungeon.name}", self.enter_dungeon))
@@ -149,3 +155,8 @@ class AreaScreen(Screen):
         # pylint: disable=import-outside-toplevel
         from screen.dungeon_screen import DungeonScreen
         return DungeonScreen(canvas, self.area.dungeon, self.player, self)
+
+    def call_feature(self, _, index):
+        feature = self.features[index]
+        feature.call_function(self.player, self.area)
+        return self

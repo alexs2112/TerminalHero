@@ -125,4 +125,7 @@ class WorldScreen(Screen):
                 for npc in area.npcs:
                     self.write(npc.name, (x + FONT_WIDTH * 3, y))
                     y += FONT_HEIGHT + 2
+                for feature in area.enabled_features():
+                    self.write(feature.name, (x + FONT_WIDTH * 3, y))
+                    y += FONT_HEIGHT + 2
             i += 1

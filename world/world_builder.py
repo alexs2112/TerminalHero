@@ -89,6 +89,7 @@ class WorldBuilder:
             "The air smells faintly of iron, dust, and the hearty meals often served to miners and travelers alike.",
             'tavern_open')
         area.condition = 'known_tavern'
+        area.features = [ feature_factory.bartender_doran(), feature_factory.tavern_rest() ]
         self.world.areas[3][5] = area
 
         area = Area("Plains", (24,24,12,12))

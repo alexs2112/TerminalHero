@@ -16,8 +16,8 @@ Valid Dialogue Trees should take the following form
 Each node can also have the following options:
 ```
 "function": "<function_name>"
-"condition": "<log_condition>"
-"anti_condition": "<log_anti_condition>"
+"condition": "<run_if_log_entry>"
+"unless": "<run_unless_log_entry>"
 "stats": { "<stat_name>": 5, "<stat_2_name>": 3, etc... }
 ```
 

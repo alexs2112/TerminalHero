@@ -42,9 +42,6 @@ def add_gorren_to_party(player: Player):
     update_log('known_crypt')
     set_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
 
-    # Temporary, this knowledge should be shared by the tavern keeper
-    update_log('known_shrine')
-
 def reject_gorren(player: Player):
     player.party = [player]
     update_log('tavern_open')
@@ -58,3 +55,18 @@ def unlock_vaelthorne_crypt(player: Player):
     player.area.exits.append(EXIT_RIGHT)
     player.area.locked.clear()
     update_log('crypt_unlocked')
+
+def unlock_tavern_room(_):
+    if not player_log['tavern_room_unlocked']:
+        update_log('tavern_room_unlocked')
+        set_notification([':YELLOW:Tavern Room Unlocked!:YELLOW:',
+                          'Use your room at the tavern to heal your companions wounds and clear their conditions.'])
+
+def unlock_tavern_store(_):
+    if not player_log['tavern_store_unlocked']:
+        update_log('tavern_store_unlocked')
+        set_notification([':YELLOW:Tavern Store Unlocked!:YELLOW:',
+                          'Purchase food at the tavern to increase your stats temporarily, until your next rest.'])
+
+def unlock_shrine(_):
+    update_log('known_shrine')

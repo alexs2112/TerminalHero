@@ -17,7 +17,9 @@ def initialize_player_log():
         'known_crypt': False,
         'known_shrine': False,
 
-        'tavern_open': False,       # Currently does nothing
+        'tavern_open': False,
+        'tavern_room_unlocked': False,
+        'tavern_store_unlocked': False,
 
         'accepted_grave_concerns': False,
         'visit_cemetery': False,

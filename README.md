@@ -106,3 +106,4 @@ options:
   - Show max of each stat for dialogue skill checks
 - Character screen to view self, [tab] to swap to next character in party
 - New constant of `FONT_HEIGHT + 2`
+- Mouse controls
