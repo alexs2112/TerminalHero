@@ -1,6 +1,6 @@
 from quests.quest_step import QuestStep
 from main.messenger import get_messenger
-from main.notification import set_notification
+from main.notification import add_notification
 
 messenger = get_messenger()
 
@@ -38,5 +38,5 @@ class Quest:
                 return False
         self.complete = True
         messenger.add(f"Quest Complete! {self.name}")
-        set_notification(["Quest Complete!", self.completion_text])
+        add_notification(["Quest Complete!", self.completion_text])
         return True

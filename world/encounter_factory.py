@@ -2,7 +2,7 @@ from world.encounter import Encounter
 from creature.creature_factory import get_creature_factory
 from creature.item_factory import get_item_factory
 from main.player_log import get_player_log, update_log
-from main.notification import set_notification
+from main.notification import add_notification
 player_log = get_player_log()
 creature_factory = get_creature_factory()
 item_factory = get_item_factory()
@@ -72,7 +72,7 @@ class EncounterFactory:
         e.valid_condition = 'shrine_opened'
         e.block_exit = True
         def complete(player, _):
-            set_notification([":YELLOW:Runebound Stalker Slain!:YELLOW:",
+            add_notification([":YELLOW:Runebound Stalker Slain!:YELLOW:",
                               "From the ashes and debris left behind by the creature, you recover the :YELLOW:Vaelthorne Seal:YELLOW:."])
             player.inventory.append(item_factory.new_vaelthorne_seal())
             update_log('runebound_stalker_defeated', player)

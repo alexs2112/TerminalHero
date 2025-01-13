@@ -51,8 +51,6 @@ options:
 ### Rough To-Do List (Unordered)
 **Area**
 - Encounters should have descriptive text that is displayed in the area screen in red
-- NPCs should be shown in cyan
-- Dynamic area descriptions based on the player log
 - Each world area should have a priority or something, sort the areas in the world screen by priority rather than location
 
 **Quest**
@@ -78,6 +76,10 @@ options:
   - Prevents pseudo save-scumming by finishing each encounter and returning to tavern to full heal before coming back
   - Not that the tavern is a thing yet lol
 - Only show the big dungeon entrance notification the very first time that dungeon is entered
+
+**World**
+- Draw the world like how dungeons are drawn, instead of using tiles
+- This can't just be kept as a dungeon because I still want Area Screens and you can't just walk around to explore it (ie. otherwise keep the interface the same for now)
 
 **Status Effects**
 - Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off

@@ -3,7 +3,7 @@ from main.constants import *
 from main.colour import *
 from main.util import *
 from main.clock import get_clock
-from main.notification import set_notification
+from main.notification import add_notification
 from screen.screen import Screen
 from screen.combat_screen import CombatScreen
 from screen.dialog_screen import DialogScreen
@@ -24,7 +24,7 @@ class DungeonScreen(Screen):
         self.return_screen = return_screen
 
         # When the player first enters the dungeon, display a notification
-        set_notification([dungeon.name] + fit_text(dungeon.description, SCREEN_WIDTH - 160))
+        add_notification([dungeon.name] + fit_text(dungeon.description, SCREEN_WIDTH - 160))
 
         self.local_time = 0
         self.frame_num = 0

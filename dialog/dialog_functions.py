@@ -1,5 +1,5 @@
 from main.player_log import get_player_log, update_log
-from main.notification import set_notification
+from main.notification import add_notification
 from world.encounter_factory import get_encounter_factory
 from world.dungeon_builder import EXIT_RIGHT
 from creature.player import Player
@@ -20,7 +20,7 @@ def add_quest_grave_concerns(player: Player):
     player_log['known_cemetery'] = True
     player_log['accepted_grave_concerns'] = True
     q = grave_concerns()
-    set_notification([":YELLOW:Quest Received!:YELLOW:", q.name])
+    add_notification([":YELLOW:Quest Received!:YELLOW:", q.name])
     player.side_quests.append(q)
 
 def set_met_gorren(_):
@@ -40,13 +40,13 @@ def add_gorren_to_party(player: Player):
     player.area.npcs.clear()
     update_log('tavern_open')
     update_log('known_crypt')
-    set_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
+    add_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
 
 def reject_gorren(player: Player):
     player.party = [player]
     update_log('tavern_open')
     update_log('known_crypt')
-    set_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
+    add_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
 
 def runebound_stalker(_):
     update_log('shrine_opened')
@@ -59,13 +59,13 @@ def unlock_vaelthorne_crypt(player: Player):
 def unlock_tavern_room(_):
     if not player_log['tavern_room_unlocked']:
         update_log('tavern_room_unlocked')
-        set_notification([':YELLOW:Tavern Room Unlocked!:YELLOW:',
+        add_notification([':YELLOW:Tavern Room Unlocked!:YELLOW:',
                           'Use your room at the tavern to heal your companions wounds and clear their conditions.'])
 
 def unlock_tavern_store(_):
     if not player_log['tavern_store_unlocked']:
         update_log('tavern_store_unlocked')
-        set_notification([':YELLOW:Tavern Store Unlocked!:YELLOW:',
+        add_notification([':YELLOW:Tavern Store Unlocked!:YELLOW:',
                           'Purchase food at the tavern to increase your stats temporarily, until your next rest.'])
 
 def unlock_shrine(_):

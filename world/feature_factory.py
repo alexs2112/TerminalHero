@@ -2,7 +2,7 @@ from world.feature import *
 from creature.player import Player
 from dialog.dialog_loader import *
 from main.player_log import get_player_log
-from main.notification import set_notification
+from main.notification import add_notification
 
 player_log = get_player_log()
 
@@ -46,7 +46,7 @@ class FeatureFactory():
         f.set_enabled_function(enabled)
 
         def func(player: Player, _):
-            set_notification([':GREEN:Party Rested!:GREEN:',
+            add_notification([':GREEN:Party Rested!:GREEN:',
                               'Party healed to full HP, any lingering conditions have ended.'])
             for c in player.party:
                 c.temporary_stats = {}

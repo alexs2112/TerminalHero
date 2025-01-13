@@ -4,15 +4,15 @@ from main.colour import *
 from main.util import fit_text
 
 # pylint: disable=invalid-name
-_notification = None
-def set_notification(text_list: list[str], min_height: int = 0):
-    global _notification
-    _notification = Notification(text_list, min_height)
+_notifications = []
+def add_notification(text_list: list[str], min_height: int = 0):
+    _notifications.append(Notification(text_list, min_height))
 def get_notification():
-    return _notification
+    if not _notifications:
+        return None
+    return _notifications[0]
 def clear_notification():
-    global _notification
-    _notification = None
+    _notifications.pop(0)
 
 NOTIFICATION_WIDTH = SCREEN_WIDTH - 128
 NOTIFICATION_START = 64
