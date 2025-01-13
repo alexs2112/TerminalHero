@@ -6,14 +6,21 @@ Game design document can be found in [design](design/)
 Running the main game 
 ```
 >>> ./game.py -h
-usage: game.py [-h] [-v] [-d] [-a]
+usage: game.py [-h] [-v] [-d] [-c] [-a] [-l LOG] [-u DUNGEON] [-r] [-e] [-s] [-i]
 
 options:
-  -h, --help     show this help message and exit
-  -v, --verbose  log debug and info statements
-  -d, --dialog   test dialog
-  -c, --companion  test a companion in the player party
-  -a, --all        enable all player_log fields
+  -h, --help            show this help message and exit
+  -v, --verbose         log debug and info statements
+  -d, --dialog          test dialog
+  -c, --companion       test a companion in the player party
+  -a, --all             enable "all" player_log fields
+  -l LOG, --log LOG     comma separated list of player_log entries to start with
+  -u DUNGEON, --dungeon DUNGEON
+                        test dungeon display by name
+  -r, --revealed        for dungeon mode, set all rooms as revealed
+  -e, --no-enemies      for dungeon mode, remove all encounters
+  -s, --stats           gives the player massively enhanced stats
+  -i, --inventory       show the inventory test screen
 ```
 
 Helper script included for visualizing dialog trees:
@@ -82,6 +89,7 @@ options:
     - Arrow-key control for dialogue options
 - Show the sprite of the NPC you are talking to
 - Instead of NPCs with dialogue, just make them DialogueFeatures?
+- Coloured text should wrap properly
 
 **Equipment**
 - Magic weapons buff damage of a particular type?

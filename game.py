@@ -46,6 +46,11 @@ class Game:
             set_initial_village(None)
             add_quest_grave_concerns(self.player)
 
+        if args_list.log:
+            logs = args_list.log.split(',')
+            for l in logs:
+                update_log(l)
+
         self.screen = StartScreen(self.canvas, self.world)
 
         if args_list.dungeon:
@@ -116,7 +121,8 @@ if __name__ == "__main__":
     parser.add_argument('-v', '--verbose', action='store_true', help='log debug and info statements')
     parser.add_argument('-d', '--dialog', action='store_true', help='test dialog')
     parser.add_argument('-c', '--companion', action='store_true', help='test a companion in the player party')
-    parser.add_argument('-a', '--all', action='store_true', help='enable all player_log fields')
+    parser.add_argument('-a', '--all', action='store_true', help='enable "all" player_log fields')
+    parser.add_argument('-l', '--log', help='comma separated list of player_log entries to start with')
     parser.add_argument('-u', '--dungeon', help='test dungeon display by name')
     parser.add_argument('-r', '--revealed', action='store_true', help='for dungeon mode, set all rooms as revealed')
     parser.add_argument('-e', '--no-enemies', action='store_true', help='for dungeon mode, remove all encounters')

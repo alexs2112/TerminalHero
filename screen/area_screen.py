@@ -23,7 +23,7 @@ class AreaScreen(Screen):
         self.area.enter_area(self.player)
         self.encounters = self.area.enabled_encounters()
         self.features = self.area.enabled_features()
-        self.description_lines = fit_text(self.area.description)
+        self.description_lines = fit_text(self.area.get_description())
         self.index = 0
         self.dialog = {}                        # dict of {index: npc/dialog_feature}
         self.options = self.define_options()    # (text, function, <colour_str>)

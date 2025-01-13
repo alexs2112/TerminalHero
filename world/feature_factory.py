@@ -13,11 +13,6 @@ def get_feature_factory():
     return _feature_factory
 
 class FeatureFactory():
-    def test_dialog(self):
-        f = DialogFeature("Testing")
-        f.set_dialog_function(test_dialog)
-        return f
-
     def vaelthorne_shrine(self):
         f = DialogFeature("Rune Pillar")
         f.set_dialog_function(vaelthorne_rune_pillar)

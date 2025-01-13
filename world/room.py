@@ -6,8 +6,8 @@ EXIT_DOWN = (0,1)
 EXIT_LEFT = (-1,0)
 
 class Room(Area):
-    def __init__(self, name, sprite_rect, description):
-        super().__init__(name, sprite_rect, description)
+    def __init__(self, name, sprite_rect):
+        super().__init__(name, sprite_rect)
         self.type = 'Room'
 
         # Where this room should be drawn

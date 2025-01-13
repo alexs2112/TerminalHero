@@ -100,7 +100,7 @@ class DungeonScreen(Screen):
     def update_rooms(self):
         self.current_room = self.dungeon.rooms[self.player_pos[0]][self.player_pos[1]]
         self.current_room.enter_area(self.player)
-        self.room_description = fit_text(self.current_room.description, SCREEN_WIDTH - self.divider_x - 32)
+        self.room_description = fit_text(self.current_room.get_description(), SCREEN_WIDTH - self.divider_x - 32)
         self.current_room.revealed = True
         self.clear_message()
         self.define_options()
