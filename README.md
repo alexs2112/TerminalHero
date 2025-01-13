@@ -70,9 +70,7 @@ options:
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
   - Prevents pseudo save-scumming by finishing each encounter and returning to tavern to full heal before coming back
   - Not that the tavern is a thing yet lol
-- Dungeon features that the player can actually interact with, the text describing them should be coloured
 - Only show the big dungeon entrance notification the very first time that dungeon is entered
-- No longer go into AreaScreens using Rooms, just do combat and all room interacts directly from the DungeonScreen
 
 **Status Effects**
 - Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off
@@ -83,6 +81,7 @@ options:
     - Mark the NPC if they have unread dialogue
     - Arrow-key control for dialogue options
 - Show the sprite of the NPC you are talking to
+- Instead of NPCs with dialogue, just make them DialogueFeatures?
 
 **Equipment**
 - Magic weapons buff damage of a particular type?

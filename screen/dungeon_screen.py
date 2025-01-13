@@ -5,7 +5,8 @@ from main.util import *
 from main.clock import get_clock
 from main.notification import set_notification
 from screen.screen import Screen
-from screen.area_screen import AreaScreen
+from screen.combat_screen import CombatScreen
+from screen.dialog_screen import DialogScreen
 from creature.player import Player
 from world.dungeon import Dungeon
 from world.room import *
@@ -35,11 +36,16 @@ class DungeonScreen(Screen):
         # The player has moved into a new room, update it
         self.current_room = None
         self.room_description = []
+        self.options = []           # [(text, function, colour)]
+        self.dialog = {}            # { index: DialogFeature }
+        self.encounters = {}        # { index: Encounter }
+        self.dungeon_sprite = None  # Cache how the dungeon is supposed to look as it is resource intensive, this is to scale
         self.update_rooms()
 
-        # Cache how the dungeon is supposed to look as it is resource intensive, this is to scale
-        self.dungeon_sprite = None
-        self.update_sprite()
+        # Temporary message shown at the bottom of the screen
+        self.message = ""
+        self.message_time = 0
+        self.message_time_max = 1500
 
     def check_events(self, events):
         if self.check_notifications(events):
@@ -48,52 +54,33 @@ class DungeonScreen(Screen):
             if event.type == pygame.KEYDOWN:
                 self.frame_num = 0
                 self.local_time = 0
-
-                # This should probably be condensed
                 if event.key == pygame.K_UP:
-                    if EXIT_UP in self.current_room.exits:
-                        self.player_pos = (self.player_pos[0], self.player_pos[1] - 1)
-                        self.update_rooms()
-                    elif EXIT_UP == self.current_room.exit_dungeon_direction:
-                        self.return_screen.refresh(area=self.dungeon.area)
-                        return self.return_screen
+                    return self.player_move((0,-1))
                 elif event.key == pygame.K_RIGHT:
-                    if EXIT_RIGHT in self.current_room.exits:
-                        self.player_pos = (self.player_pos[0] + 1, self.player_pos[1])
-                        self.update_rooms()
-                    elif EXIT_RIGHT == self.current_room.exit_dungeon_direction:
-                        self.return_screen.refresh(area=self.dungeon.area)
-                        return self.return_screen
+                    return self.player_move((1,0))
                 elif event.key == pygame.K_DOWN:
-                    if EXIT_DOWN in self.current_room.exits:
-                        self.player_pos = (self.player_pos[0], self.player_pos[1] + 1)
-                        self.update_rooms()
-                    elif EXIT_DOWN == self.current_room.exit_dungeon_direction:
-                        self.return_screen.refresh(area=self.dungeon.area)
-                        return self.return_screen
+                    return self.player_move((0,1))
                 elif event.key == pygame.K_LEFT:
-                    if EXIT_LEFT in self.current_room.exits:
-                        self.player_pos = (self.player_pos[0] - 1, self.player_pos[1])
-                        self.update_rooms()
-                    elif EXIT_LEFT == self.current_room.exit_dungeon_direction:
-                        self.return_screen.refresh(area=self.dungeon.area)
-                        return self.return_screen
-                elif event.key == pygame.K_RETURN:
-                    return AreaScreen(self.canvas, self.current_room, self.player, self)
+                    return self.player_move((-1,0))
 
-                # If the new current_room has an encounter in it, force the player into the room to start combat
-                if self.current_room.enabled_encounters():
-                    return AreaScreen(self.canvas, self.current_room, self.player, self)
-
+                elif event.key in NUMBERS:
+                    i = int(pygame.key.name(event.key)) - 1
+                    if i < len(self.options):
+                        return self.options[i][1](i)
         return self
 
     def display(self):
         super().display()
 
-        self.local_time += clock.get_time()
+        dt = clock.get_time()
+        self.local_time += dt
         if self.local_time >= 500:
             self.local_time = 0
             self.frame_num = 1 - self.frame_num
+        if self.message:
+            self.message_time += dt
+            if self.message_time >= self.message_time_max:
+                self.clear_message()
 
         self.draw_line((self.divider_x, 0), (self.divider_x, SCREEN_HEIGHT))
         self.draw_scaled_sprite()
@@ -102,6 +89,9 @@ class DungeonScreen(Screen):
         if room:
             self.write_room_info(room)
 
+        if self.message:
+            self.write_center_x(self.message, (self.divider_x / 2, SCREEN_HEIGHT - 16 - FONT_HEIGHT), RED)
+
         self.display_notifications()
 
     def refresh(self, **kwargs):
@@ -109,9 +99,51 @@ class DungeonScreen(Screen):
 
     def update_rooms(self):
         self.current_room = self.dungeon.rooms[self.player_pos[0]][self.player_pos[1]]
+        self.current_room.enter_area(self.player)
         self.room_description = fit_text(self.current_room.description, SCREEN_WIDTH - self.divider_x - 32)
         self.current_room.revealed = True
+        self.clear_message()
+        self.define_options()
         self.update_sprite()
+
+    def define_options(self):
+        opts = []
+        new_encounters = {}
+        new_dialog = {}
+        i = 0
+        for e in self.current_room.enabled_encounters():
+            opts.append((e.name, self.begin_encounter, RED))
+            new_encounters[i] = e
+            i += 1
+
+        for d in self.current_room.get_dialog_features():
+            node = d.get_dialog_node()
+            if node.area_option:
+                opts.append((node.area_option, self.start_dialog, CYAN))
+            else:
+                opts.append((d.name, self.start_dialog, YELLOW))
+            new_dialog[i] = d
+            i += 1
+
+        self.options = opts
+        self.encounters = new_encounters
+        self.dialog = new_dialog
+
+    def player_move(self, direction):
+        for e in self.current_room.enabled_encounters():
+            if e.block_exit:
+                self.update_message("Can't Leave: Enemies Present!")
+                return self
+        if direction in self.current_room.locked:
+            self.update_message("That Door is Locked!")
+        elif direction in self.current_room.exits:
+            self.player_pos = (self.player_pos[0] + direction[0], self.player_pos[1] + direction[1])
+            self.update_rooms()
+            return self
+        elif direction == self.current_room.exit_dungeon_direction:
+            self.return_screen.refresh(area=self.dungeon.area)
+            return self.return_screen
+        return self
 
     def update_sprite(self):
         w, h = self.dungeon.unscaled_width, self.dungeon.unscaled_height
@@ -141,12 +173,10 @@ class DungeonScreen(Screen):
             y += FONT_HEIGHT + 2
         y += 8
         x += 16
-        for f in room.enabled_features():
-            self.write(f.name, (x,y), YELLOW)
+        i = 1
+        for o in self.options:
+            self.write(f"{i}: {o[0]}", (x,y), o[2])
             y += FONT_HEIGHT + 2
-
-        y += 8
-        self.write('[enter]', (x,y), DIMGRAY)
 
     def draw_player_sprite(self, room: Room, x, y):
         if self.frame_num == 1:
@@ -155,3 +185,20 @@ class DungeonScreen(Screen):
         px, py = room.player_position[0], room.player_position[1]
         dx, dy = (sx + px - 7) * DUNGEON_SCALE, (sy + py - 8) * DUNGEON_SCALE
         draw_sprite(self.canvas, creature_sprites, self.player.get_sprite_rect(), x+dx, y+dy, scale=DUNGEON_SCALE)
+
+    def update_message(self, message):
+        self.message = message
+        self.message_time = 0
+    
+    def clear_message(self):
+        self.message = ""
+        self.message_time = 0
+
+    # Functions called by the room option the player selects
+    # These are essentially the same as in AreaScreen
+    def begin_encounter(self, index):
+        return CombatScreen(self.canvas, self.encounters[index], self.current_room, self.player, self)
+
+    def start_dialog(self, index):
+        root_node = self.dialog[index].get_dialog_node()
+        return DialogScreen(self.canvas, self, root_node, self.player)

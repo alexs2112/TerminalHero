@@ -56,4 +56,5 @@ def runebound_stalker(_):
 
 def unlock_vaelthorne_crypt(player: Player):
     player.area.exits.append(EXIT_RIGHT)
+    player.area.locked.clear()
     update_log('crypt_unlocked')

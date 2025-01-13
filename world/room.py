@@ -1,9 +1,9 @@
 from world.area import Area
 
-EXIT_UP = 0
-EXIT_RIGHT = 1
-EXIT_DOWN = 2
-EXIT_LEFT = 3
+EXIT_UP = (0,-1)
+EXIT_RIGHT = (1,0)
+EXIT_DOWN = (0,1)
+EXIT_LEFT = (-1,0)
 
 class Room(Area):
     def __init__(self, name, sprite_rect, description):
@@ -24,6 +24,9 @@ class Room(Area):
 
         # A list of exits available to this room
         self.exits = []
+
+        # Which of the exits are currently locked
+        self.locked = []
 
         # The direction in which to leave the dungeon
         self.exit_dungeon_direction = None

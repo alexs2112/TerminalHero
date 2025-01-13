@@ -6,12 +6,14 @@ from main.constants import *
 from main.colour import *
 from main.messenger import get_messenger
 from main.clock import get_clock
+from main.player_log import get_player_log, update_log
 from creature.creature_factory import get_creature_factory
 from world.world_builder import WorldBuilder
 from screen.start_screen import StartScreen
 
 clock = get_clock()
 creature_factory = get_creature_factory()
+player_log = get_player_log()
 
 class Game:
     def __init__(self, args_list):
@@ -47,7 +49,7 @@ class Game:
         self.screen = StartScreen(self.canvas, self.world)
 
         if args_list.dungeon:
-            self.dungeon_test(args_list.dungeon, args_list.revealed)
+            self.dungeon_test(args_list.dungeon, args_list.revealed, args_list.no_enemies)
 
         if args_list.inventory:
             self.inventory_test()
@@ -78,12 +80,13 @@ class Game:
         base_node = load_dialog('resources/dialog/gorren_questline.json')
         self.screen = DialogScreen(self.canvas, None, base_node['start'], self.player)
 
-    def dungeon_test(self, dungeon_name, set_revealed):
+    def dungeon_test(self, dungeon_name, set_revealed, no_enemies):
         # pylint: disable=import-outside-toplevel
         from world.dungeon_builder import DungeonBuilder
         from screen.dungeon_screen import DungeonScreen
         if dungeon_name == 'crypt':
             d = DungeonBuilder().new_vaelthorne_crypt(None)
+            update_log('runebound_stalker_defeated')
         else:
             print(f"Error: Could not find dungeon {dungeon_name}")
             exit(1)
@@ -92,9 +95,10 @@ class Game:
             for r in d.get_rooms():
                 r.revealed = True
 
-        for a in d.room_list:
-            for e in a.encounters:
-                e.completed = True
+        if no_enemies:
+            for a in d.room_list:
+                for e in a.encounters:
+                    e.completed = True
         self.screen = DungeonScreen(self.canvas, d, self.player, None)
 
     def inventory_test(self):
@@ -115,6 +119,7 @@ if __name__ == "__main__":
     parser.add_argument('-a', '--all', action='store_true', help='enable all player_log fields')
     parser.add_argument('-u', '--dungeon', help='test dungeon display by name')
     parser.add_argument('-r', '--revealed', action='store_true', help='for dungeon mode, set all rooms as revealed')
+    parser.add_argument('-e', '--no-enemies', action='store_true', help='for dungeon mode, remove all encounters')
     parser.add_argument('-s', '--stats', action='store_true', help='gives the player massively enhanced stats')
     parser.add_argument('-i', '--inventory', action='store_true', help='show the inventory test screen')
     args = parser.parse_args()
