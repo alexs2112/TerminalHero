@@ -8,17 +8,21 @@ from creature.item import *
 messenger = get_messenger()
 
 class Creature:
-    def __init__(self, name):
+    def __init__(self, name, level):
         self.name = name
         self.description = "placeholder text"
         self.type = 'creature'
         self.sprite: CreatureSprite = None
 
-        self.level = 0
+        self.level = level
         self.abilities: list[Ability] = []
         self.ai = None
         self.profession: Profession = None
         self.inventory: list[Item] = []
+
+        # Floating stat and ability points for levelling up
+        self.stat_points = 0
+        self.ability_points = 0
 
         self.base_hp = 0
         self.hp = 0
@@ -73,9 +77,8 @@ class Creature:
     def get_sprite_rect(self):
         return self.sprite.get(self)
 
-    def set_profession(self, profession, level):
+    def set_profession(self, profession):
         self.profession = profession
-        self.level = level
 
     def set_defensive_stats(self, base_hp, defense, dodge, will, endurance):
         self.base_hp = base_hp

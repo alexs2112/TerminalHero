@@ -51,7 +51,6 @@ options:
 ### Rough To-Do List (Unordered)
 **Area**
 - Encounters should have descriptive text that is displayed in the area screen in red
-- Each world area should have a priority or something, sort the areas in the world screen by priority rather than location
 
 **Quest**
 - Quest Steps should have NPCs and Locations, to highlight important steps for the player
@@ -80,6 +79,7 @@ options:
 **World**
 - Draw the world like how dungeons are drawn, instead of using tiles
 - This can't just be kept as a dungeon because I still want Area Screens and you can't just walk around to explore it (ie. otherwise keep the interface the same for now)
+- Each world area should have a priority or something, sort the areas in the world screen by priority rather than location
 
 **Status Effects**
 - Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off
@@ -101,7 +101,6 @@ options:
 - This is going to be a bit of an issue
 
 **Other**
-- Allow stacking several notifications at once
 - A screen to store known lore ([J]ournal?)
 - Creature screen rapidly overflows with abilities, add new ability screen that can be accessed from creature screen (or straight from combat)
 - Party Screen to view party members

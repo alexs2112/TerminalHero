@@ -2,7 +2,6 @@ from world.encounter import Encounter
 from creature.creature_factory import get_creature_factory
 from creature.item_factory import get_item_factory
 from main.player_log import get_player_log, update_log
-from main.notification import add_notification
 player_log = get_player_log()
 creature_factory = get_creature_factory()
 item_factory = get_item_factory()
@@ -27,6 +26,7 @@ class EncounterFactory:
             area.npcs.append(creature_factory.new_gorren())
             update_log('clear_cemetery_1', player)
         e.completed_function = complete
+        e.reward_xp = 200
         return e
 
     def get_cemetery_encounter_2(self):
@@ -40,6 +40,7 @@ class EncounterFactory:
         def complete(player, _):
             update_log('clear_cemetery_2', player)
         e.completed_function = complete
+        e.reward_xp = 200
         e.block_exit = True
         return e
 
@@ -51,6 +52,7 @@ class EncounterFactory:
             creature_factory.new_patchwork_dead_3()
         )
         e.block_exit = True
+        e.reward_xp = 200
         return e
 
     def get_crypt_encounter_2(self):
@@ -62,6 +64,7 @@ class EncounterFactory:
             creature_factory.new_patchwork_dead_2()
         )
         e.block_exit = True
+        e.reward_xp = 300
         return e
 
     def runebound_stalker(self):
@@ -72,9 +75,8 @@ class EncounterFactory:
         e.valid_condition = 'shrine_opened'
         e.block_exit = True
         def complete(player, _):
-            add_notification([":YELLOW:Runebound Stalker Slain!:YELLOW:",
-                              "From the ashes and debris left behind by the creature, you recover the :YELLOW:Vaelthorne Seal:YELLOW:."])
-            player.inventory.append(item_factory.new_vaelthorne_seal())
             update_log('runebound_stalker_defeated', player)
         e.completed_function = complete
+        e.reward_items = [ item_factory.new_vaelthorne_seal() ]
+        e.reward_xp = 400
         return e
