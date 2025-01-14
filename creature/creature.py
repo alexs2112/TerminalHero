@@ -3,7 +3,7 @@ from combat.ability import Ability
 from combat.effect import Effect
 from creature.profession import Profession
 from creature.creature_sprite import CreatureSprite
-from creature.item import *
+from item.item import *
 
 messenger = get_messenger()
 
@@ -67,6 +67,9 @@ class Creature:
         self.effects: list[Effect] = []
         self.skip_next_turn = False
         self.has_corpse = True
+
+        # The food the creature has eaten, stats will be stored in temporary_stats
+        self.food = None
 
     def set_description(self, description):
         self.description = description
@@ -232,3 +235,16 @@ class Creature:
                 return
         self.effects.append(effect)
         effect.effect_start(self)
+
+    def eat_food(self, food):
+        self.food = food
+        old_hp = self.max_hp()
+        old_armor = self.max_armor()
+        self.add_temp_stats(**food.stats)
+        self.add_temp_resistances(**food.resistances)
+
+        # Make sure benefits to endurance/defense are represented
+        if self.max_hp() > old_hp:
+            self.hp += self.max_hp() - old_hp
+        if self.max_armor() > old_armor:
+            self.armor += self.max_armor() - old_armor

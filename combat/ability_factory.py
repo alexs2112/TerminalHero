@@ -207,4 +207,11 @@ class AbilityFactory:
                 messenger.add(f"{c.name} lashes out with :CYAN:Runic Chains:CYAN: but misses {t.name}")
             return success
         a.set_to_hit(to_hit)
+        def effect(c: Creature, t: Creature, a: Area):
+            dam = randint(1 + c.stat('strength'), 3 + c.stat('strength'))
+            messenger.add(f"{c.name} lashes out with :CYAN:Runic Chains:CYAN: at {t.name} for {dam} damage!")
+            t.take_damage(dam, 'physical')
+            if t.is_alive():
+                t.add_effect(effects.create_stun_effect(1))
+        a.set_effect(effect)
         return a

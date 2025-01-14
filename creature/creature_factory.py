@@ -3,7 +3,7 @@ from creature.player import Player
 from creature.npc import NPC
 from creature.creature_sprite import CreatureSprite
 from creature.profession_factory import get_profession_factory
-from creature.item_factory import get_item_factory
+from item.item_factory import get_item_factory
 from creature.level_up_handler import get_level_up_handler
 from creature.ai.basic_ai import BasicAI
 from combat.ability_factory import get_ability_factory

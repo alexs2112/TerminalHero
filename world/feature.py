@@ -5,6 +5,7 @@ FEATURE = 'Feature'
 FUNCTION = 'Function'
 CHEST = 'Chest'
 DIALOG = 'Dialog'
+FOOD_STORE = 'Food Store'
 
 class Feature:
     def __init__(self, name):
@@ -55,3 +56,12 @@ class DialogFeature(Feature):
 
     def get_dialog_node(self):
         return self.dialog_function()
+
+class FoodStoreFeature(Feature):
+    def __init__(self, name):
+        super().__init__(name)
+        self.type = FOOD_STORE
+        self.store = None
+
+    def set_store(self, store):
+        self.store = store

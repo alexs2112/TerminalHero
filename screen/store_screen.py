@@ -1,14 +1,17 @@
 from math import ceil
+from screen.screen import Screen
+from screen.food_screen import FoodScreen
+from creature.player import Player
 from main.constants import *
 from main.util import *
-from screen.screen import Screen
-from screen.equip_item_screen import EquipItemScreen
-from creature.player import Player
-from item.item import Item
+from main.colour import *
+from item.store import Store
+from item.item import Item, FOOD
 
-class InventoryScreen(Screen):
-    def __init__(self, canvas, player: Player, last_screen: Screen):
+class StoreScreen(Screen):
+    def __init__(self, canvas, store: Store, player: Player, last_screen: Screen):
         super().__init__(canvas)
+        self.store = store
         self.player = player
         self.last_screen = last_screen
 
@@ -26,8 +29,7 @@ class InventoryScreen(Screen):
         self.row = 0
         self.column = 0
         self.item = self.selected_item()
-        self.num_rows = ceil(len(self.player.key_items) / self.items_per_row) \
-                      + ceil(len(self.player.inventory) / self.items_per_row)
+        self.num_rows = ceil(len(self.store.inventory)/self.items_per_row)
 
     def check_events(self, events):
         if self.check_notifications(events):
@@ -35,7 +37,8 @@ class InventoryScreen(Screen):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    return EquipItemScreen(self.canvas, self.item, self.player, self)
+                    if self.item and self.item.slot == FOOD:
+                        return FoodScreen(self.canvas, self.item, self.player, self)
                 elif event.key == pygame.K_ESCAPE:
                     return self.last_screen
                 elif event.key == pygame.K_RIGHT:
@@ -53,7 +56,7 @@ class InventoryScreen(Screen):
         super().display()
 
         self.draw_line((self.center_x, 0), (self.center_x, SCREEN_HEIGHT))
-        self.write("Inventory", (16,16))
+        self.write(self.store.name, (16,16))
         self.draw_items()
         self.write_item_details(self.item)
         self.display_notifications()
@@ -72,18 +75,10 @@ class InventoryScreen(Screen):
 
         # Move to the next valid space
         r = self.row
-        if self.player.key_items:
-            key_rows = ceil(len(self.player.key_items) / self.items_per_row)
-            if r == key_rows - 1:
-                cols = len(self.player.key_items) % self.items_per_row
-                if self.column >= cols:
-                    self.column = cols - 1
-                    return
-            r -= key_rows
-        if self.player.inventory:
-            inv_rows = ceil(len(self.player.inventory) / self.items_per_row)
-            if r == inv_rows - 1:
-                cols = len(self.player.inventory) % self.items_per_row
+        if self.store.inventory:
+            rows = ceil(len(self.store.inventory) / self.items_per_row)
+            if r == rows - 1:
+                cols = len(self.store.inventory) % self.items_per_row
                 if self.column >= cols:
                     self.column = cols - 1
                     return
@@ -91,32 +86,18 @@ class InventoryScreen(Screen):
         # cycle back to the first item in that row if len(row) < self.items_per_row - 1
 
     def selected_item(self):
-        r = self.row
-        if self.player.key_items:
-            key_rows = ceil(len(self.player.key_items) / self.items_per_row)
-            if r < key_rows:
-                return self.player.key_items[r * self.items_per_row + self.column]
-            r -= key_rows
-        if self.player.inventory:
-            return self.player.inventory[r * self.items_per_row + self.column]
+        if self.store.inventory:
+            return self.store.inventory[self.row * self.items_per_row + self.column]
         return None
 
     def draw_items(self):
         x, y = 16, 48
         current = (0,0)
-        if self.player.key_items:
-            self.write("Key Items:", (x,y))
-            y += FONT_HEIGHT + 2
-            x, y, current = self.draw_item_list(self.player.key_items, current, x, y)
-            y += 12
-
-        self.write("Items:", (x, y))
-        y += FONT_HEIGHT + 2
-        if self.player.inventory:
-            x, y, current = self.draw_item_list(self.player.inventory, current, x, y)
+        if self.store.inventory:
+            x, y, current = self.draw_item_list(self.store.inventory, current, x, y)
         else:
             y += 8
-            self.write("There's nothing here...", (x + 32, y), DIMGRAY)
+            self.write("There's nothing for purchase...", (x + 32, y), DIMGRAY)
 
     def draw_item_list(self, item_list, current, x, y):
         base_x = 16
@@ -144,30 +125,15 @@ class InventoryScreen(Screen):
         self.write_center_x(item.name, ((SCREEN_WIDTH - self.center_x) / 2 + self.center_x, y))
         y += FONT_HEIGHT + 10
 
-        if item.stats:
-            for stat, value in item.stats.items():
-                self.write(f"{stat}: {value}", (x,y), LIGHTGRAY)
-                y += FONT_HEIGHT + 2
-            y += 8
-
-        if item.resistances:
-            self.write("Resistances:", (x, y), WHITE)
-            y += FONT_HEIGHT + 2
-            for resist, value in item.resistances.items():
-                self.write(f"{resist}: {value}%", (x + 16, y), LIGHTGRAY)
-                y += FONT_HEIGHT + 2
-            y += 8
-
         width = SCREEN_WIDTH - self.center_x - 32 - 16
-        if item.abilities:
-            self.write("Abilities:", (x,y), WHITE)
+        for l in fit_text(item.description, width):
+            self.write(l, (x,y), LIGHTGRAY)
             y += FONT_HEIGHT + 2
+        y += 10
 
-            for a in item.abilities:
-                self.write(f"{a.name}{f' ({a.max_cooldown})' if a.max_cooldown > 1 else ''}", (x,y), LIGHTGRAY)
+        if item.is_known():
+            for l in item.get_stat_strings():
+                self.write(l, (x,y))
                 y += FONT_HEIGHT + 2
-                ds = fit_text(a.description, width)
-                for d in ds:
-                    self.write(d, (x + 16, y), LIGHTGRAY)
-                    y += FONT_HEIGHT + 2
-                y += 8
+        else:
+            self.write('???', (x,y), LIGHTGRAY)

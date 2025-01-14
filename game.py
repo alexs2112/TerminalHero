@@ -109,7 +109,7 @@ class Game:
     def inventory_test(self):
         # pylint: disable=import-outside-toplevel
         from screen.inventory_screen import InventoryScreen
-        from creature.item_factory import get_item_factory
+        from item.item_factory import get_item_factory
         i = get_item_factory()
         self.player.inventory = [ i.new_axe(), i.new_hammer(), i.new_leather_armor(), i.new_robe(), i.new_axe(),
                                   i.new_hammer(), i.new_axe(), i.new_hammer(), i.new_axe(), i.new_hammer() ]

@@ -30,6 +30,12 @@ def initialize_player_log():
         'shrine_opened': False,
         'runebound_stalker_defeated': False,
         'crypt_unlocked': False,
+
+        # Food Related Logs
+        'food_mushroom': False,
+        'food_carrot': False,
+        'food_steak': False,
+        'food_cheese': False,
     }
 
 def update_log(field, player=None):

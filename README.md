@@ -67,6 +67,7 @@ options:
 - Flee combat? Or just reload previous save lol
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
 - Figure out a concise way to let party members know that their allies are the players party
+  - I do not remember why I wanted this
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
 - Allow certain boss enemies act several times in a row
 
@@ -93,18 +94,28 @@ options:
 - Instead of NPCs with dialogue, just make them DialogueFeatures?
 - Coloured text should wrap properly
 
-**Equipment**
+**Items**
 - Magic weapons buff damage of a particular type?
 - Get rid of key items? I feel like these as a separate list arent useful, just flag them and border them in blue or something in the inventory screen
+- Implement currency and limited product at stores, do we want stores to reset every so often?
+  - Maybe they just get new items when certain player_log entries are set
+- Rare food from special merchants?
+
+**Screens**
+- A screen to store known lore ([J]ournal?)
+  - Include a section for known food
+- Creature screen rapidly overflows with abilities, add new ability screen that can be accessed from creature screen (or straight from combat)
+- Party Screen to view party members
+  - Show max of each stat for dialogue skill checks
+- Character screen to view self, [tab] to swap to next character in party
+- Lots of overlap between StoreScreen and InventoryScreen, should be condensed
 
 **Saving**
 - This is going to be a bit of an issue
 
 **Other**
-- A screen to store known lore ([J]ournal?)
-- Creature screen rapidly overflows with abilities, add new ability screen that can be accessed from creature screen (or straight from combat)
-- Party Screen to view party members
-  - Show max of each stat for dialogue skill checks
-- Character screen to view self, [tab] to swap to next character in party
+- Set Item as superclass of new Equipment and Food classes
 - New constant of `FONT_HEIGHT + 2`
 - Mouse controls
+- If you have unlocked all 6 companions, you unlock a bonus area of a pond with a magic frog.
+  - The frog says random sentences at you in dialogue that sound very wise but are either nonsense or unrelated.

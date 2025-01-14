@@ -26,6 +26,7 @@ class AreaScreen(Screen):
         self.description_lines = fit_text(self.area.get_description())
         self.index = 0
         self.dialog = {}                        # dict of {index: npc/dialog_feature}
+        self.stores = {}                        # dict of {index: store_feature}
         self.features = {}                      # dict of {index: function_feature}
         self.options = self.define_options()    # (text, function, <colour_str>)
 
@@ -59,6 +60,11 @@ class AreaScreen(Screen):
             self.features[i] = f
             i += 1
             opts.append((f.name, self.call_feature))
+
+        for s in self.area.get_store_features():
+            self.stores[i] = s
+            i += 1
+            opts.append((s.name, self.enter_store))
 
         if self.area.dungeon:
             opts.append((f"Enter {self.area.dungeon.name}", self.enter_dungeon))
@@ -160,3 +166,9 @@ class AreaScreen(Screen):
         feature = self.features[index]
         feature.call_function(self.player, self.area)
         return self
+
+    def enter_store(self, canvas, index):
+        # pylint: disable=import-outside-toplevel
+        from screen.store_screen import StoreScreen
+        store = self.stores[index].store
+        return StoreScreen(canvas, store, self.player, self)

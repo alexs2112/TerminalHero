@@ -1,6 +1,6 @@
 from creature.creature import Creature
-from creature.item import Item
 from creature.level_up_handler import get_level_up_handler
+from item.item import Item
 from main.player_log import get_player_log
 from main.notification import add_notification
 

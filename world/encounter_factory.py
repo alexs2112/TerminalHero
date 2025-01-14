@@ -1,6 +1,6 @@
 from world.encounter import Encounter
 from creature.creature_factory import get_creature_factory
-from creature.item_factory import get_item_factory
+from item.item_factory import get_item_factory
 from main.player_log import get_player_log, update_log
 player_log = get_player_log()
 creature_factory = get_creature_factory()

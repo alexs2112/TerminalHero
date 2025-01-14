@@ -1,6 +1,6 @@
 from main.messenger import *
 from creature.creature import Creature
-from creature.item import Item
+from item.item import Item
 from quests.quest import Quest
 
 messenger = get_messenger()

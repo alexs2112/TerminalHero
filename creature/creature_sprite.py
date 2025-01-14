@@ -1,4 +1,4 @@
-from creature.item import WEAPON
+from item.item import WEAPON
 
 class CreatureSprite:
     def __init__(self, sprite_rect, dead_rect):

@@ -3,8 +3,10 @@ from creature.player import Player
 from dialog.dialog_loader import *
 from main.player_log import get_player_log
 from main.notification import add_notification
+from item.store_builder import get_store_builder
 
 player_log = get_player_log()
+store_builder = get_store_builder()
 
 # pylint: disable=invalid-name
 _feature_factory = None
@@ -54,5 +56,14 @@ class FeatureFactory():
                 c.effects = []
                 c.hp = c.max_hp()
                 c.armor = c.max_armor()
+                c.food = None
         f.set_function(func)
+        return f
+
+    def tavern_food(self):
+        f = FoodStoreFeature("Eat at the Tavern")
+        def enabled():
+            return player_log['tavern_store_unlocked']
+        f.set_enabled_function(enabled)
+        f.set_store(store_builder.tavern_store())
         return f

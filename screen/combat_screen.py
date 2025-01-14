@@ -35,6 +35,7 @@ class CombatScreen(Screen):
         self.queue: list[QueueItem] = []
         self.last_active_creature: Creature = None
         self.selected_ability: Ability = None
+        self.index: int = 0
 
         self.frame_timer = 0
         self.frame_num = 0

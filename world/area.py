@@ -76,3 +76,6 @@ class Area:
 
     def get_function_features(self):
         return [ f for f in self.features if f.enabled() and f.type == FUNCTION ]
+
+    def get_store_features(self):
+        return [ f for f in self.features if f.enabled() and f.type == FOOD_STORE ]

@@ -2,7 +2,7 @@ from screen.screen import Screen
 from main.constants import *
 from main.colour import *
 from main.util import *
-from creature.item import *
+from item.item import *
 from creature.player import Player
 from creature.creature import Creature
 
