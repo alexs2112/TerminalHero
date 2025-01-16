@@ -64,6 +64,10 @@ class WorldScreen(Screen):
                     return InventoryScreen(self.canvas, self.world.player, self)
                 elif event.key == pygame.K_c:
                     return CreatureScreen(self.canvas, self.world.player, self)
+                elif event.key == pygame.K_s:
+                    from screen.level_stat_screen import LevelStatScreen
+                    self.world.player.stat_points += 1
+                    return LevelStatScreen(self.canvas, self.world.player, self)
         return self
 
     def display(self):

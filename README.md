@@ -110,6 +110,10 @@ options:
 - Character screen to view self, [tab] to swap to next character in party
 - Lots of overlap between StoreScreen and InventoryScreen, should be condensed
 
+**Creatures**:
+- Get secondary stats and resistances correctly to account for base (str,dex,int) stats
+  - ie. getting a creature's fire resistance should include the benefit from having high int
+
 **Saving**
 - This is going to be a bit of an issue
 
