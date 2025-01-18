@@ -188,6 +188,7 @@ class CombatScreen(Screen):
         self.queue = q
 
     def get_legal_targets(self):
+        # This might need to move to each Ability when AOEs are added
         return [ c for c in self.player.party + self.encounter.enemies if self.selected_ability.can_target(c) ]
 
     def get_target_index(self):

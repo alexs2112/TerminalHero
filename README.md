@@ -61,9 +61,9 @@ options:
 - For now, get rid of main + side quests, just have "Quests" and "Complete"
 
 **Combat**
-- Get rid of the funny `qwerasdf` targeting. Instead use arrow keys and highlight targeted enemies (possibly multiples).
-  - This also allows showing hit chance, damage, and status effects
-  - And allows preventing illegal targeting, etc
+- Abilities show hit chance, damage, and status effects, when selected
+  - Hit chance should be a separate function that returns a percentage
+  - Can also show a brief description here
 - Flee combat? Or just reload previous save lol
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
 - Figure out a concise way to let party members know that their allies are the players party
@@ -71,6 +71,9 @@ options:
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
 - Allow certain boss enemies act several times in a row
 - Action Points: Each turn get 2, basic attacks cost 1, most attacks cost 2, stronger attacks cost 3
+- Only show the name of targeted creatures or the active creature
+  - This means we don't need to stagger their positions anymore
+- Combat backgrounds: Creatures stand on a floor and have some darkened background art
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
@@ -101,6 +104,7 @@ options:
 - Implement currency and limited product at stores, do we want stores to reset every so often?
   - Maybe they just get new items when certain player_log entries are set
 - Rare food from special merchants?
+- Decouple inventory from the party
 
 **Screens**
 - A screen to store known lore ([J]ournal?)

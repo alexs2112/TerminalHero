@@ -27,6 +27,6 @@ class ProfessionFactory:
         p.set_stats(intelligence=2, will=1, endurance=1)
         p.set_resistances(dark=10)
         p.add_ability(abilities.drain_life(90, 1, 2))
-        p.add_ability(abilities.corpse_explosion(3, 5))
+        p.add_ability(abilities.corpse_explosion(1, 3))
         p.add_ability(abilities.curse_of_decay())
         return p

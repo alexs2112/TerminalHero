@@ -206,8 +206,7 @@ class Creature:
 
     def use_ability(self, ability: Ability, target, area):
         ability.set_cooldown()
-        if ability.success(self, target, area):
-            ability.apply(self, target, area)
+        ability.activate(self, target, area)
 
     def take_damage(self, damage: int, dam_type: str):
         dam = int(damage * (100 - self.get_resistance(dam_type)) / 100)

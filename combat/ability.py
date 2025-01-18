@@ -6,25 +6,19 @@ class Ability:
         self.size = size
         self.description = ""
 
-        # Bool function that is called to see if the ability hits a target
-        self.to_hit = None
-
         # Function effect called when the ability is used
         self.effect = None
+
+        # Function to be called to check if a creature can be targeted
+        self.can_target_func = None
 
     def set_description(self, desc: str):
         self.description = desc
 
-    def set_to_hit(self, bool_function):
-        self.to_hit = bool_function
-
     def set_effect(self, effect_function):
         self.effect = effect_function
 
-    def success(self, creature, target, area):
-        return self.to_hit(creature, target, area)
-
-    def apply(self, creature, target, area):
+    def activate(self, creature, target, area):
         return self.effect(creature, target, area)
 
     def set_cooldown(self):
@@ -40,5 +34,9 @@ class Ability:
         return s
 
     def can_target(self, creature):
-        # Stub
-        return True
+        if self.can_target_func:
+            return self.can_target_func(creature)
+        return creature.is_alive()
+
+    def set_can_target(self, func):
+        self.can_target_func = func
