@@ -59,6 +59,7 @@ options:
 - Quest Log icon at the bottom of the world screen that highlights if changes have been made to the quest log
 - Quest log will probably require scrolling
 - For now, get rid of main + side quests, just have "Quests" and "Complete"
+- Quests ping you when you finish individual steps? Maybe "Quest Log Updated" notification
 
 **Combat**
 - Abilities show hit chance, damage, and status effects, when selected
@@ -66,11 +67,9 @@ options:
   - Can also show a brief description here
 - Flee combat? Or just reload previous save lol
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
-- Figure out a concise way to let party members know that their allies are the players party
-  - I do not remember why I wanted this
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
-- Allow certain boss enemies act several times in a row
 - Action Points: Each turn get 2, basic attacks cost 1, most attacks cost 2, stronger attacks cost 3
+  - Boss enemies get bonus action points per turn to act many times
 - Only show the name of targeted creatures or the active creature
   - This means we don't need to stagger their positions anymore
 - Combat backgrounds: Creatures stand on a floor and have some darkened background art
@@ -83,12 +82,8 @@ options:
 
 **World**
 - Draw the world like how dungeons are drawn, instead of using tiles
-- This can't just be kept as a dungeon because I still want Area Screens and you can't just walk around to explore it (ie. otherwise keep the interface the same for now)
-- Each world area should have a priority or something, sort the areas in the world screen by priority rather than location
-
-**Status Effects**
-- Display status effect icon instead of name, effect screen that can be opened in combat to list all status effects off
-  - Sort the list by showing currently active ones first
+- This can't just turn into a dungeon because I still want Area Screens and you can't just walk around to explore it (ie. keep the interface the same for now)
+- Each world area should have a priority or something, sort the areas in the world screen by priority rather than index (Vaelthorne Shrine currently shows up first when unlocked)
 
 **Dialogue**
 - Somehow mark dialogue options that have not been chosen yet

@@ -12,8 +12,7 @@ class Player(Creature):
         self.type = 'player'
         self.party: list[Creature] = [self]
 
-        self.main_quests: list[Quest] = []
-        self.side_quests: list[Quest] = []
+        self.quests: list[Quest] = []
         self.done_quests: list[Quest] = []
 
         # Inventory also defined in Creature
@@ -25,7 +24,7 @@ class Player(Creature):
         messenger.add('You die.')
 
     def get_quests(self):
-        return self.main_quests + self.side_quests
+        return self.quests
 
     def start_combat(self):
         for c in self.party:

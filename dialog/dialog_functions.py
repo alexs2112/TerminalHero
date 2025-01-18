@@ -21,7 +21,7 @@ def add_quest_grave_concerns(player: Player):
     player_log['accepted_grave_concerns'] = True
     q = grave_concerns()
     add_notification([":YELLOW:Quest Received!:YELLOW:", q.name])
-    player.side_quests.append(q)
+    player.quests.append(q)
 
 def set_met_gorren(_):
     player_log['met_gorren'] = True

@@ -14,7 +14,7 @@ class QuestScreen(Screen):
 
         self.index = -1
         self.selected = self.get_selected_quest()
-        self.quest_num = len(self.player.main_quests) + len(self.player.side_quests)
+        self.quest_num = len(self.player.quests)
 
     def check_events(self, events):
         for event in events:
@@ -40,8 +40,7 @@ class QuestScreen(Screen):
         self.draw_line((self.center_point, 0), (self.center_point, SCREEN_HEIGHT))
 
         y = 16
-        y = self.draw_quest_titles("Main Quests", self.player.main_quests, y)
-        y = self.draw_quest_titles("Side Quests", self.player.side_quests, y)
+        y = self.draw_quest_titles("Quests", self.player.quests, y)
         if self.player.done_quests:
             y = self.draw_quest_titles("Completed", self.player.done_quests, y)
 
@@ -55,15 +54,12 @@ class QuestScreen(Screen):
             self.write_center_x("[escape] to exit", (x,y), GRAY)
 
     def get_selected_quest(self):
-        for i in range(len(self.player.main_quests)):
+        for i in range(len(self.player.quests)):
             if i == self.index:
-                return self.player.main_quests[i]
-        for j in range(len(self.player.side_quests)):
-            if j + len(self.player.main_quests) == self.index:
-                return self.player.side_quests[j]
-        for k in range(len(self.player.done_quests)):
-            if k + len(self.player.side_quests) + len(self.player.main_quests) == self.index:
-                return self.player.done_quests[k]
+                return self.player.quests[i]
+        for j in range(len(self.player.done_quests)):
+            if j + len(self.player.quests) == self.index:
+                return self.player.done_quests[j]
         return None
 
     def draw_quest_titles(self, header, quests, y):
