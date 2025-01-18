@@ -68,8 +68,6 @@ options:
 - Flee combat? Or just reload previous save lol
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
-- Action Points: Each turn get 2, basic attacks cost 1, most attacks cost 2, stronger attacks cost 3
-  - Boss enemies get bonus action points per turn to act many times
 - Only show the name of targeted creatures or the active creature
   - This means we don't need to stagger their positions anymore
 - Combat backgrounds: Creatures stand on a floor and have some darkened background art

@@ -20,7 +20,7 @@ class Creature:
         self.profession: Profession = None
         self.inventory: list[Item] = []
 
-        # Floating stat and ability points for levelling up
+        # Floating stat and ability points for leveling up
         self.stat_points = 0
         self.ability_points = 0
 
@@ -67,6 +67,8 @@ class Creature:
         self.effects: list[Effect] = []
         self.skip_next_turn = False
         self.has_corpse = True
+        self.action_points = 0
+        self.action_point_replenish = 2
 
         # The food the creature has eaten, stats will be stored in temporary_stats
         self.food = None
@@ -173,6 +175,12 @@ class Creature:
             a += self.profession.abilities
         return a
 
+    def has_usable_abilities(self):
+        for a in self.get_abilities():
+            if a.is_usable(self):
+                return True
+        return False
+
     def equip_item(self, item: Item):
         old = None
         if self.equipment[item.slot]:
@@ -185,6 +193,7 @@ class Creature:
 
     def start_turn(self):
         self.skip_next_turn = False
+        self.action_points = min(self.action_points + self.action_point_replenish, 4)
         for a in self.get_abilities():
             a.cooldown = max(0, a.cooldown - 1)
         for e in self.effects:

@@ -22,6 +22,9 @@ HP_CONTAINER_DARK   = (24,36,24,12)
 HP_CONTAINER_LIGHT  = (48,36,24,12)
 HP_CONTAINER_YELLOW = (72,36,24,12)
 HP_CONTAINER_RED    = (96,36,24,12)
+ACTION_POINT_EMPTY  = ( 0,48, 6, 6)
+ACTION_POINT_TO_FILL= ( 6,48, 6, 6)
+ACTION_POINT_FULL   = (12,48, 6, 6)
 
 class CombatScreen(Screen):
     def __init__(self, canvas, encounter: Encounter, area: Area, player: Player, last_screen: Screen = None):
@@ -95,17 +98,21 @@ class CombatScreen(Screen):
                         if event.key in NUMBERS:
                             i = int(pygame.key.name(event.key)) - 1
                             if i < len(c.get_abilities()):
-                                if c.get_abilities()[i].is_usable():
-                                    self.selected_ability = c.get_abilities()[i]
+                                a = c.get_abilities()[i]
+                                if a.is_usable(c):
+                                    self.selected_ability = a
                                     self.legal_targets = self.get_legal_targets()
                                     self.target_index = self.get_target_index()
                                     return self
                                 else:
-                                    messenger.add("This ability is still on cooldown.")
+                                    if a.cooldown > 0:
+                                        messenger.add("This ability is still on cooldown.")
+                                    elif c.action_points < a.action_points:
+                                        messenger.add("Not enough action points.")
                                     return self
                         # Skip turn
                         elif event.key == pygame.K_0:
-                            messenger.add(f"{c.name} skips their turn.")
+                            messenger.add(f"{c.name} ends their turn.")
                             c.end_turn()
                             self.queue.pop(0)
                             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
@@ -132,9 +139,11 @@ class CombatScreen(Screen):
                                 self.bump_locations[c] = BumpLocation((COMBAT_BUMP_DISTANCE, 0), 100)
                                 c.use_ability(self.selected_ability, target, self.area)
                                 self.selected_ability = None
-                                c.end_turn()
-                                self.queue.pop(0)
-                                self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
+                                # Auto end turn once action points have run out
+                                if c.action_points == 0:
+                                    c.end_turn()
+                                    self.queue.pop(0)
+                                    self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
 
         # AI Controlled Turn
         elif c:
@@ -144,8 +153,9 @@ class CombatScreen(Screen):
                 # For now just assume the enemy is only attacking
                 self.bump_locations[c] = BumpLocation((-COMBAT_BUMP_DISTANCE, 0), 100)
 
-            c.end_turn()
-            self.queue.pop(0)
+            if not c.has_usable_abilities():
+                c.end_turn()
+                self.queue.pop(0)
             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
 
         return self
@@ -276,10 +286,21 @@ class CombatScreen(Screen):
         y += 80
 
         self.write_center_x(f"{creature.name}", (x, y + y_offset))
+        y += FONT_HEIGHT * 2 + 4
 
-        y += FONT_HEIGHT * 2 + 8
+        for i in range(4):
+            if creature.is_alive() and creature.action_points > i:
+                r = ACTION_POINT_FULL
+            elif creature.is_alive() and creature.action_points + creature.action_point_replenish > i:
+                r = ACTION_POINT_TO_FILL
+            else:
+                r = ACTION_POINT_EMPTY
+            draw_sprite(self.canvas, interface_sprites, r, x - 48 + i * 20 + 6, y, scale=4)
+        y += 6 * 4
+
         r = self.get_hp_container(creature)
-        draw_sprite(self.canvas, interface_sprites, r, x - 40 - 8, y - 8, scale = 4)
+        draw_sprite(self.canvas, interface_sprites, r, x - 40 - 8, y - 4, scale = 4)
+        y += 4
 
         full_armor_rect = (x - 36, y, 72, 8)
         pygame.draw.rect(self.canvas, DIMGRAY, full_armor_rect)
@@ -324,11 +345,11 @@ class CombatScreen(Screen):
         y += 10
         i = 1
         for a in c.get_abilities():
-            colour = WHITE if a.is_usable() else GRAY
+            colour = WHITE if a.is_usable(c) else GRAY
             self.write(f"{i}: {a.get_short_desc()}", (24, y), colour)
             y += FONT_SIZE + 2
             i += 1
-        self.write("0: Skip Turn", (24, y))
+        self.write("0: End Turn", (24, y))
 
         return box_height + y
 

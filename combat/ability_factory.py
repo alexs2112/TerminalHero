@@ -56,7 +56,7 @@ class AbilityFactory:
     # Hammer
     def heavy_blow(self, min_damage, max_damage, base_stun_chance):
         # Higher cooldown to make up for it basically being strictly better than disarming_strike
-        a = Ability("Heavy Blow", cooldown=4)
+        a = Ability("Heavy Blow", cooldown=4, cost=3)
         a.set_description("Swing a heavy blow to stun your target.")
         def effect(c: Creature, t: Creature, a: Area):
             if strength_melee_attack(c,t):
@@ -123,7 +123,7 @@ class AbilityFactory:
         return a
 
     def corpse_explosion(self, min_damage, max_damage):
-        a = Ability("Corpse Explosion", cooldown=4)
+        a = Ability("Corpse Explosion", cooldown=4, cost=3)
         a.set_description("Explode target inert corpse, dealing Dark damage to each enemy.")
         def can_target(t: Creature):
             return not t.is_alive() and t.has_corpse
@@ -146,7 +146,7 @@ class AbilityFactory:
         return a
 
     def curse_of_decay(self):
-        a = Ability("Curse of Decay", cooldown=5)
+        a = Ability("Curse of Decay", cooldown=4)
         a.set_description("Target creature gains the Decaying status, reducing their resistance every turn.")
         def effect(c: Creature, t: Creature, a: Area):
             success = attack_roll(c) > t.stat('endurance') * 5
@@ -163,14 +163,14 @@ class AbilityFactory:
 
     # Runebound Stalker
     def astral_lightning(self):
-        a = Ability("Astral Lightning", cooldown=2)
+        a = Ability("Astral Lightning", cooldown=2, cost=3)
         a.set_description("Astral lightning jumps from your target to several others.")
         def effect(c: Creature, t: Creature, a: Area):
             messenger.add(f"{c.name} conjurs :CYAN:Astral Lightning:CYAN:.")
             for target in a.player.party:
                 at_least_one_hit = False
                 if target.is_alive():
-                    success = attack_roll(c) > (target.stat('dexterity') + target.stat('endurance')) * 5
+                    success = attack_roll(c) > target.stat('dexterity') * 5
                     if success:
                         at_least_one_hit = True
                         dam = randint(c.stat('intelligence'), c.stat('intelligence') + 2)

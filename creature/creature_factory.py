@@ -100,6 +100,7 @@ class CreatureFactory:
         c.add_ability(abilities.astral_lightning())
         c.add_ability(abilities.runic_chains())
         c.set_ai(BasicAI(c))
+        c.action_point_replenish = 3
         return c
 
     def new_harold(self):
