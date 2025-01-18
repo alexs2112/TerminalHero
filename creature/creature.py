@@ -71,6 +71,9 @@ class Creature:
         # The food the creature has eaten, stats will be stored in temporary_stats
         self.food = None
 
+        # If this creature is allied with the player
+        self.allied = False
+
     def set_description(self, description):
         self.description = description
 

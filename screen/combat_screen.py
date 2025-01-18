@@ -1,7 +1,6 @@
 import pygame
 from screen.screen import Screen
 from screen.game_over_screen import GameOverScreen
-from screen.creature_screen import CreatureScreen
 from main.constants import *
 from main.colour import *
 from main.messenger import get_messenger
@@ -18,11 +17,11 @@ from world.area import Area
 messenger = get_messenger()
 clock = get_clock()
 
-ENEMY_KEYS = ['q','w','e','r']
-PARTY_KEYS = ['a', 's','d','f']
-HP_CONTAINER_WHITE  = ( 0,36,24,11)
-HP_CONTAINER_YELLOW = (24,36,24,12)
-HP_CONTAINER_RED    = (48,36,24,12)
+HP_CONTAINER        = ( 0,36,24,12)
+HP_CONTAINER_DARK   = (24,36,24,12)
+HP_CONTAINER_LIGHT  = (48,36,24,12)
+HP_CONTAINER_YELLOW = (72,36,24,12)
+HP_CONTAINER_RED    = (96,36,24,12)
 
 class CombatScreen(Screen):
     def __init__(self, canvas, encounter: Encounter, area: Area, player: Player, last_screen: Screen = None):
@@ -38,7 +37,9 @@ class CombatScreen(Screen):
         self.queue: list[QueueItem] = []
         self.last_active_creature: Creature = None
         self.selected_ability: Ability = None
-        self.index: int = 0
+
+        self.target_index: int = 0
+        self.legal_targets: list[Creature] = []
 
         self.frame_timer = 0
         self.frame_num = 0
@@ -96,6 +97,8 @@ class CombatScreen(Screen):
                             if i < len(c.get_abilities()):
                                 if c.get_abilities()[i].is_usable():
                                     self.selected_ability = c.get_abilities()[i]
+                                    self.legal_targets = self.get_legal_targets()
+                                    self.target_index = self.get_target_index()
                                     return self
                                 else:
                                     messenger.add("This ability is still on cooldown.")
@@ -106,22 +109,32 @@ class CombatScreen(Screen):
                             c.end_turn()
                             self.queue.pop(0)
                             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
-                        elif self.get_creature_by_code(event.key):
-                            return CreatureScreen(self.canvas, self.get_creature_by_code(event.key), self)
+
+                        # Add way to inspect a creature
+                        # return CreatureScreen(self.canvas, self.get_creature_by_code(event.key), self)
+
                     # If the ability to use is already selected:
                     else:
-                        # Target another creature
-                        target = self.get_creature_by_code(event.key)
-                        if target:
-                            self.bump_locations[c] = BumpLocation((COMBAT_BUMP_DISTANCE, 0), 100)
-                            c.use_ability(self.selected_ability, target, self.area)
-                            self.selected_ability = None
-                            c.end_turn()
-                            self.queue.pop(0)
-                            self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
-                        elif event.key == pygame.K_ESCAPE:
+                        if event.key == pygame.K_ESCAPE:
                             self.selected_ability = None
                             return self
+                        elif event.key == pygame.K_RIGHT:
+                            self.target_index += 1
+                            if self.target_index >= len(self.legal_targets):
+                                self.target_index = 0
+                        elif event.key == pygame.K_LEFT:
+                            self.target_index -= 1
+                            if self.target_index < 0:
+                                self.target_index = len(self.legal_targets) - 1
+                        elif event.key == pygame.K_RETURN:
+                            target = self.legal_targets[self.target_index]
+                            if target:
+                                self.bump_locations[c] = BumpLocation((COMBAT_BUMP_DISTANCE, 0), 100)
+                                c.use_ability(self.selected_ability, target, self.area)
+                                self.selected_ability = None
+                                c.end_turn()
+                                self.queue.pop(0)
+                                self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
 
         # AI Controlled Turn
         elif c:
@@ -174,16 +187,18 @@ class CombatScreen(Screen):
         q.sort(key=lambda c: c.creature.stat('speed'), reverse=True)
         self.queue = q
 
-    def get_creature_by_code(self, event_key):
-        for i in range(len(ENEMY_KEYS)):
-            if event_key == pygame.key.key_code(ENEMY_KEYS[i]):
-                if i < len(self.encounter.enemies):
-                    return self.encounter.enemies[i]
-        for i in range(len(PARTY_KEYS)):
-            if event_key == pygame.key.key_code(PARTY_KEYS[i]):
-                if i < len(self.player.party):
-                    return self.player.party[i]
-        return None
+    def get_legal_targets(self):
+        return [ c for c in self.player.party + self.encounter.enemies if self.selected_ability.can_target(c) ]
+
+    def get_target_index(self):
+        # This can be revised when we add buffing allies
+        i = 0
+        for c in self.player.party:
+            if self.selected_ability.can_target(c):
+                i += 1
+        if i >= len(self.legal_targets):
+            i = 0
+        return i
 
     def update_bumps(self, time):
         for c, b in self.bump_locations.items():
@@ -208,7 +223,7 @@ class CombatScreen(Screen):
             y_offset = FONT_HEIGHT + 2
             if len(self.player.party) > 2:
                 y_offset = self.calculate_offset(i)
-            self.draw_creature(self.player.party[i], PARTY_KEYS[i], x, y, y_offset)
+            self.draw_creature(self.player.party[i], x, y, y_offset)
             x += segment_width
 
         # Draw Enemies
@@ -218,7 +233,7 @@ class CombatScreen(Screen):
             y_offset = FONT_HEIGHT + 2
             if len(self.encounter.enemies) > 2:
                 y_offset = self.calculate_offset(i)
-            self.draw_creature(self.encounter.enemies[i], ENEMY_KEYS[i], x, y, y_offset)
+            self.draw_creature(self.encounter.enemies[i], x, y, y_offset)
             x += segment_width
 
         y += 184
@@ -239,7 +254,7 @@ class CombatScreen(Screen):
     def calculate_offset(self, index):
         return (FONT_HEIGHT + 2) * (index % 2)
 
-    def draw_creature(self, creature, letter, x, y, y_offset):
+    def draw_creature(self, creature, x, y, y_offset):
         if creature == self.last_active_creature:
             draw_sprite(self.canvas, interface_sprites, ARROW_DOWN, x - 24, y - 76 + self.frame_num * 4)
 
@@ -262,10 +277,7 @@ class CombatScreen(Screen):
         self.write_center_x(f"{creature.name}", (x, y + y_offset))
 
         y += FONT_HEIGHT * 2 + 8
-
-        r = HP_CONTAINER_WHITE
-        if creature == self.last_active_creature:
-            r = HP_CONTAINER_YELLOW
+        r = self.get_hp_container(creature)
         draw_sprite(self.canvas, interface_sprites, r, x - 40 - 8, y - 8, scale = 4)
 
         full_armor_rect = (x - 36, y, 72, 8)
@@ -290,8 +302,20 @@ class CombatScreen(Screen):
             s = ":RED:dead:RED:"
         self.write_center_x(s, (x, y))
 
-        y += 16
-        self.write(f"[{letter}]", (x - int(FONT_WIDTH * 1.5), y), DIMGRAY)
+    def get_hp_container(self, creature: Creature):
+        if self.selected_ability:
+            if self.legal_targets:
+                if creature == self.legal_targets[self.target_index]:
+                    return HP_CONTAINER_RED
+                elif creature == self.last_active_creature:
+                    return HP_CONTAINER_YELLOW
+                elif creature in self.legal_targets:
+                    return HP_CONTAINER_LIGHT
+            return HP_CONTAINER_DARK
+        if creature == self.last_active_creature:
+            return HP_CONTAINER_YELLOW
+        else:
+            return HP_CONTAINER
 
     def draw_abilities(self, c: Creature, y: int):
         box_height = (len(c.get_abilities()) + 1) * (FONT_SIZE + 2)

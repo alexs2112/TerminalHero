@@ -38,3 +38,7 @@ class Ability:
         if self.cooldown > 0:
             s += f" ({self.cooldown})"
         return s
+
+    def can_target(self, creature):
+        # Stub
+        return True

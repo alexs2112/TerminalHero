@@ -70,6 +70,7 @@ options:
   - I do not remember why I wanted this
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
 - Allow certain boss enemies act several times in a row
+- Action Points: Each turn get 2, basic attacks cost 1, most attacks cost 2, stronger attacks cost 3
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
