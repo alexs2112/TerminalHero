@@ -19,7 +19,10 @@ messenger = get_messenger()
 clock = get_clock()
 
 ENEMY_KEYS = ['q','w','e','r']
-PARTY_KEYS  = ['a', 's','d','f']
+PARTY_KEYS = ['a', 's','d','f']
+HP_CONTAINER_WHITE  = ( 0,36,24,11)
+HP_CONTAINER_YELLOW = (24,36,24,12)
+HP_CONTAINER_RED    = (48,36,24,12)
 
 class CombatScreen(Screen):
     def __init__(self, canvas, encounter: Encounter, area: Area, player: Player, last_screen: Screen = None):
@@ -157,14 +160,6 @@ class CombatScreen(Screen):
                         return None
 
                 self.last_active_creature = self.queue[0].creature
-
-                # This could probably be cleaned up a bit
-                # if self.queue[0].creature.skip_next_turn:
-                #     self.queue[0].creature.end_turn()
-                #     self.queue.pop(0)
-                #     self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
-                #     return None
-
                 return self.queue[0].creature
         return None
 
@@ -254,7 +249,7 @@ class CombatScreen(Screen):
         if creature in self.bump_locations and self.bump_locations[creature]:
             dx,dy = self.bump_locations[creature].get_pos_delta()
         cr = creature.get_sprite_rect()
-        if not creature.is_alive() and creature.has_corpse == False:
+        if not creature.is_alive() and not creature.has_corpse:
             cr = EXPLODED_CORPSE
         draw_sprite(self.canvas, creature_sprites, cr, cx + dx, cy + dy + y_offset, scale=6)
 
@@ -267,23 +262,35 @@ class CombatScreen(Screen):
         self.write_center_x(f"{creature.name}", (x, y + y_offset))
 
         y += FONT_HEIGHT * 2 + 8
+
+        r = HP_CONTAINER_WHITE
+        if creature == self.last_active_creature:
+            r = HP_CONTAINER_YELLOW
+        draw_sprite(self.canvas, interface_sprites, r, x - 40 - 8, y - 8, scale = 4)
+
+        full_armor_rect = (x - 36, y, 72, 8)
+        pygame.draw.rect(self.canvas, DIMGRAY, full_armor_rect)
         if creature.armor > 0:
-            armor_width = int(80 * (creature.armor / creature.max_armor()))
-            armor_rect = (x - 40, y, armor_width, 8)
-            full_armor_rect = (x - 40, y, 80, 8)
-            pygame.draw.rect(self.canvas, DIMGRAY, full_armor_rect)
+            armor_width = int(72 * (creature.armor / creature.max_armor()))
+            armor_rect = (x - 36, y, armor_width, 8)
             pygame.draw.rect(self.canvas, TURQOISE, armor_rect)
 
         y += 8
-        health_width = int(80 * (creature.hp / creature.max_hp()))
-        health_rect = (x - 40, y, health_width, 8)
-        full_health_rect = (x - 40, y, 80, 8)
+        health_width = int(72 * (creature.hp / creature.max_hp()))
+        health_rect = (x - 36, y, health_width, 8)
+        full_health_rect = (x - 36, y, 72, 8)
         pygame.draw.rect(self.canvas, DIMGRAY, full_health_rect)
         pygame.draw.rect(self.canvas, RED, health_rect)
 
-        self.write_center_x(f"{creature.hp if creature.hp > 0 else '0'}{f'+{creature.armor}' if creature.armor > 0 else ''}", (x, y - 8))
+        y += 12
+        if creature.is_alive():
+            s = f":RED:{creature.hp if creature.hp > 0 else '0'}:RED:" \
+                f"{f'+:CYAN:{creature.armor}:CYAN:' if creature.armor > 0 else ''}"
+        else:
+            s = ":RED:dead:RED:"
+        self.write_center_x(s, (x, y))
 
-        y += 10
+        y += 16
         self.write(f"[{letter}]", (x - int(FONT_WIDTH * 1.5), y), DIMGRAY)
 
     def draw_abilities(self, c: Creature, y: int):
