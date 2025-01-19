@@ -1,11 +1,13 @@
 from creature.creature import Creature
 from creature.level_up_handler import get_level_up_handler
 from item.item import Item
+from item.inventory import get_inventory
 from main.player_log import get_player_log
 from main.notification import add_notification
 
 player_log = get_player_log()
 level_up_handler = get_level_up_handler()
+inventory = get_inventory()
 
 class Encounter:
     def __init__(self, name):
@@ -45,7 +47,7 @@ class Encounter:
             reward_strings.append(f':ORANGE:Gold::ORANGE: {self.reward_gold}')
             # Add gold to player
         for i in self.reward_items:
-            player.inventory.append(i)
+            inventory.add(i)
             reward_strings.append(i.name)
         add_notification(reward_strings)
         if self.reward_xp:

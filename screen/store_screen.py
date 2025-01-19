@@ -76,6 +76,8 @@ class StoreScreen(Screen):
         # Move to the next valid space
         r = self.row
         if self.store.inventory:
+            if len(self.store.inventory) % self.items_per_row == 0:
+                return
             rows = ceil(len(self.store.inventory) / self.items_per_row)
             if r == rows - 1:
                 cols = len(self.store.inventory) % self.items_per_row

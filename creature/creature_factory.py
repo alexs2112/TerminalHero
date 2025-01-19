@@ -94,7 +94,7 @@ class CreatureFactory:
         c.set_description("A massive, four-armed feline-like predator, its body wrapped in broken runic chains that float around it. "
                           "Its face is hidden beneath an imperial mask, engraved with the Vaelthorne crest, but cracks in it's body reveal shifting eyes underneath.")
         c.set_defensive_stats(base_hp=25, defense=10, dodge=2, will=4, endurance=2)
-        c.set_offensive_stats(speed=4, strength=3, dexterity=3, intelligence=2)
+        c.set_offensive_stats(speed=4, strength=3, dexterity=3, intelligence=4)
         c.set_profession(professions.new_enemy_profession("Astral Predator"))
         c.add_ability(abilities.basic_attack(2, 4))
         c.add_ability(abilities.astral_lightning())

@@ -5,12 +5,14 @@ from screen.screen import Screen
 from screen.equip_item_screen import EquipItemScreen
 from creature.player import Player
 from item.item import Item
+from item.inventory import get_inventory
 
 class InventoryScreen(Screen):
     def __init__(self, canvas, player: Player, last_screen: Screen):
         super().__init__(canvas)
         self.player = player
         self.last_screen = last_screen
+        self.inventory = get_inventory()
 
         # This really doesn't like odd numbers for some reason
         self.items_per_row = 6
@@ -26,8 +28,7 @@ class InventoryScreen(Screen):
         self.row = 0
         self.column = 0
         self.item = self.selected_item()
-        self.num_rows = ceil(len(self.player.key_items) / self.items_per_row) \
-                      + ceil(len(self.player.inventory) / self.items_per_row)
+        self.num_rows = ceil(self.inventory.count() / self.items_per_row)
 
     def check_events(self, events):
         if self.check_notifications(events):
@@ -35,7 +36,8 @@ class InventoryScreen(Screen):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    return EquipItemScreen(self.canvas, self.item, self.player, self)
+                    if self.item:
+                        return EquipItemScreen(self.canvas, self.item, self.player, self)
                 elif event.key == pygame.K_ESCAPE:
                     return self.last_screen
                 elif event.key == pygame.K_RIGHT:
@@ -72,18 +74,12 @@ class InventoryScreen(Screen):
 
         # Move to the next valid space
         r = self.row
-        if self.player.key_items:
-            key_rows = ceil(len(self.player.key_items) / self.items_per_row)
-            if r == key_rows - 1:
-                cols = len(self.player.key_items) % self.items_per_row
-                if self.column >= cols:
-                    self.column = cols - 1
-                    return
-            r -= key_rows
-        if self.player.inventory:
-            inv_rows = ceil(len(self.player.inventory) / self.items_per_row)
-            if r == inv_rows - 1:
-                cols = len(self.player.inventory) % self.items_per_row
+        if not self.inventory.is_empty():
+            if self.inventory.count() % self.items_per_row == 0:
+                return
+            rows = ceil(self.inventory.count() / self.items_per_row)
+            if r == rows - 1:
+                cols = self.inventory.count() % self.items_per_row
                 if self.column >= cols:
                     self.column = cols - 1
                     return
@@ -91,29 +87,17 @@ class InventoryScreen(Screen):
         # cycle back to the first item in that row if len(row) < self.items_per_row - 1
 
     def selected_item(self):
-        r = self.row
-        if self.player.key_items:
-            key_rows = ceil(len(self.player.key_items) / self.items_per_row)
-            if r < key_rows:
-                return self.player.key_items[r * self.items_per_row + self.column]
-            r -= key_rows
-        if self.player.inventory:
-            return self.player.inventory[r * self.items_per_row + self.column]
+        if not self.inventory.is_empty():
+            return self.inventory.items[self.row * self.items_per_row + self.column]
         return None
 
     def draw_items(self):
         x, y = 16, 48
         current = (0,0)
-        if self.player.key_items:
-            self.write("Key Items:", (x,y))
-            y += FONT_HEIGHT + 2
-            x, y, current = self.draw_item_list(self.player.key_items, current, x, y)
-            y += 12
-
         self.write("Items:", (x, y))
         y += FONT_HEIGHT + 2
-        if self.player.inventory:
-            x, y, current = self.draw_item_list(self.player.inventory, current, x, y)
+        if not self.inventory.is_empty():
+            x, y, current = self.draw_item_list(self.inventory.items, current, x, y)
         else:
             y += 8
             self.write("There's nothing here...", (x + 32, y), DIMGRAY)

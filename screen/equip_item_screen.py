@@ -3,6 +3,7 @@ from main.constants import *
 from main.colour import *
 from main.util import *
 from item.item import *
+from item.inventory import get_inventory
 from creature.player import Player
 from creature.creature import Creature
 
@@ -10,20 +11,11 @@ class EquipItemScreen(Screen):
     def __init__(self, canvas, item: Item, player: Player, last_screen: Screen):
         super().__init__(canvas)
         self.item = item
-        self.player = player
         self.last_screen = last_screen
         self.party = player.party
         self.index = 0
         self.box_width = 192
-
-        # Move all inventory items to the player
-        for c in self.party:
-            if c.type == 'player':
-                continue
-            if c.inventory:
-                for item in c.inventory:
-                    self.player.inventory.append(item)
-                c.inventory.clear()
+        self.inventory = get_inventory()
 
     def check_events(self, events):
         for event in events:
@@ -37,11 +29,9 @@ class EquipItemScreen(Screen):
                 elif event.key == pygame.K_RETURN:
                     old_item = self.party[self.index].equip_item(self.item)
                     if old_item:
-                        self.player.inventory.append(old_item)
-                    if self.item in self.player.inventory:
-                        self.player.inventory.remove(self.item)
-                    elif self.item in self.player.key_items:
-                        self.player.key_items.remove(self.item)
+                        self.inventory.add(old_item)
+                    if self.item in self.inventory.items:
+                        self.inventory.remove(self.item)
                     self.last_screen.refresh()
                     return self.last_screen
         return self

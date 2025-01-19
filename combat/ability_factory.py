@@ -56,7 +56,7 @@ class AbilityFactory:
     # Hammer
     def heavy_blow(self, min_damage, max_damage, base_stun_chance):
         # Higher cooldown to make up for it basically being strictly better than disarming_strike
-        a = Ability("Heavy Blow", cooldown=4, cost=3)
+        a = Ability("Heavy Blow", cooldown=3, cost=2)
         a.set_description("Swing a heavy blow to stun your target.")
         def effect(c: Creature, t: Creature, a: Area):
             if strength_melee_attack(c,t):

@@ -18,7 +18,6 @@ class Creature:
         self.abilities: list[Ability] = []
         self.ai = None
         self.profession: Profession = None
-        self.inventory: list[Item] = []
 
         # Floating stat and ability points for leveling up
         self.stat_points = 0

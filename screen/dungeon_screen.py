@@ -7,6 +7,9 @@ from main.notification import add_notification
 from screen.screen import Screen
 from screen.combat_screen import CombatScreen
 from screen.dialog_screen import DialogScreen
+from screen.quest_screen import QuestScreen
+from screen.inventory_screen import InventoryScreen
+from screen.creature_screen import CreatureScreen
 from creature.player import Player
 from world.dungeon import Dungeon
 from world.room import *
@@ -67,6 +70,13 @@ class DungeonScreen(Screen):
                     i = int(pygame.key.name(event.key)) - 1
                     if i < len(self.options):
                         return self.options[i][1](i)
+
+                elif event.key == pygame.K_l:
+                    return QuestScreen(self.canvas, self.player, self)
+                elif event.key == pygame.K_i:
+                    return InventoryScreen(self.canvas, self.player, self)
+                elif event.key == pygame.K_c:
+                    return CreatureScreen(self.canvas, self.player, self)
         return self
 
     def display(self):

@@ -140,7 +140,7 @@ class CombatScreen(Screen):
                                 c.use_ability(self.selected_ability, target, self.area)
                                 self.selected_ability = None
                                 # Auto end turn once action points have run out
-                                if c.action_points == 0:
+                                if c.action_points == 0 or not c.has_usable_abilities():
                                     c.end_turn()
                                     self.queue.pop(0)
                                     self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
@@ -153,7 +153,7 @@ class CombatScreen(Screen):
                 # For now just assume the enemy is only attacking
                 self.bump_locations[c] = BumpLocation((-COMBAT_BUMP_DISTANCE, 0), 100)
 
-            if not c.has_usable_abilities():
+            if c.skip_next_turn or not c.has_usable_abilities():
                 c.end_turn()
                 self.queue.pop(0)
             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
@@ -183,6 +183,12 @@ class CombatScreen(Screen):
                         return None
 
                 self.last_active_creature = self.queue[0].creature
+                if self.queue[0].creature.skip_next_turn:
+                    self.queue[0].creature.end_turn()
+                    self.queue.pop(0)
+                    self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
+                    return None
+
                 return self.queue[0].creature
         return None
 
@@ -291,7 +297,9 @@ class CombatScreen(Screen):
         for i in range(4):
             if creature.is_alive() and creature.action_points > i:
                 r = ACTION_POINT_FULL
-            elif creature.is_alive() and creature.action_points + creature.action_point_replenish > i:
+            elif self.last_active_creature != creature and \
+                    creature.is_alive() and \
+                    creature.action_points + creature.action_point_replenish > i:
                 r = ACTION_POINT_TO_FILL
             else:
                 r = ACTION_POINT_EMPTY

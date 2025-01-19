@@ -97,7 +97,6 @@ options:
 - Implement currency and limited product at stores, do we want stores to reset every so often?
   - Maybe they just get new items when certain player_log entries are set
 - Rare food from special merchants?
-- Decouple inventory from the party
 
 **Screens**
 - A screen to store known lore ([J]ournal?)
@@ -108,8 +107,6 @@ options:
 - Character screen to view self, [tab] to swap to next character in party
 - Lots of overlap between StoreScreen and InventoryScreen, should be condensed
 - Dialogue Screens have art, backgrounds with the characters speaking
-- Combat Screens have backgrounds and the characters stand on a "floor"
-  - Only show creature names when they are hovered over or when it is their turn
 
 **Creatures**:
 - Get secondary stats and resistances correctly to account for base (str,dex,int) stats

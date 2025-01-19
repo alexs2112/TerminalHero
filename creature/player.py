@@ -1,6 +1,5 @@
 from main.messenger import *
 from creature.creature import Creature
-from item.item import Item
 from quests.quest import Quest
 
 messenger = get_messenger()
@@ -14,11 +13,6 @@ class Player(Creature):
 
         self.quests: list[Quest] = []
         self.done_quests: list[Quest] = []
-
-        # Inventory also defined in Creature
-        # Might want to get rid of key_items and just mark the item differently if its key?
-        self.key_items: list[Item] = []
-        self.inventory: list[Item] = []
 
     def dies(self):
         messenger.add('You die.')
@@ -38,6 +32,7 @@ class Player(Creature):
             if not c.is_alive():
                 pass
             c.effects.clear()
+            c.action_points = 0
 
     def party_stat(self, stat):
         s = 0

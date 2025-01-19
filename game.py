@@ -45,6 +45,9 @@ class Game:
             from dialog.dialog_functions import set_initial_village, add_quest_grave_concerns
             set_initial_village(None)
             add_quest_grave_concerns(self.player)
+            update_log('tavern_open')
+            update_log('tavern_store_unlocked')
+            update_log('tavern_room_unlocked')
 
         if args_list.log:
             logs = args_list.log.split(',')
@@ -110,10 +113,12 @@ class Game:
         # pylint: disable=import-outside-toplevel
         from screen.inventory_screen import InventoryScreen
         from item.item_factory import get_item_factory
+        from item.inventory import get_inventory
         i = get_item_factory()
-        self.player.inventory = [ i.new_axe(), i.new_hammer(), i.new_leather_armor(), i.new_robe(), i.new_axe(),
-                                  i.new_hammer(), i.new_axe(), i.new_hammer(), i.new_axe(), i.new_hammer() ]
-        self.player.key_items = [ i.new_sword(), i.new_staff(), i.new_staff(), i.new_staff(), i.new_staff() ]
+        inventory = get_inventory()
+        inventory.add_list([ i.new_axe(), i.new_hammer(), i.new_leather_armor(), i.new_robe(), i.new_axe(), i.new_hammer(),
+                             i.new_axe(), i.new_hammer(), i.new_axe(), i.new_hammer(), i.new_staff(), i.new_staff(),
+                             i.new_axe(), i.new_hammer(), i.new_leather_armor() ])
         self.screen = InventoryScreen(self.canvas, self.player, None)
 
 if __name__ == "__main__":
