@@ -146,6 +146,7 @@ class AreaScreen(Screen):
         return True
 
     # Some basic functions that are called by the option the player selects
+    # pylint: disable=import-outside-toplevel
     def leave_area(self, *_):
         self.prev_screen.refresh()
         return self.prev_screen
@@ -158,7 +159,6 @@ class AreaScreen(Screen):
         return DialogScreen(canvas, self, root_node, self.player)
 
     def enter_dungeon(self, canvas, _):
-        # pylint: disable=import-outside-toplevel
         from screen.dungeon_screen import DungeonScreen
         return DungeonScreen(canvas, self.area.dungeon, self.player, self)
 
@@ -168,7 +168,6 @@ class AreaScreen(Screen):
         return self
 
     def enter_store(self, canvas, index):
-        # pylint: disable=import-outside-toplevel
         from screen.store_screen import StoreScreen
         store = self.stores[index].store
         return StoreScreen(canvas, store, self.player, self)

@@ -11,11 +11,11 @@ def elder_varik_dialog():
     return load_dialog('resources/dialog/elder_varik.json')['first_contact']
 
 def gorren_dialogue():
-    if not player_log['clear_cemetery_1']:
+    if not player_log['clear_church_1']:
         return load_dialog('resources/dialog/gorren_questline.json')['start']
-    elif player_log['met_gorren'] and not player_log['clear_cemetery_2']:
+    elif player_log['met_gorren'] and not player_log['clear_church_2']:
         return load_dialog('resources/dialog/gorren_questline.json')['pre_combat']
-    elif player_log['clear_cemetery_2']:
+    elif player_log['clear_church_2']:
         return load_dialog('resources/dialog/gorren_questline.json')['post_combat']
 
     # Add default dialogue once he is in your party

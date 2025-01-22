@@ -16,11 +16,51 @@ def get_dungeon_builder():
 
 class DungeonBuilder:
     #pylint: disable=line-too-long
+    def new_arad_cemetery(self, area):
+        d = Dungeon('Arad Cemetery',
+                    "placeholder text",
+                    area, 2, 2)
+        d.set_unscaled_size(63, 65)
+        d.start_player_pos = (0,1)
+
+        start = Room("Cemetery Entrance", (54, 35, 32, 32))
+        start.add_description("placeholder text")
+        start.set_unscaled_position(0, 33)
+        start.set_player_position(16,15)
+        start.exits = [ EXIT_UP, EXIT_RIGHT ]
+        start.exit_dungeon_direction = EXIT_LEFT
+        d.add_room((0,1), start)
+
+        tree = Room("Deathly Tree", (54, 1, 32, 33))
+        tree.add_description("placeholder text")
+        tree.set_unscaled_position(0,0)
+        tree.set_player_position(16,16)
+        tree.exits = [ EXIT_RIGHT, EXIT_DOWN ]
+        d.add_room((0,0), tree)
+
+        pool = Room("Shattered Mausoleums", (87,35,31,32))
+        pool.add_description("placeholder text")
+        pool.set_unscaled_position(32,33)
+        pool.set_player_position(14,15)
+        pool.exits = [ EXIT_LEFT, EXIT_UP ]
+        d.add_room((1,1), pool)
+
+        church = Room("Abandoned Church", (87,1,31,33))
+        church.add_description("placeholder text")
+        church.set_unscaled_position(32,0)
+        church.set_player_position(14,16)
+        church.exits = [ EXIT_LEFT, EXIT_DOWN ]
+        church.features = [ feature_factory.cemetery_church() ]
+        d.add_room((1,0), church)
+
+        return d
+
     def new_vaelthorne_crypt(self, area):
         d = Dungeon('Vaelthorne Crypt',
                     "A heavy, suffocating chill fills the air, thick with the scent of damp stone and decayed linen. "
                     "Flickering sconces cast long, shifting shadows across ancient sarcophagi, their lids slightly ajar as if disturbed. "
-                    "A faint, unnatural whisper echoes through the chamber. The dead do not rest easily here.", area, 2,3)
+                    "A faint, unnatural whisper echoes through the chamber. The dead do not rest easily here.",
+                    area, 2,3)
         d.set_unscaled_size(53, 95)
         d.start_player_pos = (0,1)
 

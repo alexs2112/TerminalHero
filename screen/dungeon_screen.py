@@ -5,6 +5,7 @@ from main.util import *
 from main.clock import get_clock
 from main.notification import add_notification
 from screen.screen import Screen
+from screen.area_screen import AreaScreen
 from screen.combat_screen import CombatScreen
 from screen.dialog_screen import DialogScreen
 from screen.quest_screen import QuestScreen
@@ -40,6 +41,7 @@ class DungeonScreen(Screen):
         self.current_room = None
         self.room_description = []
         self.options = []           # [(text, function, colour)]
+        self.areas = {}             # { index: AreaFeature }
         self.dialog = {}            # { index: DialogFeature }
         self.encounters = {}        # { index: Encounter }
         self.dungeon_sprite = None  # Cache how the dungeon is supposed to look as it is resource intensive, this is to scale
@@ -118,9 +120,15 @@ class DungeonScreen(Screen):
 
     def define_options(self):
         opts = []
+        new_areas = {}
         new_encounters = {}
         new_dialog = {}
         i = 0
+        for a in self.current_room.get_area_features():
+            opts.append((a.name, self.enter_area, YELLOW))
+            new_areas[i] = a
+            i += 1
+
         for e in self.current_room.enabled_encounters():
             opts.append((e.name, self.begin_encounter, RED))
             new_encounters[i] = e
@@ -136,6 +144,7 @@ class DungeonScreen(Screen):
             i += 1
 
         self.options = opts
+        self.areas = new_areas
         self.encounters = new_encounters
         self.dialog = new_dialog
 
@@ -199,13 +208,16 @@ class DungeonScreen(Screen):
     def update_message(self, message):
         self.message = message
         self.message_time = 0
-    
+
     def clear_message(self):
         self.message = ""
         self.message_time = 0
 
     # Functions called by the room option the player selects
     # These are essentially the same as in AreaScreen
+    def enter_area(self, index):
+        return AreaScreen(self.canvas, self.areas[index].area, self.player, self)
+
     def begin_encounter(self, index):
         return CombatScreen(self.canvas, self.encounters[index], self.current_room, self.player, self)
 

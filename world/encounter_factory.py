@@ -15,7 +15,7 @@ def get_encounter_factory():
     return _encounter_factory
 
 class EncounterFactory:
-    def get_cemetery_encounter_1(self):
+    def get_church_encounter_1(self):
         e = Encounter("Attack Patchwork Dead")
         e.add_enemies(
             creature_factory.new_patchwork_dead_1(),
@@ -24,12 +24,12 @@ class EncounterFactory:
         e.valid_condition = 'accepted_grave_concerns'
         def complete(player, area):
             area.npcs.append(creature_factory.new_gorren())
-            update_log('clear_cemetery_1', player)
+            update_log('clear_church_1', player)
         e.completed_function = complete
         e.reward_xp = 200
         return e
 
-    def get_cemetery_encounter_2(self):
+    def get_church_encounter_2(self):
         e = Encounter("Attack Patchwork Dead")
         e.add_enemies(
             creature_factory.new_patchwork_dead_1(),
@@ -38,7 +38,7 @@ class EncounterFactory:
         )
         e.valid_condition = 'met_gorren'
         def complete(player, _):
-            update_log('clear_cemetery_2', player)
+            update_log('clear_church_2', player)
         e.completed_function = complete
         e.reward_xp = 200
         e.block_exit = True

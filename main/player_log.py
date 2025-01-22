@@ -23,8 +23,8 @@ def initialize_player_log():
 
         'accepted_grave_concerns': False,
         'visit_cemetery': False,
-        'clear_cemetery_1': False,
-        'clear_cemetery_2': False,
+        'clear_church_1': False,
+        'clear_church_2': False,
         'visit_crypt': False,
         'visit_shrine': False,
         'shrine_opened': False,

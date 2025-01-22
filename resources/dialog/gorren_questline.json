@@ -82,7 +82,7 @@
             "children": [
                 ["Finish Talking", "None"]
             ],
-            "function": "add_corpse_pile_encounter_2"
+            "function": "add_gorren_to_party_temp"
         },
 
 

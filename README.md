@@ -60,6 +60,7 @@ options:
 - Quest log will probably require scrolling
 - For now, get rid of main + side quests, just have "Quests" and "Complete"
 - Quests ping you when you finish individual steps? Maybe "Quest Log Updated" notification
+- Decouple quests from the player
 
 **Combat**
 - Abilities show hit chance, damage, and status effects, when selected
@@ -75,7 +76,6 @@ options:
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
   - Prevents pseudo save-scumming by finishing each encounter and returning to tavern to full heal before coming back
-  - Not that the tavern is a thing yet lol
 - Only show the big dungeon entrance notification the very first time that dungeon is entered
 
 **World**
@@ -93,7 +93,6 @@ options:
 
 **Items**
 - Magic weapons buff damage of a particular type?
-- Get rid of key items? I feel like these as a separate list arent useful, just flag them and border them in blue or something in the inventory screen
 - Implement currency and limited product at stores, do we want stores to reset every so often?
   - Maybe they just get new items when certain player_log entries are set
 - Rare food from special merchants?

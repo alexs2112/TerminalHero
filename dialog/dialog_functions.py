@@ -26,9 +26,7 @@ def add_quest_grave_concerns(player: Player):
 def set_met_gorren(_):
     player_log['met_gorren'] = True
 
-def add_corpse_pile_encounter_2(player: Player):
-    player.area.encounters.append(encounter_factory.get_cemetery_encounter_2())
-
+def add_gorren_to_party_temp(player: Player):
     # Assume there is only Gorren in the area
     gorren = player.area.npcs[0]
     player.party.append(gorren)

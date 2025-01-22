@@ -35,11 +35,9 @@ class WorldBuilder:
             "The cemetery outside the Mining Village of Arad is a desolate expanse of crooked headstones and crumbling crypts, shrouded in an eerie mist that clings to the ground like grasping fingers. "
             "The air is thick with the scent of damp earth and decay, and the faint sound of something shifting beneath the soil sends a chill down the spine. "
             "Scattered among the graves are signs of recent disturbances: open plots, shattered coffins, and deep claw marks carved into the stone.")
-        area.encounters = [
-            encounter_factory.get_cemetery_encounter_1()
-        ]
         area.condition = 'known_cemetery'
         area.entry_log_update = 'visit_cemetery'
+        area.dungeon = dungeon_builder.new_arad_cemetery(area)
         self.world.areas[6][2] = area
 
         area = Area("Vaelthorne Crypt", (36,0,12,12))

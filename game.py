@@ -92,9 +92,13 @@ class Game:
         # pylint: disable=import-outside-toplevel
         from world.dungeon_builder import DungeonBuilder
         from screen.dungeon_screen import DungeonScreen
+        from dialog.dialog_functions import add_quest_grave_concerns
         if dungeon_name == 'crypt':
             d = DungeonBuilder().new_vaelthorne_crypt(None)
             update_log('runebound_stalker_defeated')
+        elif dungeon_name == 'cemetery':
+            d = DungeonBuilder().new_arad_cemetery(None)
+            add_quest_grave_concerns(self.player)
         else:
             print(f"Error: Could not find dungeon {dungeon_name}")
             exit(1)

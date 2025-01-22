@@ -11,7 +11,7 @@ def grave_concerns():
 
     step2 = QuestStep("Clear the Cemetery of Enemies")
     step2.set_description("You have observed some Patchwork Dead shambling around the cemetery.")
-    step2.set_log_completion("clear_cemetery_1")
+    step2.set_log_completion("clear_church_1")
     step2.required.append(step1)
 
     step3 = QuestStep("Examine the Crypt")
@@ -21,7 +21,7 @@ def grave_concerns():
 
     step4 = QuestStep("Patchwork Dead ")
     step4.set_description("Meeting the young necromancer Gorren, the two of you are attacked by more Patchwork Dead")
-    step4.set_log_completion("clear_cemetery_2")
+    step4.set_log_completion("clear_church_2")
     step4.required.append(step3)
 
     q.steps = [ step1, step2, step3, step4 ]

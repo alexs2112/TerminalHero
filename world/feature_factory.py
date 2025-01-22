@@ -1,4 +1,6 @@
 from world.feature import *
+from world.area import Area
+from world.encounter_factory import get_encounter_factory
 from creature.player import Player
 from dialog.dialog_loader import *
 from main.player_log import get_player_log
@@ -7,6 +9,7 @@ from item.store_builder import get_store_builder
 
 player_log = get_player_log()
 store_builder = get_store_builder()
+encounter_factory = get_encounter_factory()
 
 # pylint: disable=invalid-name
 _feature_factory = None
@@ -66,4 +69,14 @@ class FeatureFactory():
             return player_log['tavern_store_unlocked']
         f.set_enabled_function(enabled)
         f.set_store(store_builder.tavern_store())
+        return f
+
+    def cemetery_church(self):
+        church_area = Area("Abandoned Church", None)
+        church_area.add_description("Placeholder Text")
+        church_area.encounters = [
+            encounter_factory.get_church_encounter_1(),
+            encounter_factory.get_church_encounter_2()
+        ]
+        f = AreaFeature("Abandoned Church", church_area)
         return f
