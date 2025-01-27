@@ -18,13 +18,19 @@ class DungeonBuilder:
     #pylint: disable=line-too-long
     def new_arad_cemetery(self, area):
         d = Dungeon('Arad Cemetery',
-                    "placeholder text",
+                    "A forsaken patch of land overrun with decay and neglect. "
+                    "Crumbling headstones jut from the earth like forgotten memories, while overgrown weeds claim the graves in a suffocating embrace. "
+                    "A faint, acrid smell of rot lingers in the air, and a deathly stillness hangs heavy over the area.",
                     area, 2, 2)
         d.set_unscaled_size(63, 65)
         d.start_player_pos = (0,1)
 
         start = Room("Cemetery Entrance", (54, 35, 32, 32))
-        start.add_description("placeholder text")
+        start.add_description(
+            "The dirt path leading into the cemetery is lined with shattered headstones and dry, withered grass. "
+            "The overgrowth reaches across the path, clawing at the legs of any who pass. "
+            "The scent of decay thickens as you walk, and the distant sound of rustling leaves adds to the eerie atmosphere."
+        )
         start.set_unscaled_position(0, 33)
         start.set_player_position(16,15)
         start.exits = [ EXIT_UP, EXIT_RIGHT ]
@@ -32,27 +38,54 @@ class DungeonBuilder:
         d.add_room((0,1), start)
 
         tree = Room("Deathly Tree", (54, 1, 32, 33))
-        tree.add_description("placeholder text")
+        tree.add_description(
+            "The centerpiece of this area is a massive, decaying tree with brittle, gnarled branches that claw at the sky. "
+            "Its blackened bark is cracked, and a faint ooze leaks from its hollow trunk. "
+            "Scattered bones and remnants of graves circle its base, as though the tree itself feeds on the cemetery's corruption."
+        )
         tree.set_unscaled_position(0,0)
         tree.set_player_position(16,16)
         tree.exits = [ EXIT_RIGHT, EXIT_DOWN ]
+        tree.encounters = [
+            encounter_factory.cemetery_first_stage_1(),
+            encounter_factory.cemetery_second_stage_1()
+        ]
         d.add_room((0,0), tree)
 
-        pool = Room("Shattered Mausoleums", (87,35,31,32))
-        pool.add_description("placeholder text")
-        pool.set_unscaled_position(32,33)
-        pool.set_player_position(14,15)
-        pool.exits = [ EXIT_LEFT, EXIT_UP ]
-        d.add_room((1,1), pool)
+        mauses = Room("Shattered Mausoleums", (87,35,31,32))
+        mauses.add_description(
+            "This section is dominated by three mausoleums, all in various stages of ruin. "
+            "One has caved in completely, its crypt exposed to the elements. "
+            "Another's stone walls are cracked, with faint engravings barely visible. "
+            "The last leans precariously, its door hanging loose on rusted hinges. "
+        )
+        mauses.set_unscaled_position(32,33)
+        mauses.set_player_position(14,15)
+        mauses.exits = [ EXIT_LEFT, EXIT_UP ]
+        mauses.encounters = [
+            encounter_factory.cemetery_first_stage_2(),
+            encounter_factory.cemetery_second_stage_2()
+        ]
+        d.add_room((1,1), mauses)
 
         church = Room("Abandoned Church", (87,1,31,33))
-        church.add_description("placeholder text")
+        church.add_description(
+            "This decrepit structure stands at the far end of the cemetery, its roof partially collapsed and its wooden doors splintered. "
+            "Broken stained-glass windows depict barely recognizable scenes of mourning and prayer. "
+            "Inside the church, rubble and shattered pews litter the floor, and the smell of damp earth is overwhelming."
+        )
         church.set_unscaled_position(32,0)
         church.set_player_position(14,16)
         church.exits = [ EXIT_LEFT, EXIT_DOWN ]
-        church.features = [ feature_factory.cemetery_church() ]
+        church.encounters = [
+            # Ambush occurs once the player has exhausted Gorren dialogue
+            encounter_factory.cemetery_second_stage_ambush()
+        ]
+        church.features = [
+            #Talking to Gorren finishes Cemetery Stage 1
+            feature_factory.gorren_initial_meeting()
+        ]
         d.add_room((1,0), church)
-
         return d
 
     def new_vaelthorne_crypt(self, area):
@@ -99,19 +132,20 @@ class DungeonBuilder:
         burial_chamber.set_unscaled_position(0,0)
         burial_chamber.set_player_position(34,12)
         burial_chamber.exits = [ EXIT_DOWN ]
-        burial_chamber.encounters = [ encounter_factory.get_crypt_encounter_2() ]
+        burial_chamber.encounters = [ encounter_factory.get_crypt_encounter_3() ]
         d.add_room((1,0), burial_chamber)
 
-        pool_room = Room("Ritual Room", (23,79,37,31))
-        pool_room.add_description(
+        ritual_room = Room("Ritual Room", (23,79,37,31))
+        ritual_room.add_description(
             "Two large pools of still, murky water dominate the room, their surfaces reflecting the dim glow of shattered Bloodstones lying inert within them. "
             "The air is damp, heavy with an unnatural energy, and the faint scent of iron lingers. "
             "At the far end, an :YELLOW:Ancient Chest:YELLOW: rests in the gloom, its ornate design hinting at something long forgotten."
         )
-        pool_room.set_unscaled_position(16,63)
-        pool_room.set_player_position(19,14)
-        pool_room.features = [ ] # Treasure Chest
-        pool_room.exits = [ EXIT_UP ]
-        d.add_room((1,2), pool_room)
+        ritual_room.set_unscaled_position(16,63)
+        ritual_room.set_player_position(19,14)
+        ritual_room.features = [ ] # Treasure Chest
+        ritual_room.exits = [ EXIT_UP ]
+        ritual_room.encounters = [ encounter_factory.get_crypt_encounter_2() ]
+        d.add_room((1,2), ritual_room)
 
         return d

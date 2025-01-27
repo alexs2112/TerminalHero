@@ -22,3 +22,15 @@ class EffectFactory:
 
     def create_decaying_effect(self, duration, strength):
         return DecayingEffect(duration, strength)
+
+    def create_bolstered_effect(self, duration, str_buff, armor_buff):
+        return BolsteredEffect(duration, str_buff, armor_buff)
+
+    def create_bleed_effect(self, duration, strength):
+        return BleedEffect(duration, strength)
+
+    def create_armor_effect(self, duration, strength):
+        return ArmorEffect(duration, strength)
+
+    def create_drained_effect(self, duration, strength):
+        return DrainedEffect(duration, strength)

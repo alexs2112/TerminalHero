@@ -72,11 +72,14 @@ options:
 - Only show the name of targeted creatures or the active creature
   - This means we don't need to stagger their positions anymore
 - Combat backgrounds: Creatures stand on a floor and have some darkened background art
+- Actually go over enemy AI
+  - Each ability has a function that returns a list of [(Creature, int)] where the int is the priority of using the ability targeting that creature.
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
   - Prevents pseudo save-scumming by finishing each encounter and returning to tavern to full heal before coming back
 - Only show the big dungeon entrance notification the very first time that dungeon is entered
+- A Bloodstone Pouch that allows the party to full-heal during dungeons. This can increase in size over time. You unlock the pouch the first time you get a companion.
 
 **World**
 - Draw the world like how dungeons are drawn, instead of using tiles

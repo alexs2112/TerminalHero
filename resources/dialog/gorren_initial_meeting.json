@@ -1,0 +1,126 @@
+{
+    "nodes": {
+        "start": {
+            "area_option": "Talk to the Huddled Figure",
+            "name": "Huddled Figure",
+            "text": "Ah, so someone has finally come. The air here reeks of death and despair. I am :CYAN:Gorren:CYAN:, :BLUEVIOLET:Soulwarden:BLUEVIOLET: of Arad. What brings you to this cursed place?",
+            "children": [
+                [ "Who are you?", "who_are_you" ],
+                [ "I was sent by Elder Varik to find you.", "sent_by_varik" ]
+            ],
+            "function": "set_met_gorren"
+        },
+        "who_are_you": {
+            "name": "Gorren",
+            "text": "I am the Soulwarden of this village. My duty is to guard the boundary between life and death, ensuring spirits of the recently deceased can find their way to the :YELLOW:Eternal City:YELLOW:.",
+            "children": [
+                [ "Eternal City?", "eternal_city" ],
+                [ "Why are you here?", "why_here" ],
+                [ "I was sent by Elder Varik to find you.", "sent_by_varik" ]
+            ]
+        },
+        "eternal_city": {
+            "name": "Gorren",
+            "text": "The :YELLOW:Eternal City:YELLOW: is where souls must travel to in order to be reborn. TEMP TEXT TEMP TEXT FUCK FUCK FUCK",
+            "children": [
+                [ "Why are you here?", "why_here" ],
+                [ "I was sent by Elder Varik to find you.", "sent_by_varik" ]
+            ]
+        },
+        "sent_by_varik": {
+            "name": "Gorren",
+            "text": "Varik, is it? That old fool worries too much. Still, his timing is fortunate. I came here after feeling a dark call emanating from this :CYAN:Cemetery:CYAN:. Something foul stirs here, and it grows stronger by the moment.",
+            "children": [
+                [ "Why are you here?", "why_here" ],
+                [ "What do you need to stop it?", "ritual_problem" ]
+            ]
+        },
+        "why_here": {
+            "name": "Gorren",
+            "text": "The :RED:Patchwork Dead:RED: you saw outside are no accident. A wave of :BLUEVIOLET:Necromantic:BLUEVIOLET: :BLUEVIOLET:Energy:BLUEVIOLET: washed over this place, bringing the dead to their feet. I came to the :CYAN:Eternal Church:CYAN: to conduct a ritual to banish them, but...",
+            "children": [
+                [ "But what?", "ritual_problem" ],
+                [ "What do you need to stop it?", "ritual_problem" ]
+            ]
+        },
+        "ritual_problem": {
+            "name": "Gorren",
+            "text": "The ritual requires an :YELLOW:Obsidian Lantern:YELLOW:, an artifact stored here in these :CYAN:Eternal Churches:CYAN:. When I arrived, I found it shattered, its power scattered. Without it, I cannot complete the ritual.",
+            "children": [
+                [ "What can we do?", "next_steps" ],
+                [ "Is there no other way?", "no_other_way" ]
+            ]
+        },
+        "next_steps": {
+            "name": "Gorren",
+            "text": "There may be another :YELLOW:Obsidian Lantern:YELLOW: in the vicinity of :CYAN:Arad:CYAN:. The :CYAN:Vaelthorne Crypt:CYAN:, hidden nearby, is said to have been used to perform rituals with the dead. However, the crypt is sealed and I've never been able to enter.",
+            "children": [
+                [ "Vaelthorne Crypt?", "vaelthorne_crypt" ],
+                [ "We'll find the Lantern.", "dark_wave" ]
+            ]
+        },
+        "no_other_way": {
+            "name": "Gorren",
+            "text": "None that would last. The undead will return unless I complete the ritual. Our only hope lies in finding another :YELLOW:Obsidian Lantern:YELLOW:.",
+            "children": [
+                [ "Where can we find another lantern?", "next_steps" ],
+                [ "We'll find the Lantern.", "dark_wave" ]
+            ]
+        },
+        "vaelthorne_crypt": {
+            "name": "Gorren",
+            "text": "The :ORANGE:Vaelthorne Family:ORANGE: was the founding family of Arad. They have long since died out, but a lot of their legacy still lingers here.",
+            "children": [
+                [ "We'll find the Lantern.", "dark_wave" ]
+            ]
+        },
+        "dark_wave": {
+            "name": "Gorren",
+            "text": "*Wait... do you feel that?* The air shifts... darker. Something is wrong. Something is—",
+            "children": [
+                [ "What's happening?", "wave_impact" ]
+            ]
+        },
+        "wave_impact": {
+            "name": "System",
+            "text": "A surge of :BLUEVIOLET:Necromantic Energy:BLUEVIOLET: explodes through the church, shattering the stained-glass windows. Outside, you hear the moans of the dead growing louder as shadows coalesce inside.",
+            "children": [
+                [ "None", "None" ]
+            ],
+            "function": "add_gorren_to_party_temp"
+        },
+
+
+
+        "defeated_ambush": {
+            "name": "Gorren",
+            "text": "Well fought. The dead grow restless, but your strength may be just what we need to set this right.",
+            "children": [
+                [ "What was that surge of energy?", "what_was_that" ],
+                [ "What happens now?", "what_happens_now" ]
+            ]
+        },
+        "what_was_that": {
+            "name": "Gorren",
+            "text": "The surge was no accident. Something is out there stirring this darkness. Whatever power lies out there, it fuels the dead. We must act quickly.",
+            "children": [
+                [ "What do we do next?", "what_happens_now" ]
+            ]
+        },
+        "what_happens_now": {
+            "name": "Gorren",
+            "text": "We need to reach the :CYAN:Vaelthorne Crypt:CYAN:. It is the source of all this corruption, and perhaps the only place where we'll find another :YELLOW:Obsidian Lantern:YELLOW:.",
+            "children": [
+                [ "Do you know where it is?", "mark_crypt" ]
+            ]
+        },
+        "mark_crypt": {
+            "name": "Gorren",
+            "text": "I've marked its location on your map. I will join you, this fight is as much mine as it is yours. Together, we might stand a chance.",
+            "children": [
+                [ "Let's go.", "None" ]
+            ],
+            "function": "add_gorren_to_party"
+        }
+    }
+}

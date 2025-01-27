@@ -48,6 +48,8 @@ class DisarmedEffect(Effect):
             self.effect_end(creature)
             self.strength = max(self.strength, other_effect.strength)
             self.effect_start(creature)
+            return True
+        return False
 
 class StunEffect(Effect):
     def __init__(self, duration):
@@ -110,5 +112,111 @@ class DecayingEffect(Effect):
         if other_effect.name == self.name:
             self.duration = max(self.duration, other_effect.duration)
             self.strength = max(self.strength, other_effect.strength)
+            return True
+        return False
+
+class BolsteredEffect(Effect):
+    def __init__(self, duration, str_buff, armor_buff):
+        super().__init__("Bolstered", duration, LIGHTGRAY)
+        self.str_buff = str_buff
+        self.armor_buff = armor_buff
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} is :LIGHTGRAY:Bolstered:LIGHTGRAY:.")
+        creature.gain_armor(self.armor_buff)
+        creature.add_temp_stats(
+            strength=self.str_buff,
+            dexterity=self.str_buff,
+            intelligence=self.str_buff
+        )
+
+    def effect_turn(self, _):
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        creature.add_temp_stats(
+            strength=-self.str_buff,
+            dexterity=-self.str_buff,
+            intelligence=-self.str_buff
+        )
+
+    def combine(self, creature, other_effect):
+        if other_effect.name == self.name:
+            self.effect_end(creature)
+            self.armor_buff = max(self.armor_buff, other_effect.armor_buff)
+            self.str_buff = max(self.str_buff, other_effect.str_buff)
+            self.duration = max(self.duration, other_effect.duration)
+            self.effect_start(creature)
+            return True
+        return False
+
+class BleedEffect(Effect):
+    def __init__(self, duration, strength):
+        super().__init__("Bleeding", duration, RED)
+        self.strength = strength
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} is bleeding!")
+
+    def effect_turn(self, creature):
+        dam = creature.take_damage(self.strength, 'physical', ignore_armor=True)
+        messenger.add(f"{creature.name} bleeds for {dam} damage.")
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        messenger.add(f"{creature.name} stops bleeding.")
+
+    def combine(self, _, other_effect):
+        if other_effect.name == self.name:
+            self.duration = max(other_effect.duration, self.duration)
+            self.strength = max(other_effect.strength, self.strength)
+            return True
+        return False
+
+class ArmorEffect(Effect):
+    def __init__(self, duration, strength):
+        super().__init__("Armored", duration, LIGHTGRAY)
+        self.strength = strength
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} strengthens their armor.")
+        creature.add_temp_stats(defense=self.strength)
+
+    def effect_turn(self, _):
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        creature.add_temp_stats(defense=-self.strength)
+
+    def combine(self, creature, other_effect):
+        if other_effect.name == self.name:
+            self.effect_end(creature)
+            self.duration = max(other_effect.duration, self.duration)
+            self.strength = max(other_effect.strength, self.strength)
+            self.effect_start(creature)
+            return True
+        return False
+
+class DrainedEffect(Effect):
+    def __init__(self, duration, strength):
+        super().__init__("Drained", duration, BLUEVIOLET)
+        self.strength = strength
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} has reduced resistance to Dark.")
+        creature.add_temp_resistance(dark = -self.strength)
+
+    def effect_turn(self, _):
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        creature.add_temp_resistance(dark = self.strength)
+
+    def combine(self, creature, other_effect):
+        if other_effect.name == self.name:
+            self.effect_end(creature)
+            self.duration = max(other_effect.duration, self.duration)
+            self.strength = max(other_effect.strength, self.strength)
+            self.effect_start(creature)
             return True
         return False

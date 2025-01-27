@@ -7,7 +7,7 @@ class QuestStep:
         self.description = ""
         self.complete = False
 
-        # Required other quest steps for this one to show
+        # What needs to be True in the player_log for this one to show up
         self.required = []
 
         # What needs to be True in the player_log for this to count as complete
@@ -29,6 +29,6 @@ class QuestStep:
 
     def is_enabled(self):
         for q in self.required:
-            if not q.complete:
+            if not player_log[q]:
                 return False
         return True

@@ -196,6 +196,7 @@ class DungeonScreen(Screen):
         for o in self.options:
             self.write(f"{i}: {o[0]}", (x,y), o[2])
             y += FONT_HEIGHT + 2
+            i += 1
 
     def draw_player_sprite(self, room: Room, x, y):
         if self.frame_num == 1:

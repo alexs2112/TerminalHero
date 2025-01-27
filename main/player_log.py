@@ -21,15 +21,19 @@ def initialize_player_log():
         'tavern_room_unlocked': False,
         'tavern_store_unlocked': False,
 
+        # Grave Concerns Questline
         'accepted_grave_concerns': False,
         'visit_cemetery': False,
-        'clear_church_1': False,
-        'clear_church_2': False,
+        'finish_cemetery_stage_1': False,       # Finished when the player talks to Gorren for the first time
+        'defeat_cemetery_church_ambush': False,
+        'gorren_leaves_church': False,
+        'finish_cemetery_stage_2': False,       # Finished then the player clears the Vaelthorne Crypt
         'visit_crypt': False,
         'visit_shrine': False,
         'shrine_opened': False,
-        'runebound_stalker_defeated': False,
+        'runebound_stalker_defeated': False,    # Vaelthorne Seal Acquired
         'crypt_unlocked': False,
+        'unhallowed_guardian_defeated': False,  # Obsidian Lantern Acquired
 
         # Food Related Logs
         'food_mushroom': False,

@@ -22,8 +22,8 @@ class ProfessionFactory:
         p.add_ability(abilities.flickering_flames(85))
         return p
 
-    def new_necromancer(self):
-        p = Profession("Necromancer")
+    def new_soulwarden(self):
+        p = Profession("Soulwarden")
         p.set_stats(intelligence=2, will=1, endurance=1)
         p.set_resistances(dark=10)
         p.add_ability(abilities.drain_life(90, 1, 2))

@@ -22,6 +22,9 @@ class Encounter:
         # Condition in player_log that makes this encounter appear in an area
         self.valid_condition: str = None
 
+        # Condition in player_log that makes this encounter disappear in an area
+        self.invalid_condition: str = None
+
         # Function that is called when the encounter is completed
         self.completed_function = None
 
@@ -31,6 +34,9 @@ class Encounter:
     def enabled(self):
         if self.completed:
             return False
+        if self.invalid_condition in player_log:
+            if player_log[self.invalid_condition]:
+                return False
         if self.valid_condition in player_log:
             return player_log[self.valid_condition]
         return True

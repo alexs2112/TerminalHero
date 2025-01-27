@@ -58,7 +58,7 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=4, defense=1, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=1, dexterity=0, intelligence=0)
         c.set_profession(professions.new_enemy_profession("Shuffler"))
-        c.add_ability(abilities.basic_attack(1, 3))
+        c.add_ability(abilities.slow_attack(1, 3))
         c.set_ai(BasicAI(c))
         return c
 
@@ -71,7 +71,7 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=4, defense=3, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=2, dexterity=0, intelligence=0)
         c.set_profession(professions.new_enemy_profession("Brute"))
-        c.add_ability(abilities.basic_attack(1, 3))
+        c.add_ability(abilities.slow_attack(1, 3))
         c.set_ai(BasicAI(c))
         return c
 
@@ -84,13 +84,40 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=4, defense=0, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=1, dexterity=0, intelligence=0)
         c.set_profession(professions.new_enemy_profession("Shambler"))
-        c.add_ability(abilities.basic_attack(1, 3))
+        c.add_ability(abilities.slow_attack(1, 3))
+        c.set_ai(BasicAI(c))
+        return c
+
+    def new_lanternbearer(self):
+        c = Creature("Lanternbearer", 1)
+        c.set_sprite(CreatureSprite((36,48,12,12), (60,0,12,12)))
+        c.set_description("A skeletal figure clutching a rusted, glowing lantern that emits faint, necrotic light. "
+                          "It appears to guide the undead forces.")
+        c.set_defensive_stats(base_hp=5,defense=3,dodge=1,will=3,endurance=2)
+        c.set_offensive_stats(speed=4, strength=1, dexterity=1, intelligence=3)
+        c.set_profession(professions.new_enemy_profession("Guide of Lost Souls"))
+        c.add_ability(abilities.basic_attack(1,3))
+        c.add_ability(abilities.drain_life(85, 1, 2))
+        c.add_ability(abilities.pale_light())
+        c.set_ai(BasicAI(c))
+        return c
+
+    def new_rotten_stray(self):
+        c = Creature("Rotten Stray", 1)
+        c.set_sprite(CreatureSprite((48,48,12,12), (72,0,12,12)))
+        c.set_description("Decayed canine corpse, animated to guard the cemetery from intruders.")
+        c.set_defensive_stats(base_hp=4, defense=3, dodge=3, will=0, endurance=1)
+        c.set_offensive_stats(speed=4, strength=2, dexterity=1, intelligence=1)
+        c.set_profession(professions.new_enemy_profession("Hound"))
+        c.add_ability(abilities.basic_attack(1,3))
+        c.add_ability(abilities.rabid_bite(1,3))
+        c.add_ability(abilities.chilling_howl('Rotten Stray'))
         c.set_ai(BasicAI(c))
         return c
 
     def new_runebound_stalker(self):
         c = Creature("Runebound Stalker", 3)
-        c.set_sprite(CreatureSprite((0,96,12,12), (60,0,12,12)))
+        c.set_sprite(CreatureSprite((0,96,12,12), (108,0,12,12)))
         c.set_description("A massive, four-armed feline-like predator, its body wrapped in broken runic chains that float around it. "
                           "Its face is hidden beneath an imperial mask, engraved with the Vaelthorne crest, but cracks in it's body reveal shifting eyes underneath.")
         c.set_defensive_stats(base_hp=25, defense=10, dodge=2, will=4, endurance=2)
@@ -101,6 +128,46 @@ class CreatureFactory:
         c.add_ability(abilities.runic_chains())
         c.set_ai(BasicAI(c))
         c.action_point_replenish = 3
+        return c
+
+    def new_bone_servitor(self):
+        c = Creature("Bone Servitor", 3)
+        c.set_sprite(CreatureSprite((60,48,12,12), (84,0,12,12)))
+        c.set_description("A skeletal construct assembled with crude weapons and jagged bones.")
+        c.set_defensive_stats(base_hp=16,defense=8,dodge=2,will=1,endurance=3)
+        c.set_offensive_stats(speed=3, strength=3, dexterity=2, intelligence=2)
+        c.set_profession(professions.new_enemy_profession("Servitor"))
+        c.add_ability(abilities.basic_attack(2,4))
+        c.add_ability(abilities.multi_attack(2,4))
+        c.add_ability(abilities.bone_shield(5))
+        c.set_ai(BasicAI(c))
+        return c
+
+    def new_gravebound_watcher(self):
+        c = Creature("Gravebound Watcher", 3)
+        c.set_sprite(CreatureSprite((72,48,12,12), (60,0,12,12)))
+        c.set_description("A rotting figure with glowing eyes and remnants of priestly robes.")
+        c.set_defensive_stats(base_hp=12,defense=12,dodge=2,will=4,endurance=2)
+        c.set_offensive_stats(speed=4, strength=2, dexterity=3, intelligence=4)
+        c.add_ability(abilities.elemental_attack(1, 3, 'dark', 'intelligence'))
+        c.add_ability(abilities.hollow_gaze(1, 3, 30))
+        c.add_ability(abilities.necrotic_chains(1, 3, 80))
+        c.set_ai(BasicAI(c))
+        return c
+
+    def new_unhallowed_guardian(self):
+        c = Creature("Unhallowed Guardian", 4)
+        c.set_sprite(CreatureSprite((84,48,12,12), (96,0,12,12)))
+        c.set_description("A massive undead knight, clad in ancient armor that bears the Vaelthorne Crest. Bound to the crypt to defend the Vaelthorne remains.")
+        c.set_defensive_stats(base_hp=30, defense=14, dodge=2, will=5, endurance=4)
+        c.set_offensive_stats(speed=3, strength=5, dexterity=3, intelligence=5)
+        c.add_ability(abilities.basic_attack(2,4))
+        c.add_ability(abilities.multi_attack(2,4))
+        c.add_ability(abilities.greataxe_slash(2,4))
+        c.add_ability(abilities.bone_shield(8))
+        c.add_ability(abilities.soul_drain(1,2,2))
+        c.action_point_replenish = 3
+        c.set_ai(BasicAI(c))
         return c
 
     def new_harold(self):
@@ -122,14 +189,13 @@ class CreatureFactory:
     def new_gorren(self):
         gorren = NPC("Gorren", 1)
         gorren.set_sprite(CreatureSprite(-1, (0,0,12,12)))
-        gorren.set_description("A scrawny young man with hollow cheeks, wide eyes, and the scent of damp earth clinging to his tattered robes. "
-                               "Gorren was once a gravedigger, but after too many lonely nights among the dead, he became obsessed with mastering necromancy.")
+        gorren.set_description("A wiry, pale-skinned young man who looks as though he hasn't seen sunlight in years. "
+                               "A faint aura of cold seems to cling to him, as if the magic he wields has leeched warmth from his very being.")
         gorren.set_defensive_stats(base_hp=7, defense=0, dodge=2, will=3, endurance=1)
         gorren.set_offensive_stats(speed=3, strength=2, dexterity=2, intelligence=2)
         gorren.equip_item(items.new_staff())
         gorren.equip_item(items.new_robe())
-        gorren.set_profession(professions.new_necromancer())
-        gorren.dialog_function = gorren_dialogue
+        gorren.set_profession(professions.new_soulwarden())
         gorren.hp = gorren.max_hp()
         level_handler.add_creature(gorren)
         return gorren

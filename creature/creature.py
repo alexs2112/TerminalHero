@@ -111,11 +111,24 @@ class Creature:
         self.stats['intelligence'] = intelligence
 
     def add_temp_stats(self, **kwargs):
+        old_hp = self.max_hp()
+        old_armor = self.max_armor()
+
         for stat, value in kwargs.items():
             if stat in self.temporary_stats:
                 self.temporary_stats[stat] += value
             else:
                 self.temporary_stats[stat] = value
+
+        # Make sure benefits to endurance/defense are represented
+        if self.max_hp() > old_hp:
+            self.hp += self.max_hp() - old_hp
+        if self.max_armor() > old_armor:
+            self.armor += self.max_armor() - old_armor
+        if self.hp > self.max_hp():
+            self.hp = self.max_hp()
+        if self.armor > self.max_armor():
+            self.armor = self.max_armor()
 
     def stat(self, stat_name):
         s = self.stats[stat_name]
@@ -216,10 +229,10 @@ class Creature:
         ability.set_cooldown()
         ability.activate(self, target, area)
 
-    def take_damage(self, damage: int, dam_type: str):
+    def take_damage(self, damage: int, dam_type: str, ignore_armor=False):
         dam = int(damage * (100 - self.get_resistance(dam_type)) / 100)
         total_dam = dam
-        if self.armor > 0:
+        if not ignore_armor and self.armor > 0:
             armor_dam = min(self.armor, dam)
             self.armor -= armor_dam
             dam -= armor_dam
@@ -241,20 +254,12 @@ class Creature:
     def add_effect(self, effect: Effect):
         for e in self.effects:
             # If this new effect successfully combines with a current one, don't apply it
-            if e.combine(effect, self):
+            if e.combine(self, effect):
                 return
         self.effects.append(effect)
         effect.effect_start(self)
 
     def eat_food(self, food):
         self.food = food
-        old_hp = self.max_hp()
-        old_armor = self.max_armor()
         self.add_temp_stats(**food.stats)
         self.add_temp_resistances(**food.resistances)
-
-        # Make sure benefits to endurance/defense are represented
-        if self.max_hp() > old_hp:
-            self.hp += self.max_hp() - old_hp
-        if self.max_armor() > old_armor:
-            self.armor += self.max_armor() - old_armor

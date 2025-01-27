@@ -65,6 +65,12 @@ class ItemFactory:
         # Heal wearer at the end of each combat
         return i
 
+    def new_obsidian_lantern(self):
+        i = Item("Obsidian Lantern", TRINKET, (12,120,12,12))
+        i.set_stats(defense=5)
+        i.set_resistances(dark=15)
+        return i
+
     # FOOD
     def new_mushroom(self):
         f = Food("Plump Helmet", 10, (0,132,12,12), 'food_mushroom')

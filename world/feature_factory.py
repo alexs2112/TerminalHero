@@ -20,6 +20,16 @@ def get_feature_factory():
     return _feature_factory
 
 class FeatureFactory():
+    def gorren_initial_meeting(self):
+        f = DialogFeature("Talk to Gorren")
+        f.set_dialog_function(gorren_initial_meeting)
+        def enabled():
+            if player_log['gorren_leaves_church']:
+                return False
+            return not player_log['finish_cemetery_stage_1'] or player_log['defeat_cemetery_church_ambush']
+        f.set_enabled_function(enabled)
+        return f
+
     def vaelthorne_shrine(self):
         f = DialogFeature("Rune Pillar")
         f.set_dialog_function(vaelthorne_rune_pillar)
@@ -72,11 +82,13 @@ class FeatureFactory():
         return f
 
     def cemetery_church(self):
-        church_area = Area("Abandoned Church", None)
-        church_area.add_description("Placeholder Text")
+        church_area = Area("Eternal Church", None)
+        church_area.add_description("Inside the church, rubble and shattered pews litter the floor, and the smell of damp earth is overwhelming.")
         church_area.encounters = [
-            encounter_factory.get_church_encounter_1(),
-            encounter_factory.get_church_encounter_2()
+            encounter_factory.cemetery_second_stage_ambush()
         ]
-        f = AreaFeature("Abandoned Church", church_area)
+        church_area.features = [
+            self.gorren_initial_meeting()
+        ]
+        f = AreaFeature("Eternal Church", church_area)
         return f

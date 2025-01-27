@@ -2,9 +2,11 @@ from main.player_log import get_player_log, update_log
 from main.notification import add_notification
 from world.encounter_factory import get_encounter_factory
 from world.dungeon_builder import EXIT_RIGHT
+from creature.creature_factory import get_creature_factory
 from creature.player import Player
 from quests.quest_factory import *
 player_log = get_player_log()
+creature_factory = get_creature_factory()
 encounter_factory = get_encounter_factory()
 
 def set_met_elder_varik(_):
@@ -27,24 +29,22 @@ def set_met_gorren(_):
     player_log['met_gorren'] = True
 
 def add_gorren_to_party_temp(player: Player):
-    # Assume there is only Gorren in the area
-    gorren = player.area.npcs[0]
-    player.party.append(gorren)
+    gorren = creature_factory.new_gorren()
+    player.party.insert(0, gorren)
+    update_log('finish_cemetery_stage_1')
 
-def add_gorren_to_party(player: Player):
-    # At this point, assume that the only NPC in the area is Gorren
-    if len(player.party) < 2:
-        player.party = [player, player.area.npcs[0]]
-    player.area.npcs.clear()
-    update_log('tavern_open')
+def add_gorren_to_party(_):
+    # For now, assume Gorren has already been added to the party
+    update_log('gorren_leaves_church')
     update_log('known_crypt')
-    add_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
+    add_notification([':YELLOW:Area Unlocked!:YELLOW:',
+                      'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
 
-def reject_gorren(player: Player):
-    player.party = [player]
-    update_log('tavern_open')
-    update_log('known_crypt')
-    add_notification([':YELLOW:Area Unlocked!:YELLOW:', 'Gorren shows you on your map where the :CYAN:Crypt:CYAN: is.'])
+    if not player_log['tavern_open']:
+        update_log('tavern_open')
+        if player_log['known_tavern']:
+            add_notification([':YELLOW:Area Unlocked!:YELLOW:',
+                              'The :CYAN:Lifeblood Tavern:CYAN: is open for business!'])
 
 def runebound_stalker(_):
     update_log('shrine_opened')
