@@ -259,6 +259,12 @@ class Creature:
         self.effects.append(effect)
         effect.effect_start(self)
 
+    def has_effect(self, effect_name: str):
+        for e in self.effects:
+            if e.name == effect_name:
+                return True
+        return False
+
     def eat_food(self, food):
         self.food = food
         self.add_temp_stats(**food.stats)

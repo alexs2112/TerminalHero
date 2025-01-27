@@ -36,6 +36,7 @@ class CreatureFactory:
         #player.equip_item(items.new_axe())
         player.equip_item(items.new_leather_armor())
         player.set_profession(professions.new_test_wizard())
+        player.allied = True
         level_handler.add_creature(player)
         return player
 
@@ -46,6 +47,7 @@ class CreatureFactory:
         c.set_offensive_stats(speed=4, strength=1, dexterity=2, intelligence=3)
         c.add_ability(abilities.basic_attack(1, 2))
         c.add_ability(abilities.flickering_flames(85))
+        c.allied = True
         level_handler.add_creature(c)
         return c
 
@@ -197,5 +199,6 @@ class CreatureFactory:
         gorren.equip_item(items.new_robe())
         gorren.set_profession(professions.new_soulwarden())
         gorren.hp = gorren.max_hp()
+        gorren.allied = True
         level_handler.add_creature(gorren)
         return gorren

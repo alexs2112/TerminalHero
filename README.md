@@ -72,8 +72,6 @@ options:
 - Only show the name of targeted creatures or the active creature
   - This means we don't need to stagger their positions anymore
 - Combat backgrounds: Creatures stand on a floor and have some darkened background art
-- Actually go over enemy AI
-  - Each ability has a function that returns a list of [(Creature, int)] where the int is the priority of using the ability targeting that creature.
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)

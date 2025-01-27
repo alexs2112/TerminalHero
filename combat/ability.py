@@ -12,6 +12,9 @@ class Ability:
         # Function to be called to check if a creature can be targeted
         self.can_target_func = None
 
+        # Function to be called to determine target priorities
+        self.target_priority_func = None
+
     def set_description(self, desc: str):
         self.description = desc
 
@@ -42,3 +45,11 @@ class Ability:
 
     def set_can_target(self, func):
         self.can_target_func = func
+
+    def set_target_priority(self, func):
+        self.target_priority_func = func
+
+    def get_target_priorities(self, creature, player, encounter):
+        if not self.target_priority_func:
+            return []
+        return self.target_priority_func(self, creature, player, encounter)

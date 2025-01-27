@@ -1,8 +1,11 @@
-from random import random, randint, choice
+from random import random, randint
 from creature.creature import Creature
+from creature.player import Player
+from creature.ai.priority import Priority
 from combat.ability import Ability
 from combat.effect_factory import get_effect_factory
 from world.area import Area
+from world.encounter import Encounter
 from main.messenger import get_messenger
 
 messenger = get_messenger()
@@ -27,10 +30,44 @@ def strength_melee_attack(c: Creature, t: Creature):
         messenger.add(f"{c.name} misses {t.name} with an attack.")
     return success
 
+def default_offensive_priority(a: Ability, c: Creature, p: Player, e: Encounter):
+    # Assume they will only target creatures allied to the player
+    out = []
+    for ally in p.party:
+        if a.can_target(ally):
+            # Priority 1 of using this ability on that ally
+            out.append(Priority(a, ally, 1))
+    return out
+
+def high_offensive_priority(a: Ability, c: Creature, p: Player, e: Encounter):
+    out = default_offensive_priority(a,c,p,e)
+    for prio in out:
+        prio.priority = 3
+    return out
+
+def default_bolstered_priority(a: Ability, c: Creature, p: Player, e: Encounter):
+    # Assume they will only target creatures friendly to the enemy
+    out = []
+    for enemy in e.enemies:
+        if a.can_target(enemy):
+            if enemy.has_effect('Bolstered'):
+                if enemy.armor < enemy.max_armor() / 2:
+                    prio = 2
+                else:
+                    prio = 0
+            else:
+                if enemy.armor < enemy.max_armor() / 2:
+                    prio = 3
+                else:
+                    prio = 1
+            out.append(Priority(a, enemy, prio))
+    return out
+
 class AbilityFactory:
     def basic_attack(self, min_damage, max_damage):
         a = Ability("Attack", cooldown=1, cost=1)
         a.set_description("Melee attack an enemy.")
+        a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             if strength_melee_attack(c, t):
                 dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
@@ -47,6 +84,7 @@ class AbilityFactory:
     def multi_attack(self, min_damage, max_damage, num_attacks=2):
         a = Ability("Multi-Attack", cooldown=1, cost=3)
         a.set_description("Make two melee attacks.")
+        a.set_target_priority(high_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             for _ in range(num_attacks):
                 if strength_melee_attack(c, t):
@@ -59,6 +97,7 @@ class AbilityFactory:
     def elemental_attack(self, min_damage, max_damage, damage_type, damage_stat):
         a = Ability("Attack", cooldown=1, cost=1)
         a.set_description(f"Attack an enemy for {damage_type} damage.")
+        a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             success = attack_roll(c) > t.stat('dodge') * 5
             if success:
@@ -73,6 +112,7 @@ class AbilityFactory:
     def flickering_flames(self, base_hit_chance):
         a = Ability("Flickering Flames", cooldown=3)
         a.set_description("Attempt to light an enemy on fire.")
+        a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             success = attack_roll(c) > (100-base_hit_chance) + t.stat('dodge') * 5 - c.stat('intelligence') * 5
             if success:
@@ -87,6 +127,7 @@ class AbilityFactory:
     def disarming_strike(self, min_damage, max_damage):
         a = Ability("Disarming Strike", cooldown=2)
         a.set_description("A precise hit that lowers your targets Accuracy.")
+        a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             if strength_melee_attack(c,t):
                 dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
@@ -101,6 +142,7 @@ class AbilityFactory:
     def heavy_blow(self, min_damage, max_damage, base_stun_chance):
         a = Ability("Heavy Blow", cooldown=2, cost=2)
         a.set_description("Swing a heavy blow to stun your target.")
+        a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             if strength_melee_attack(c,t):
                 dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
@@ -119,6 +161,7 @@ class AbilityFactory:
     def cleave(self, min_damage, max_damage, splash_damage):
         a = Ability("Cleave", cooldown=2)
         a.set_description("Cleave through your target, dealing damage to each other enemy.")
+        a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             if strength_melee_attack(c,t):
                 dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
@@ -139,6 +182,16 @@ class AbilityFactory:
     def drain_life(self, base_hit_chance, min_damage, max_damage):
         a = Ability("Drain Life", cooldown=2)
         a.set_description("Deal Dark damage, restore half of damage dealt to your armor.")
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            out = default_offensive_priority(a,c,p,e)
+            if c.armor < c.max_armor() * 0.6:
+                i = 2
+            else:
+                i = -1
+            for prio in out:
+                prio.priority += i
+            return out
+        a.set_target_priority(priority)
         def effect(c: Creature, t: Creature, a: Area):
             success = attack_roll(c) > (100-base_hit_chance) + t.stat('will') * 5
             if success:
@@ -176,6 +229,7 @@ class AbilityFactory:
     def curse_of_decay(self):
         a = Ability("Curse of Decay", cooldown=4)
         a.set_description("Target creature gains the Decaying status, reducing their resistance every turn.")
+        a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             success = attack_roll(c) > t.stat('endurance') * 5
             if success:
@@ -193,10 +247,10 @@ class AbilityFactory:
     def pale_light(self):
         a = Ability("Pale Light", cooldown=3, cost=2)
         a.set_description("Wave the Pale Lantern, providing armor and strength to a target.")
+        a.set_target_priority(default_bolstered_priority)
         def effect(c: Creature, t: Creature, a: Area):
             messenger.add(f"{c.name} waves their :BLUEVIOLET:Pale Lantern:BLUEVIOLET:.")
-            e = choice([ e for e in a.get_encounter().enemies if e.is_alive() ])
-            e.add_effect(effects.create_bolstered_effect(3, c.stat('intelligence'), c.stat('intelligence') + 2))
+            t.add_effect(effects.create_bolstered_effect(3, c.stat('intelligence'), c.stat('intelligence') + 2))
         a.set_effect(effect)
         return a
 
@@ -204,6 +258,13 @@ class AbilityFactory:
     def rabid_bite(self, min_damage, max_damage):
         a = Ability("Rabid Bite", cooldown=2, cost=2)
         a.set_description("A quick attack with a chance to bleed the target.")
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            out = high_offensive_priority(a,c,p,e)
+            for prio in out:
+                if prio.target.has_effect('Bleeding'):
+                    prio.priority -= 1
+            return out
+        a.set_target_priority(priority)
         def effect(c: Creature, t: Creature, a: Area):
             success = attack_roll(c) > t.stat('dodge') * 5
             if success:
@@ -222,6 +283,11 @@ class AbilityFactory:
     def chilling_howl(self, name):
         a = Ability("Chilling Howl", cooldown=4, cost=2)
         a.set_description("Howl, providing buffs to other Rotten Strays.")
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            if c.has_effect('Bolstered'):
+                return [ Priority(a, c, 0) ]
+            return [ Priority(a, c, 4) ]
+        a.set_target_priority(priority)
         def effect(c: Creature, t: Creature, a: Area):
             messenger.add(f"{c.name} lets out a chilling howl.")
             for e in a.get_encounter().enemies:
@@ -234,6 +300,9 @@ class AbilityFactory:
     def astral_lightning(self):
         a = Ability("Astral Lightning", cooldown=2, cost=3)
         a.set_description("Astral lightning jumps from your target to several others.")
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            return [ Priority(a, c, 4) ]
+        a.set_target_priority(priority)
         def effect(c: Creature, t: Creature, a: Area):
             messenger.add(f"{c.name} conjurs :CYAN:Astral Lightning:CYAN:.")
             for target in a.player.party:
@@ -252,6 +321,7 @@ class AbilityFactory:
     def runic_chains(self):
         a = Ability("Runic Chains", cooldown=3)
         a.set_description("Lash out with your chains, binding your target.")
+        a.set_target_priority(high_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             success = attack_roll(c) > t.stat('dodge') * 5
             if success:
@@ -270,6 +340,11 @@ class AbilityFactory:
     def bone_shield(self, strength):
         a = Ability("Bone Shield", cooldown=3)
         a.set_description("Raise your shield, enhancing your armor for a time.")
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            if c.armor < c.max_armor() / 0.6:
+                return [ Priority(a, c, 4) ]
+            return [ Priority(a, c, 2) ]
+        a.set_target_priority(priority)
         def effect(c: Creature, t: Creature, a: Area):
             c.add_effect(effects.create_armor_effect(3, strength))
         a.set_effect(effect)
@@ -279,6 +354,7 @@ class AbilityFactory:
     def hollow_gaze(self, min_damage, max_damage, resist_drain):
         a = Ability("Hollow Gaze", cooldown=3)
         a.set_description("Gaze at a target, dealing dark damage and reducing their dark resistance.")
+        a.set_target_priority(high_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             success = attack_roll(c) > t.stat('will') * 5
             if success:
@@ -294,6 +370,7 @@ class AbilityFactory:
     def necrotic_chains(self, min_damage, max_damage, stun_chance):
         a = Ability("Necrotic Chains", cooldown=3)
         a.set_description("Wrap the target in Necrotic Chains, dealing dark damage and stunning them.")
+        a.set_target_priority(high_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             success = attack_roll(c) > t.stat('dodge') * 5
             if success:
@@ -314,6 +391,9 @@ class AbilityFactory:
     def greataxe_slash(self, min_damage, max_damage):
         a = Ability("Greataxe Slash", cooldown=2)
         a.set_description("Swing a heavy greataxe blow, dealing damage to each enemy.")
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            return [ Priority(a, c, 3) ]
+        a.set_target_priority(priority)
         def effect(c: Creature, _, a: Area):
             at_least_one = False
             messenger.add(f"The {c.name} swings their unholy greataxe in a wide arc.")
@@ -331,6 +411,11 @@ class AbilityFactory:
     def soul_drain(self, min_damage, max_damage, bonus_armor):
         a = Ability("Soul Drain", cooldown=4, cost=3)
         a.set_description("Call upon unholy energies to drain the souls of your enemies, replenishing yourself.")
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            if c.armor < c.max_armor() / 0.6:
+                return [ Priority(a, c, 4) ]
+            return [ Priority(a, c, 2) ]
+        a.set_target_priority(priority)
         def effect(c: Creature, _, a: Area):
             at_least_one = False
             messenger.add(f"The {c.name} calls upon unholy energies.")
@@ -345,6 +430,7 @@ class AbilityFactory:
                     t.take_damage(dam, 'dark')
             if at_least_one:
                 messenger.add(f"The {c.name} replenishes {armor} armor.")
+                c.gain_armor(armor)
             else:
                 messenger.add("Everybody resists...")
         a.set_effect(effect)
