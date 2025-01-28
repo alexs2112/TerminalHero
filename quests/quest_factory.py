@@ -11,7 +11,7 @@ def grave_concerns():
     step1.set_log_completion("gorren_leaves_church")
 
     step2 = QuestStep("Find out how to unseal the Vaelthorne Crypt")
-    step2.set_description("Gorren has directed you towards the Vaelthorne Crypt, however it remains sealed. Ask around town to see if you can find a good starting point.")
+    step2.set_description("Gorren has directed you towards the Vaelthorne Crypt, however it remains sealed. Visit the Crypt to find hints, and ask around town to see if you can find a good starting point.")
     step2.set_log_completion("known_shrine")
     step2.required = [ "gorren_leaves_church" ]
 
@@ -25,6 +25,11 @@ def grave_concerns():
     step4.set_log_completion("unhallowed_guardian_defeated")
     step4.required.append("runebound_stalker_defeated")
 
-    q.steps = [ step1, step2, step3, step4 ]
-    q.required_steps = [ step1, step2, step3, step4 ]
+    step5 = QuestStep("Complete Gorren's Banishment Ritual")
+    step5.set_description("Now that you have another Obsidian Lantern, return to the Eternal Church in the Cemetery to complete the Banishment Ritual, purging Arad of the undead.")
+    step5.set_log_completion("finish_cemetery_stage_3")
+    step5.required.append("unhallowed_guardian_defeated")
+
+    q.steps = [ step1, step2, step3, step4, step5 ]
+    q.required_steps = [ step1, step2, step3, step4, step5 ]
     return q

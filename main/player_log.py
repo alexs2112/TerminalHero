@@ -27,13 +27,17 @@ def initialize_player_log():
         'finish_cemetery_stage_1': False,       # Finished when the player talks to Gorren for the first time
         'defeat_cemetery_church_ambush': False,
         'gorren_leaves_church': False,
-        'finish_cemetery_stage_2': False,       # Finished then the player clears the Vaelthorne Crypt
+        'finish_cemetery_stage_2': False,       # Finished when the player clears the Vaelthorne Crypt
         'visit_crypt': False,
         'visit_shrine': False,
         'shrine_opened': False,
         'runebound_stalker_defeated': False,    # Vaelthorne Seal Acquired
         'crypt_unlocked': False,
         'unhallowed_guardian_defeated': False,  # Obsidian Lantern Acquired
+        'banishment_ritual_can_start': False,
+        'gorren_ritual_interrupted': False,
+        'soul_tethered_herald_defeated': False,
+        'finish_cemetery_stage_3': False,       # Finished when the player completes the banishment ritual with Gorren
 
         # Food Related Logs
         'food_mushroom': False,

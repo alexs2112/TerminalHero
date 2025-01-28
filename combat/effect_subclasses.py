@@ -204,13 +204,13 @@ class DrainedEffect(Effect):
 
     def effect_start(self, creature):
         messenger.add(f"{creature.name} has reduced resistance to Dark.")
-        creature.add_temp_resistance(dark = -self.strength)
+        creature.add_temp_resistances(dark = -self.strength)
 
     def effect_turn(self, _):
         self.duration -= 1
 
     def effect_end(self, creature):
-        creature.add_temp_resistance(dark = self.strength)
+        creature.add_temp_resistances(dark = self.strength)
 
     def combine(self, creature, other_effect):
         if other_effect.name == self.name:

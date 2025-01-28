@@ -18,6 +18,21 @@ def set_initial_village(_):
     player_log['known_garrison'] = True
     player_log['known_tavern'] = True
 
+def unlock_tavern_room(_):
+    if not player_log['tavern_room_unlocked']:
+        update_log('tavern_room_unlocked')
+        add_notification([':YELLOW:Tavern Room Unlocked!:YELLOW:',
+                          'Use your room at the tavern to heal your companions wounds and clear their conditions.'])
+
+def unlock_tavern_store(_):
+    if not player_log['tavern_store_unlocked']:
+        update_log('tavern_store_unlocked')
+        add_notification([':YELLOW:Tavern Store Unlocked!:YELLOW:',
+                          'Purchase food at the tavern to increase your stats temporarily, until your next rest.'])
+
+def unlock_shrine(_):
+    update_log('known_shrine')
+
 def add_quest_grave_concerns(player: Player):
     player_log['known_cemetery'] = True
     player_log['accepted_grave_concerns'] = True
@@ -44,7 +59,7 @@ def add_gorren_to_party(_):
         update_log('tavern_open')
         if player_log['known_tavern']:
             add_notification([':YELLOW:Area Unlocked!:YELLOW:',
-                              'The :CYAN:Lifeblood Tavern:CYAN: is open for business!'])
+                              'The :CYAN:Lifeblood Tavern:CYAN: is now open for business!'])
 
 def runebound_stalker(_):
     update_log('shrine_opened')
@@ -54,17 +69,8 @@ def unlock_vaelthorne_crypt(player: Player):
     player.area.locked.clear()
     update_log('crypt_unlocked')
 
-def unlock_tavern_room(_):
-    if not player_log['tavern_room_unlocked']:
-        update_log('tavern_room_unlocked')
-        add_notification([':YELLOW:Tavern Room Unlocked!:YELLOW:',
-                          'Use your room at the tavern to heal your companions wounds and clear their conditions.'])
+def banishment_ritual_interrupted(_):
+    update_log('gorren_ritual_interrupted')
 
-def unlock_tavern_store(_):
-    if not player_log['tavern_store_unlocked']:
-        update_log('tavern_store_unlocked')
-        add_notification([':YELLOW:Tavern Store Unlocked!:YELLOW:',
-                          'Purchase food at the tavern to increase your stats temporarily, until your next rest.'])
-
-def unlock_shrine(_):
-    update_log('known_shrine')
+def complete_banishment(_):
+    update_log('finish_cemetery_stage_3')

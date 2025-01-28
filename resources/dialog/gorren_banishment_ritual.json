@@ -1,0 +1,86 @@
+{
+    "nodes": {
+        "start": {
+            "name": "Gorren",
+            "text": "This is it. The Obsidian Lantern will stabilize the banishment ritual to clear the necromantic energy from Arad. But I'll need some time. Stay alert.",
+            "children": [
+                ["Understood. Let's end this.", "gorren_begins_ritual"],
+                ["You better know what you're doing, Gorren.", "gorren_begins_ritual"]
+            ]
+        },
+        "gorren_begins_ritual": {
+            "name": "Gorren",
+            "text": "The power here is... overwhelming. Focused, even. There's something at the heart of this corruption.",
+            "children": [
+                ["What do you mean?", "ritual_interruption"],
+                ["Just keep going, I'll handle anything that comes.", "ritual_interruption"]
+            ]
+        },
+        "ritual_interruption": {
+            "name": "System",
+            "text": "A bone-chilling wail echoes across the cemetery, followed by the sound of cracking stone.",
+            "children": [
+                ["What in the Nine Hells was that?", "herald_speaks"],
+                ["Stay close, Gorren.", "herald_speaks"]
+            ]
+        },
+        "herald_speaks": {
+            "name": "Soul-Tethered Herald",
+            "text": ":BLUEVIOLET:The Living have no claim here. This ground is ours.:BLUEVIOLET:",
+            "children": [
+                ["What are you?", "herald_reveals_form"],
+                ["Step aside, monster. Your time has passed.", "herald_reveals_form"]
+            ]
+        },
+        "herald_reveals_form": {
+            "name": "System",
+            "text": "The shadows at the center of the cemetery writhe and coalesce into a towering, misshapen figure. A tattered priestly vestment clings to its skeletal frame, its face obscured by a cracked, golden mask. :BLUEVIOLET:Necrotic Energy:BLUEVIOLET: seeps from its every movement.",
+            "children": [
+                ["By the gods...", "combat_begins"],
+                ["So much for an easy ritual.", "combat_begins"]
+            ]
+        },
+        "combat_begins": {
+            "name": "Gorren",
+            "text": "That's no ordinary undead; it's a :BLUEVIOLET:Soul-Tethered Herald:BLUEVIOLET:! The corruption flows through it! We have to sever its link before I can finish the ritual!",
+            "children": [
+                ["Then let's kill it before this gets worse.", "None"],
+                ["Time to put it down.", "None"]
+            ],
+            "function": "banishment_ritual_interrupted"
+        },
+
+
+
+        "victory_start": {
+            "name": "Gorren",
+            "text": "It's done... the Herald is defeated. But that thing, its power... That was no accident. Someone or something is feeding this corruption.",
+            "children": [
+                ["What do you mean? Feeding it how?", "corruption_theory"],
+                ["At least it's over for now. Can you finish the ritual?", "ritual_continues"]
+            ]
+        },
+        "corruption_theory": {
+            "name": "Gorren",
+            "text": "The Herald was a conduit, yes, but not the source. That kind of energy? It's being funneled here. :BLUEVIOLET:Someone:BLUEVIOLET: is using Arad as a staging ground for their dark experiments.",
+            "children": [
+                ["Then we need to stop them. Can you finish the ritual?", "ritual_continues"]
+            ]
+        },
+        "ritual_continues": {
+            "name": "Gorren",
+            "text": "Yes, the :BLUEVIOLET:Obsidian Lantern:BLUEVIOLET: is intact, and with the Herald gone, there's nothing to block the energy's banishment. Stand back while I finish this.",
+            "children": [
+                ["Do what you need to do.", "ritual_complete"]
+            ]
+        },
+        "ritual_complete": {
+            "name": "System",
+            "text": "With a dramatic display of dark energy, you feel the unceasing despair that has filled the cemetery slowly drain away. The :BLUEVIOLET:Obsidian Lantern:BLUEVIOLET: begins to glow with a faint purple light.",
+            "function": "complete_banishment",
+            "children": [
+                ["None", "None"]
+            ]
+        }
+    }
+}

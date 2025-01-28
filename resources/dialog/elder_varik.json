@@ -96,7 +96,7 @@
         },
         "grave_concerns_info": {
             "name": "Elder Varik",
-            "text": "Located to the :CYAN:Cemetery:CYAN: outside of town, graves are being dug up overnight. Strangely enough, most of the valuables buried with the deceased are left behind.",
+            "text": "Our Soulwarden has not been seen in over a week. Last I had seen him, he was checking on some troubles in the :CYAN:Cemetery:CYAN: outside of town. Can you please check on him and aid him in whatever work he was doing?",
             "children": [
                 ["Accept Quest", "accept_grave_concerns"],
                 ["Back", "quests"],

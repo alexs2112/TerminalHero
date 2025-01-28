@@ -1,5 +1,4 @@
 from world.feature import *
-from world.area import Area
 from world.encounter_factory import get_encounter_factory
 from creature.player import Player
 from dialog.dialog_loader import *
@@ -20,32 +19,6 @@ def get_feature_factory():
     return _feature_factory
 
 class FeatureFactory():
-    def gorren_initial_meeting(self):
-        f = DialogFeature("Talk to Gorren")
-        f.set_dialog_function(gorren_initial_meeting)
-        def enabled():
-            if player_log['gorren_leaves_church']:
-                return False
-            return not player_log['finish_cemetery_stage_1'] or player_log['defeat_cemetery_church_ambush']
-        f.set_enabled_function(enabled)
-        return f
-
-    def vaelthorne_shrine(self):
-        f = DialogFeature("Rune Pillar")
-        f.set_dialog_function(vaelthorne_rune_pillar)
-        def enabled():
-            return not player_log['shrine_opened']
-        f.set_enabled_function(enabled)
-        return f
-
-    def vaelthorne_crypt_entrance(self):
-        f = DialogFeature("Locked Door")
-        f.set_dialog_function(vaelthorne_crypt_entrance)
-        def enabled():
-            return not player_log['crypt_unlocked']
-        f.set_enabled_function(enabled)
-        return f
-
     def bartender_doran(self):
         f = DialogFeature("Doran the Red")
         f.set_dialog_function(doran_dialogue)
@@ -81,14 +54,42 @@ class FeatureFactory():
         f.set_store(store_builder.tavern_store())
         return f
 
-    def cemetery_church(self):
-        church_area = Area("Eternal Church", None)
-        church_area.add_description("Inside the church, rubble and shattered pews litter the floor, and the smell of damp earth is overwhelming.")
-        church_area.encounters = [
-            encounter_factory.cemetery_second_stage_ambush()
-        ]
-        church_area.features = [
-            self.gorren_initial_meeting()
-        ]
-        f = AreaFeature("Eternal Church", church_area)
+    def gorren_initial_meeting(self):
+        f = DialogFeature("Talk to Gorren")
+        f.set_dialog_function(gorren_initial_meeting)
+        def enabled():
+            if player_log['gorren_leaves_church']:
+                return False
+            return not player_log['finish_cemetery_stage_1'] or player_log['defeat_cemetery_church_ambush']
+        f.set_enabled_function(enabled)
+        return f
+
+    def vaelthorne_shrine(self):
+        f = DialogFeature("Rune Pillar")
+        f.set_dialog_function(vaelthorne_rune_pillar)
+        def enabled():
+            return not player_log['shrine_opened']
+        f.set_enabled_function(enabled)
+        return f
+
+    def vaelthorne_crypt_entrance(self):
+        f = DialogFeature("Locked Door")
+        f.set_dialog_function(vaelthorne_crypt_entrance)
+        def enabled():
+            return not player_log['crypt_unlocked']
+        f.set_enabled_function(enabled)
+        return f
+
+    def gorren_banishment_ritual(self):
+        f = DialogFeature("Perform the Ritual")
+        f.set_dialog_function(gorren_banishment_ritual)
+        def enabled():
+            if not player_log['banishment_ritual_can_start'] \
+                or player_log['finish_cemetery_stage_3']:
+                return False
+            if not player_log['gorren_ritual_interrupted'] \
+                or player_log['soul_tethered_herald_defeated']:
+                return True
+            return False
+        f.set_enabled_function(enabled)
         return f

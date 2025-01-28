@@ -1,8 +1,10 @@
+from random import shuffle
 from world.encounter import Encounter
 from creature.creature_factory import get_creature_factory
 from item.item_factory import get_item_factory
 from main.messenger import get_messenger
 from main.player_log import get_player_log, update_log
+from main.notification import add_notification
 messenger = get_messenger()
 player_log = get_player_log()
 creature_factory = get_creature_factory()
@@ -62,6 +64,7 @@ class EncounterFactory:
             creature_factory.new_rotten_stray(),
             creature_factory.new_lanternbearer()
         )
+        shuffle(e.enemies)
         e.valid_condition = 'finish_cemetery_stage_1'
         e.invalid_condition = 'finish_cemetery_stage_2'
         e.reward_xp = 350
@@ -103,6 +106,7 @@ class EncounterFactory:
             creature_factory.new_bone_servitor(),
             creature_factory.new_bone_servitor()
         )
+        shuffle(e.enemies)
         e.block_exit = True
         e.reward_xp = 500
         return e
@@ -123,11 +127,75 @@ class EncounterFactory:
         )
         def complete(player, _):
             update_log('unhallowed_guardian_defeated', player)
-            messenger.add("The :BLUEVIOLET:Unhallowed Guardian:BLUEVIOLET: collapses into a pillar of :LIGHTGRAY:Salt:LIGHTGRAY:. "
-                          "you feel another dark pulse of :BLUEVIOLET:Necromantic Energy:BLUEVIOLET: "
-                          "rock the crypt around you.")
+            update_log('finish_cemetery_stage_2', player)
+            add_notification(
+                ["The :BLUEVIOLET:Unhallowed Guardian:BLUEVIOLET: collapses into a pillar of :LIGHTGRAY:Salt:LIGHTGRAY:. "
+                "you feel another dark pulse of :BLUEVIOLET:Necromantic Energy:BLUEVIOLET: "
+                "rock the crypt around you.",
+                "The :CYAN:Cemetery:CYAN: is now a dungeon instance!"]
+            )
         e.set_completed_function(complete)
         e.reward_items = [ item_factory.new_obsidian_lantern() ]
         e.block_exit = True
         e.reward_xp = 800
+        return e
+
+    # Cemetery - Third Stage
+    def cemetery_third_stage_1(self):
+        e = Encounter("Attack Bound Remnants")
+        e.add_enemies(
+            creature_factory.new_bound_remnant_sword(),
+            creature_factory.new_bound_remnant_hammer(),
+            creature_factory.new_bound_remnant_axe()
+        )
+        shuffle(e.enemies)
+        e.block_exit = True
+        e.reward_xp = 450
+        e.valid_condition = 'finish_cemetery_stage_2'
+        e.invalid_condition = 'finish_cemetery_stage_3'
+        return e
+
+    def cemetery_third_stage_2(self):
+        e = Encounter("Attack Rotten Strays")
+        e.add_enemies(
+            creature_factory.new_rotten_stray(),
+            creature_factory.new_rotten_stray(),
+            creature_factory.new_rotten_stray(),
+            creature_factory.new_rotten_stray()
+        )
+        e.block_exit = True
+        e.reward_xp = 550
+        e.valid_condition = 'finish_cemetery_stage_2'
+        e.invalid_condition = 'finish_cemetery_stage_3'
+        return e
+
+    def cemetery_third_stage_3(self):
+        e = Encounter("Attack Bound Remnants")
+        e.add_enemies(
+            creature_factory.new_bound_remnant_sword(),
+            creature_factory.new_bound_remnant_sword(),
+            creature_factory.new_bound_remnant_hammer(),
+            creature_factory.new_bound_remnant_axe()
+        )
+        shuffle(e.enemies)
+        e.block_exit = True
+        e.reward_xp = 450
+        e.valid_condition = 'finish_cemetery_stage_2'
+        e.invalid_condition = 'finish_cemetery_stage_3'
+        def complete(player, _):
+            update_log('banishment_ritual_can_start', player)
+        e.set_completed_function(complete)
+        return e
+
+    def soul_tethered_herald(self):
+        e = Encounter("Soul-Tethered Herald")
+        e.add_enemies(
+            creature_factory.new_soul_tethered_herald()
+        )
+        e.block_exit = True
+        e.reward_xp = 800
+        e.valid_condition = 'gorren_ritual_interrupted'
+        def complete(player, _):
+            update_log('soul_tethered_herald_defeated', player)
+        e.set_completed_function(complete)
         return e

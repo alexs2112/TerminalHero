@@ -63,6 +63,7 @@ def default_bolstered_priority(a: Ability, c: Creature, p: Player, e: Encounter)
             out.append(Priority(a, enemy, prio))
     return out
 
+#pylint: disable=line-too-long, import-outside-toplevel
 class AbilityFactory:
     def basic_attack(self, min_damage, max_damage):
         a = Ability("Attack", cooldown=1, cost=1)
@@ -84,7 +85,7 @@ class AbilityFactory:
     def multi_attack(self, min_damage, max_damage, num_attacks=2):
         a = Ability("Multi-Attack", cooldown=1, cost=3)
         a.set_description("Make two melee attacks.")
-        a.set_target_priority(high_offensive_priority)
+        a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             for _ in range(num_attacks):
                 if strength_melee_attack(c, t):
@@ -167,8 +168,12 @@ class AbilityFactory:
                 dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
                 messenger.add(f"{c.name} attacks {t.name} for {dam} damage!")
                 t.take_damage(dam, 'physical')
-                for e in a.get_encounter().enemies:
-                    if t != e:
+                if c.allied:
+                    targets = a.get_encounter().enemies
+                else:
+                    targets = a.player.party
+                for e in targets:
+                    if t != e and t.is_alive():
                         roll = random() * 100
                         success = roll > e.stat('dodge') * 5
                         if success:
@@ -214,16 +219,22 @@ class AbilityFactory:
             messenger.add(f"{c.name} gestures and the corpse of {t.name} explodes!")
             t.has_corpse = False
             multiplier = 1
+            at_least_one = False
             for e in a.get_encounter().enemies:
                 if not e.is_alive() and e.has_corpse:
                     multiplier += 1
-            # Figure out a way to also count dead party members
+            for c in a.player.party:
+                if not c.is_alive() and c.has_corpse:
+                    multiplier += 1
             for e in a.get_encounter().enemies:
                 if e.is_alive() and attack_roll(c) > e.stat('endurance') * 5:
+                    at_least_one = True
                     base_dam = randint(min_damage + c.stat('intelligence'), max_damage + c.stat('intelligence'))
                     dam = base_dam * multiplier
                     messenger.add(f"{e.name} takes {dam}{f' ({base_dam}x{multiplier})' if multiplier > 1 else ''} damage!")
                     e.take_damage(dam, 'dark')
+            if not at_least_one:
+                messenger.add("The explosion failed to hit anything...")
         a.set_effect(effect)
         return a
     def curse_of_decay(self):
@@ -305,8 +316,8 @@ class AbilityFactory:
         a.set_target_priority(priority)
         def effect(c: Creature, t: Creature, a: Area):
             messenger.add(f"{c.name} conjurs :CYAN:Astral Lightning:CYAN:.")
+            at_least_one_hit = False
             for target in a.player.party:
-                at_least_one_hit = False
                 if target.is_alive():
                     success = attack_roll(c) > target.stat('dodge') * 5
                     if success:
@@ -342,8 +353,8 @@ class AbilityFactory:
         a.set_description("Raise your shield, enhancing your armor for a time.")
         def priority(a: Ability, c: Creature, p: Player, e: Encounter):
             if c.armor < c.max_armor() / 0.6:
-                return [ Priority(a, c, 4) ]
-            return [ Priority(a, c, 2) ]
+                return [ Priority(a, c, 3) ]
+            return [ Priority(a, c, 1) ]
         a.set_target_priority(priority)
         def effect(c: Creature, t: Creature, a: Area):
             c.add_effect(effects.create_armor_effect(3, strength))
@@ -398,12 +409,13 @@ class AbilityFactory:
             at_least_one = False
             messenger.add(f"The {c.name} swings their unholy greataxe in a wide arc.")
             for t in a.player.party:
-                success = attack_roll(c) > t.stat('dodge') * 5
-                if success:
-                    at_least_one = True
-                    dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
-                    messenger.add(f"{t.name} is hit for {dam} damage!")
-                    t.take_damage(dam, 'physical')
+                if t.is_alive():
+                    success = attack_roll(c) > t.stat('dodge') * 5
+                    if success:
+                        at_least_one = True
+                        dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
+                        messenger.add(f"{t.name} is hit for {dam} damage!")
+                        t.take_damage(dam, 'physical')
             if not at_least_one:
                 messenger.add("The greataxe slash misses everyone...")
         a.set_effect(effect)
@@ -421,17 +433,90 @@ class AbilityFactory:
             messenger.add(f"The {c.name} calls upon unholy energies.")
             armor = c.stat('intelligence')
             for t in a.player.party:
-                success = random() * 85 > t.stat('will') * 5
-                if success:
-                    at_least_one = True
-                    armor += bonus_armor
-                    dam = randint(min_damage + c.stat('intelligence'), max_damage + c.stat('intelligence'))
-                    messenger.add(f"{t.name} is drained for {dam} dark damage.")
-                    t.take_damage(dam, 'dark')
+                if t.is_alive():
+                    success = random() * 85 > t.stat('will') * 5
+                    if success:
+                        at_least_one = True
+                        armor += bonus_armor
+                        dam = randint(min_damage + c.stat('intelligence'), max_damage + c.stat('intelligence'))
+                        messenger.add(f"{t.name} is drained for {dam} dark damage.")
+                        t.take_damage(dam, 'dark')
             if at_least_one:
                 messenger.add(f"The {c.name} replenishes {armor} armor.")
                 c.gain_armor(armor)
             else:
                 messenger.add("Everybody resists...")
+        a.set_effect(effect)
+        return a
+
+    # Soul-Tethered Herald
+    def dark_tether(self, min_damage, max_damage):
+        a = Ability("Dark Tether", cooldown=3)
+        a.set_description("Tether the target's soul, dealing dark damage and stunning them.")
+        a.set_target_priority(high_offensive_priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            messenger.add(f"{c.name} casts :BLUEVIOLET:Soul Tether:BLUEVIOLET: on {t.name}.")
+            success = attack_roll(c) > t.stat('will') * 5
+            if success:
+                dam = randint(min_damage + c.stat('intelligence'), max_damage + c.stat('intelligence'))
+                messenger.add(f"{t.name} takes {dam} dark damage!")
+                t.take_damage(dam, 'dark')
+                if t.is_alive():
+                    t.add_effect(effects.create_stun_effect(1))
+                    t.action_points -= 2
+            else:
+                messenger.add(f"{t.name} resists.")
+        a.set_effect(effect)
+        return a
+    def necrotic_wave(self, min_damage, max_damage, resist_drain):
+        a = Ability("Necrotic Wave", cooldown=4, cost=3)
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            count = len([alive for alive in p.party if alive.is_alive()])
+            if count > 1:
+                return [ Priority(a, c, 4) ]
+            return [ Priority(a, c, 2) ]
+        a.set_target_priority(priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            messenger.add(f"{c.name} unleashes a wave of :BLUEVIOLET:Necrotic Energy:BLUEVIOLET:.")
+            at_least_one = False
+            for t in a.player.party:
+                if t.is_alive():
+                    success = attack_roll(c) > t.stat('will') * 5
+                    if success:
+                        at_least_one = True
+                        dam = randint(min_damage + c.stat('intelligence'), max_damage + c.stat('intelligence'))
+                        messenger.add(f"{t.name} takes {dam} dark damage!")
+                        t.take_damage(dam, 'dark')
+                        if t.is_alive():
+                            t.add_effect(effects.create_drained_effect(3, resist_drain))
+            if not at_least_one:
+                messenger.add("Everybody resists...")
+        a.set_effect(effect)
+        return a
+    def unholy_summons(self):
+        a = Ability("Unholy Summons", cooldown=3, cost=4)
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            if len(e.enemies) >= 4:
+                return []
+            return [ Priority(a, c, 6) ]
+        a.set_target_priority(priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            from creature.creature_factory import get_creature_factory
+            creature_factory = get_creature_factory()
+            messenger.add(f"{c.name} calls upon dread forces.")
+            i = randint(0,2)
+            if i == 0:
+                s = creature_factory.new_bone_servitor()
+            else:
+                i = randint(0,2)
+                if i == 0:
+                    s = creature_factory.new_bound_remnant_sword()
+                elif i == 1:
+                    s = creature_factory.new_bound_remnant_hammer()
+                else:
+                    s = creature_factory.new_bound_remnant_axe()
+            messenger.add(f"A :BLUEVIOLET:{s.name}:BLUEVIOLET: awakens.")
+            a.get_encounter().add_enemies(s)
+            c.add_effect(effects.create_armor_effect(4, 8))
         a.set_effect(effect)
         return a

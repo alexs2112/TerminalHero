@@ -10,6 +10,9 @@ def elder_varik_dialog():
         return load_dialog('resources/dialog/elder_varik.json')['start']
     return load_dialog('resources/dialog/elder_varik.json')['first_contact']
 
+def doran_dialogue():
+    return load_dialog('resources/dialog/doran_the_red.json')['start']
+
 def gorren_initial_meeting():
     if player_log['defeat_cemetery_church_ambush']:
         return load_dialog('resources/dialog/gorren_initial_meeting.json')['defeated_ambush']
@@ -21,5 +24,7 @@ def vaelthorne_rune_pillar():
 def vaelthorne_crypt_entrance():
     return load_dialog('resources/dialog/vaelthorne_crypt_entrance.json')['start']
 
-def doran_dialogue():
-    return load_dialog('resources/dialog/doran_the_red.json')['start']
+def gorren_banishment_ritual():
+    if player_log['soul_tethered_herald_defeated']:
+        return load_dialog('resources/dialog/gorren_banishment_ritual.json')['victory_start']
+    return load_dialog('resources/dialog/gorren_banishment_ritual.json')['start']

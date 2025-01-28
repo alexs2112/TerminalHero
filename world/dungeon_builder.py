@@ -48,7 +48,8 @@ class DungeonBuilder:
         tree.exits = [ EXIT_RIGHT, EXIT_DOWN ]
         tree.encounters = [
             encounter_factory.cemetery_first_stage_1(),
-            encounter_factory.cemetery_second_stage_1()
+            encounter_factory.cemetery_second_stage_1(),
+            encounter_factory.cemetery_third_stage_1()
         ]
         d.add_room((0,0), tree)
 
@@ -64,7 +65,8 @@ class DungeonBuilder:
         mauses.exits = [ EXIT_LEFT, EXIT_UP ]
         mauses.encounters = [
             encounter_factory.cemetery_first_stage_2(),
-            encounter_factory.cemetery_second_stage_2()
+            encounter_factory.cemetery_second_stage_2(),
+            encounter_factory.cemetery_third_stage_2()
         ]
         d.add_room((1,1), mauses)
 
@@ -79,11 +81,19 @@ class DungeonBuilder:
         church.exits = [ EXIT_LEFT, EXIT_DOWN ]
         church.encounters = [
             # Ambush occurs once the player has exhausted Gorren dialogue
-            encounter_factory.cemetery_second_stage_ambush()
+            encounter_factory.cemetery_second_stage_ambush(),
+
+            # This encounter is set after the player completes the Vaelthorne Crypt
+            encounter_factory.cemetery_third_stage_3(),
+
+            # Set once the ritual is interrupted
+            encounter_factory.soul_tethered_herald()
         ]
         church.features = [
-            #Talking to Gorren finishes Cemetery Stage 1
-            feature_factory.gorren_initial_meeting()
+            # Talking to Gorren finishes Cemetery Stage 1
+            feature_factory.gorren_initial_meeting(),
+
+            feature_factory.gorren_banishment_ritual()
         ]
         d.add_room((1,0), church)
         return d

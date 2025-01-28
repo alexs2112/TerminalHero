@@ -172,6 +172,62 @@ class CreatureFactory:
         c.set_ai(BasicAI(c))
         return c
 
+    def new_bound_remnant_sword(self):
+        c = Creature("Bound Remnant", 3)
+        c.set_sprite(CreatureSprite((36,60,12,12), (12,0,12,12)))
+        c.set_description("Cobbled together with sinew and mismatched bone, its torso wrapped in chains to hold it upright. "
+                          "One arm ends in a jagged, rusted sword fused to the forearm, while the other clutches a battered shield of cracked iron. "
+                          "Scraps of rotted leather dangle from its shoulders, as if mocking the memory of a warrior.")
+        c.set_defensive_stats(base_hp=12, defense=12, dodge=2, will=1, endurance=2)
+        c.set_offensive_stats(speed=3, strength=4, dexterity=2, intelligence=2)
+        c.add_ability(abilities.basic_attack(1,3))
+        c.add_ability(abilities.disarming_strike(1,3))
+        c.add_ability(abilities.bone_shield(5))
+        c.add_ability(abilities.multi_attack(1,3))
+        c.set_ai(BasicAI(c))
+        return c
+
+    def new_bound_remnant_hammer(self):
+        c = Creature("Bound Remnant", 3)
+        c.set_sprite(CreatureSprite((48,60,12,12), (12,0,12,12)))
+        c.set_description("Reinforced with iron rods piercing its limbs, giving it a hulking, unnatural stance. "
+                          "It wields a crude warhammer, the head a block of rust-streaked stone lashed to a thick, splintering wooden shaft.")
+        c.set_defensive_stats(base_hp=14, defense=12, dodge=2, will=1, endurance=2)
+        c.set_offensive_stats(speed=3, strength=4, dexterity=2, intelligence=2)
+        c.add_ability(abilities.basic_attack(1,3))
+        c.add_ability(abilities.heavy_blow(1,3,70))
+        c.add_ability(abilities.multi_attack(1,3))
+        c.set_ai(BasicAI(c))
+        return c
+
+    def new_bound_remnant_axe(self):
+        c = Creature("Bound Remnant", 3)
+        c.set_sprite(CreatureSprite((60,60,12,12), (12,0,12,12)))
+        c.set_description("a lopsided horror, its arms unevenly sized, with the larger one fused to a massive battle axe forged from jagged steel. "
+                          "Its ribcage is exposed, with faintly glowing runes etched into the bone, pulsing with necrotic energy.")
+        c.set_defensive_stats(base_hp=12, defense=14, dodge=2, will=1, endurance=2)
+        c.set_offensive_stats(speed=3, strength=4, dexterity=2, intelligence=2)
+        c.add_ability(abilities.basic_attack(1,3))
+        c.add_ability(abilities.cleave(1,3,3))
+        c.add_ability(abilities.multi_attack(1,3))
+        c.set_ai(BasicAI(c))
+        return c
+
+    def new_soul_tethered_herald(self):
+        c = Creature("Soul-Tethered Herald", 5)
+        c.set_sprite(CreatureSprite((96,48,12,12), (60,12,12,12)))
+        c.set_description("A twisted undead being that was once a priest or holy figure in life. "
+                          "In death, it has become a conduit for the endless waves of necromantic energy that have corrupted the cemetery.")
+        c.set_defensive_stats(base_hp=28, defense=24, dodge=3, will=4, endurance=6)
+        c.set_offensive_stats(speed=4, strength=4, dexterity=2, intelligence=5)
+        c.add_ability(abilities.elemental_attack(1, 3, 'dark', 'intelligence'))
+        c.add_ability(abilities.dark_tether(1,3))
+        c.add_ability(abilities.necrotic_wave(0,2,20))
+        c.add_ability(abilities.unholy_summons())
+        c.action_point_replenish = 4
+        c.set_ai(BasicAI(c))
+        return c
+
     def new_harold(self):
         harold = Creature("Harold", 1)
         harold.set_sprite(CreatureSprite((0,84,12,12), (48,0,12,12)))

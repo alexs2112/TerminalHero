@@ -72,6 +72,9 @@ options:
 - Only show the name of targeted creatures or the active creature
   - This means we don't need to stagger their positions anymore
 - Combat backgrounds: Creatures stand on a floor and have some darkened background art
+- Actual ability animations
+- When there is a lot of text it goes by very quickly, maybe stagger it better with timing if multiple things happen at once?
+  - Move the combat log to the top of the screen?
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
@@ -107,6 +110,8 @@ options:
 - Character screen to view self, [tab] to swap to next character in party
 - Lots of overlap between StoreScreen and InventoryScreen, should be condensed
 - Dialogue Screens have art, backgrounds with the characters speaking
+- Messages Screen: View past messages, we already store 100 of them
+  - To be used in combat, but also during dialogue and main screens
 
 **Creatures**:
 - Get secondary stats and resistances correctly to account for base (str,dex,int) stats
