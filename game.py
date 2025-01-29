@@ -85,7 +85,7 @@ class Game:
         # pylint: disable=import-outside-toplevel
         from screen.dialog_screen import DialogScreen
         from dialog.dialog_parser import load_dialog
-        base_node = load_dialog('resources/dialog/gorren_questline.json')
+        base_node = load_dialog('resources/dialog/test_elder_varik.json')
         self.screen = DialogScreen(self.canvas, None, base_node['start'], self.player)
 
     def dungeon_test(self, dungeon_name, set_revealed, no_enemies):

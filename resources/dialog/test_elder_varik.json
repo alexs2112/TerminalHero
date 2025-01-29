@@ -1,12 +1,13 @@
 {
     "nodes": {
-        "root_node": {
+        "start": {
             "name": "Elder Varik",
             "text": "Welcome, stranger, to the Mining Village of Arad. Not many outsiders come through here. What brings you to our humble village?",
             "children": [
                 ["I heard about a stolen shipment of bloodstone. Is that true?", "2"],
                 ["I'm just passing through. What's this place like?", "3"],
-                ["I'm looking for work. Got anything for me?", "4"]
+                ["I'm looking for work. Got anything for me?", "4"],
+                ["Test Dice Rolling", "test_roll"]
             ]
         },
         "2": {
@@ -168,6 +169,30 @@
             "children": [
                 ["That's unsettling. I'll stay close to the surface.", "None"],
                 ["I'm not afraid of rumors. I'll go deeper.", "None"]
+            ]
+        },
+
+
+
+        "test_roll": {
+            "type": "Roll",
+            "stat": "intelligence",
+            "value": 7,
+            "success": "you_win",
+            "failure": "you_lose"
+        },
+        "you_win": {
+            "name": "System",
+            "text": "You Win!",
+            "children": [
+                ["Okay", "test_roll"]
+            ]
+        },
+        "you_lose": {
+            "name": "System",
+            "text": "You Lose.",
+            "children": [
+                ["Okay", "test_roll"]
             ]
         }
     }

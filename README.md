@@ -58,7 +58,6 @@ options:
 - World Screen should highlight quest areas
 - Quest Log icon at the bottom of the world screen that highlights if changes have been made to the quest log
 - Quest log will probably require scrolling
-- For now, get rid of main + side quests, just have "Quests" and "Complete"
 - Quests ping you when you finish individual steps? Maybe "Quest Log Updated" notification
 
 **Combat**
@@ -118,6 +117,7 @@ options:
 **Creatures**:
 - Get secondary stats and resistances correctly to account for base (str,dex,int) stats
   - ie. getting a creature's fire resistance should include the benefit from having high int
+- Modular companion sprites that draws equipment on top of each other, instead of changing the sprite entirely 
 
 **Saving**
 - This is going to be a bit of an issue

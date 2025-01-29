@@ -18,16 +18,6 @@
             ],
             "condition": "met_elder_varik"
         },
-        "test_int_5": {
-            "name": "System",
-            "text": "You Win!",
-            "children": [
-                ["Yeet", "village_info"]
-            ],
-            "stats": {
-                "intelligence": 5
-            }
-        },
         "village_info": {
             "name": "Elder Varik",
             "text": "This village is a colony of the :YELLOW:Auric Empire:YELLOW: constructed to mine :ORANGE:Bloodstone:ORANGE:. The miners here work hard and are rewarded for it.",

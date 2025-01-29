@@ -5,6 +5,8 @@ messenger = get_messenger()
 
 class DialogNode:
     def __init__(self, name: str, text: str, children):
+        self.type = "Dialog"
+
         # Title of the dialogue box
         self.name: str = name
 
@@ -27,7 +29,7 @@ class DialogNode:
         self.area_option = None
 
         # Stat requirement to show this node, else just greyed out requirement
-        # A dict of stats
+        # A dict of { stat: value }
         self.stat_requirement = None
 
     def set_condition(self, condition: str):
