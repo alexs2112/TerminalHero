@@ -74,7 +74,7 @@ class DungeonScreen(Screen):
                         return self.options[i][1](i)
 
                 elif event.key == pygame.K_l:
-                    return QuestScreen(self.canvas, self.player, self)
+                    return QuestScreen(self.canvas, self)
                 elif event.key == pygame.K_i:
                     return InventoryScreen(self.canvas, self.player, self)
                 elif event.key == pygame.K_c:

@@ -1,20 +1,21 @@
 import pygame
 from screen.screen import Screen
-from creature.player import Player
+from quests.quest_handler import get_quest_handler
 from main.constants import *
 from main.colour import *
 from main.util import fit_text
 
+quest_handler = get_quest_handler()
+
 class QuestScreen(Screen):
-    def __init__(self, canvas, player: Player, prev_screen: Screen):
+    def __init__(self, canvas, prev_screen: Screen):
         super().__init__(canvas)
-        self.player = player
         self.prev_screen = prev_screen
         self.center_point = SCREEN_WIDTH / 3
 
-        self.index = -1
+        self.index = 0
+        self.quest_num = len(quest_handler.get())
         self.selected = self.get_selected_quest()
-        self.quest_num = len(self.player.quests)
 
     def check_events(self, events):
         for event in events:
@@ -40,9 +41,9 @@ class QuestScreen(Screen):
         self.draw_line((self.center_point, 0), (self.center_point, SCREEN_HEIGHT))
 
         y = 16
-        y = self.draw_quest_titles("Quests", self.player.quests, y)
-        if self.player.done_quests:
-            y = self.draw_quest_titles("Completed", self.player.done_quests, y)
+        y = self.draw_quest_titles("Quests", quest_handler.get(), y)
+        if quest_handler.done:
+            y = self.draw_quest_titles("Completed", quest_handler.get_done(), y)
 
         if self.selected:
             self.draw_quest_details(self.selected)
@@ -54,12 +55,12 @@ class QuestScreen(Screen):
             self.write_center_x("[escape] to exit", (x,y), GRAY)
 
     def get_selected_quest(self):
-        for i in range(len(self.player.quests)):
+        for i in range(self.quest_num):
             if i == self.index:
-                return self.player.quests[i]
-        for j in range(len(self.player.done_quests)):
-            if j + len(self.player.quests) == self.index:
-                return self.player.done_quests[j]
+                return quest_handler.get(i)
+        for j in range(len(quest_handler.get_done())):
+            if j + self.quest_num == self.index:
+                return quest_handler.get_done(j)
         return None
 
     def draw_quest_titles(self, header, quests, y):

@@ -57,7 +57,7 @@ class Area:
     def enter_area(self, player):
         player.area = self
         self.player = player
-        update_log(self.entry_log_update, player)
+        update_log(self.entry_log_update)
 
     def finish_encounter(self, encounter: Encounter, player):
         encounter.complete(player, self)

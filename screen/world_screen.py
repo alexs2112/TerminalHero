@@ -59,7 +59,7 @@ class WorldScreen(Screen):
                 elif event.key == pygame.K_RETURN:
                     return AreaScreen(self.canvas, self.area_by_index(self.index), self.world.player, self)
                 elif event.key == pygame.K_l:
-                    return QuestScreen(self.canvas, self.world.player, self)
+                    return QuestScreen(self.canvas, self)
                 elif event.key == pygame.K_i:
                     return InventoryScreen(self.canvas, self.world.player, self)
                 elif event.key == pygame.K_c:

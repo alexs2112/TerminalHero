@@ -46,13 +46,14 @@ def initialize_player_log():
         'food_cheese': False,
     }
 
-def update_log(field, player=None):
+def update_log(field):
+    # pylint: disable=import-outside-toplevel
+    from quests.quest_handler import get_quest_handler
     player_log = get_player_log()
+    quest_handler = get_quest_handler()
     if field in player_log:
         player_log[field] = True
-    if player:
-        for q in player.get_quests():
+        for q in quest_handler.get():
             q.check_completion()
             if q.complete:
-                player.quests.remove(q)
-                player.done_quests.append(q)
+                quest_handler.mark_complete(q)

@@ -91,8 +91,8 @@ class EncounterFactory:
         )
         e.valid_condition = 'shrine_opened'
         e.block_exit = True
-        def complete(player, _):
-            update_log('runebound_stalker_defeated', player)
+        def complete(*_):
+            update_log('runebound_stalker_defeated')
         e.set_completed_function(complete)
         e.reward_items = [ item_factory.new_vaelthorne_seal() ]
         e.reward_xp = 400
@@ -125,9 +125,9 @@ class EncounterFactory:
             creature_factory.new_unhallowed_guardian(),
             creature_factory.new_gravebound_watcher()
         )
-        def complete(player, _):
-            update_log('unhallowed_guardian_defeated', player)
-            update_log('finish_cemetery_stage_2', player)
+        def complete(*_):
+            update_log('unhallowed_guardian_defeated')
+            update_log('finish_cemetery_stage_2')
             add_notification(
                 ["The :BLUEVIOLET:Unhallowed Guardian:BLUEVIOLET: collapses into a pillar of :LIGHTGRAY:Salt:LIGHTGRAY:. "
                 "you feel another dark pulse of :BLUEVIOLET:Necromantic Energy:BLUEVIOLET: "
@@ -182,8 +182,8 @@ class EncounterFactory:
         e.reward_xp = 450
         e.valid_condition = 'finish_cemetery_stage_2'
         e.invalid_condition = 'finish_cemetery_stage_3'
-        def complete(player, _):
-            update_log('banishment_ritual_can_start', player)
+        def complete(*_):
+            update_log('banishment_ritual_can_start')
         e.set_completed_function(complete)
         return e
 
@@ -195,7 +195,7 @@ class EncounterFactory:
         e.block_exit = True
         e.reward_xp = 800
         e.valid_condition = 'gorren_ritual_interrupted'
-        def complete(player, _):
-            update_log('soul_tethered_herald_defeated', player)
+        def complete(*_):
+            update_log('soul_tethered_herald_defeated')
         e.set_completed_function(complete)
         return e

@@ -5,9 +5,11 @@ from world.dungeon_builder import EXIT_RIGHT
 from creature.creature_factory import get_creature_factory
 from creature.player import Player
 from quests.quest_factory import *
+from quests.quest_handler import get_quest_handler
 player_log = get_player_log()
 creature_factory = get_creature_factory()
 encounter_factory = get_encounter_factory()
+quest_handler = get_quest_handler()
 
 def set_met_elder_varik(_):
     player_log['met_elder_varik'] = True
@@ -33,12 +35,12 @@ def unlock_tavern_store(_):
 def unlock_shrine(_):
     update_log('known_shrine')
 
-def add_quest_grave_concerns(player: Player):
+def add_quest_grave_concerns(_):
     player_log['known_cemetery'] = True
     player_log['accepted_grave_concerns'] = True
     q = grave_concerns()
     add_notification([":YELLOW:Quest Received!:YELLOW:", q.name])
-    player.quests.append(q)
+    quest_handler.add(q)
 
 def set_met_gorren(_):
     player_log['met_gorren'] = True

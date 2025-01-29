@@ -60,7 +60,6 @@ options:
 - Quest log will probably require scrolling
 - For now, get rid of main + side quests, just have "Quests" and "Complete"
 - Quests ping you when you finish individual steps? Maybe "Quest Log Updated" notification
-- Decouple quests from the player
 
 **Combat**
 - Abilities show hit chance, damage, and status effects, when selected
@@ -69,6 +68,9 @@ options:
 - Flee combat? Or just reload previous save lol
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
+- Dark Souls weapon scaling? Each weapon scales weapon skills by stats multiplied by some decimal (and those skills also multiply by some decimal)
+  - Magic Weapons increase scaling of spells
+  - Non-magic skills just have high base scaling?
 - Only show the name of targeted creatures or the active creature
   - This means we don't need to stagger their positions anymore
 - Combat backgrounds: Creatures stand on a floor and have some darkened background art
