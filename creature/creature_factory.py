@@ -53,7 +53,7 @@ class CreatureFactory:
 
     def new_patchwork_dead_1(self):
         c = Creature("Patchwork Dead", 0)
-        c.set_sprite(CreatureSprite((0,48,12,12), (12,0,12,12)))
+        c.set_sprite(CreatureSprite((0,36,12,12), (36,0,12,12)))
         c.set_description("Sloppily assembled from discarded remains, this undead barely holds together. "
                           "A missing eye socket leaks dark fluid, and its left arm is attached at an unnatural angle. "
                           "It takes a step, and something wet and rotten falls from its torso, but it shuffles on undeterred.")
@@ -66,7 +66,7 @@ class CreatureFactory:
 
     def new_patchwork_dead_2(self):
         c = Creature("Patchwork Dead", 0)
-        c.set_sprite(CreatureSprite((12,48,12,12), (12,0,12,12)))
+        c.set_sprite(CreatureSprite((12,36,12,12), (36,0,12,12)))
         c.set_description("This crude abomination is hastily sewn together, its seams splitting with every jerky movement. "
                           "Its face is an awful mismatch—one eye wide and unblinking, the other sunken and dead. "
                           "Its mouth stretches too far, pulled open by uneven stitches, revealing a grotesque attempt at a snarl.")
@@ -79,7 +79,7 @@ class CreatureFactory:
 
     def new_patchwork_dead_3(self):
         c = Creature("Patchwork Dead", 0)
-        c.set_sprite(CreatureSprite((24,48,12,12), (12,0,12,12)))
+        c.set_sprite(CreatureSprite((24,36,12,12), (36,0,12,12)))
         c.set_description("This undead creature lurches forward on uneven legs, its body stitched together from mismatched limbs. "
                           "One arm is bloated and bruised, the other little more than bone. "
                           "Its head is loosely attached, lolling to the side as it groans mindlessly.")
@@ -92,7 +92,7 @@ class CreatureFactory:
 
     def new_lanternbearer(self):
         c = Creature("Lanternbearer", 1)
-        c.set_sprite(CreatureSprite((36,48,12,12), (60,0,12,12)))
+        c.set_sprite(CreatureSprite((0,48,12,12), (60,0,12,12)))
         c.set_description("A skeletal figure clutching a rusted, glowing lantern that emits faint, necrotic light. "
                           "It appears to guide the undead forces.")
         c.set_defensive_stats(base_hp=5,defense=3,dodge=1,will=3,endurance=2)
@@ -106,7 +106,7 @@ class CreatureFactory:
 
     def new_rotten_stray(self):
         c = Creature("Rotten Stray", 1)
-        c.set_sprite(CreatureSprite((48,48,12,12), (72,0,12,12)))
+        c.set_sprite(CreatureSprite((72,36,12,12), (48,0,12,12)))
         c.set_description("Decayed canine corpse, animated to guard the cemetery from intruders.")
         c.set_defensive_stats(base_hp=4, defense=3, dodge=3, will=0, endurance=1)
         c.set_offensive_stats(speed=4, strength=2, dexterity=1, intelligence=1)
@@ -119,7 +119,7 @@ class CreatureFactory:
 
     def new_runebound_stalker(self):
         c = Creature("Runebound Stalker", 3)
-        c.set_sprite(CreatureSprite((0,96,12,12), (108,0,12,12)))
+        c.set_sprite(CreatureSprite((0,84,12,12), (108,0,12,12)))
         c.set_description("A massive, four-armed feline-like predator, its body wrapped in broken runic chains that float around it. "
                           "Its face is hidden beneath an imperial mask, engraved with the Vaelthorne crest, but cracks in it's body reveal shifting eyes underneath.")
         c.set_defensive_stats(base_hp=25, defense=10, dodge=2, will=4, endurance=2)
@@ -134,7 +134,7 @@ class CreatureFactory:
 
     def new_bone_servitor(self):
         c = Creature("Bone Servitor", 3)
-        c.set_sprite(CreatureSprite((60,48,12,12), (84,0,12,12)))
+        c.set_sprite(CreatureSprite((0,60,12,12), (72,0,12,12)))
         c.set_description("A skeletal construct assembled with crude weapons and jagged bones.")
         c.set_defensive_stats(base_hp=16,defense=8,dodge=2,will=1,endurance=3)
         c.set_offensive_stats(speed=3, strength=3, dexterity=2, intelligence=2)
@@ -147,7 +147,7 @@ class CreatureFactory:
 
     def new_gravebound_watcher(self):
         c = Creature("Gravebound Watcher", 3)
-        c.set_sprite(CreatureSprite((72,48,12,12), (60,0,12,12)))
+        c.set_sprite(CreatureSprite((12,48,12,12), (60,0,12,12)))
         c.set_description("A rotting figure with glowing eyes and remnants of priestly robes.")
         c.set_defensive_stats(base_hp=12,defense=12,dodge=2,will=4,endurance=2)
         c.set_offensive_stats(speed=4, strength=2, dexterity=3, intelligence=4)
@@ -159,7 +159,7 @@ class CreatureFactory:
 
     def new_unhallowed_guardian(self):
         c = Creature("Unhallowed Guardian", 4)
-        c.set_sprite(CreatureSprite((84,48,12,12), (96,0,12,12)))
+        c.set_sprite(CreatureSprite((12,60,12,12), (84,0,12,12)))
         c.set_description("A massive undead knight, clad in ancient armor that bears the Vaelthorne Crest. Bound to the crypt to defend the Vaelthorne remains.")
         c.set_defensive_stats(base_hp=30, defense=14, dodge=2, will=5, endurance=4)
         c.set_offensive_stats(speed=3, strength=5, dexterity=3, intelligence=5)
@@ -174,7 +174,7 @@ class CreatureFactory:
 
     def new_bound_remnant_sword(self):
         c = Creature("Bound Remnant", 3)
-        c.set_sprite(CreatureSprite((36,60,12,12), (12,0,12,12)))
+        c.set_sprite(CreatureSprite((36,36,12,12), (36,0,12,12)))
         c.set_description("Cobbled together with sinew and mismatched bone, its torso wrapped in chains to hold it upright. "
                           "One arm ends in a jagged, rusted sword fused to the forearm, while the other clutches a battered shield of cracked iron. "
                           "Scraps of rotted leather dangle from its shoulders, as if mocking the memory of a warrior.")
@@ -189,7 +189,7 @@ class CreatureFactory:
 
     def new_bound_remnant_hammer(self):
         c = Creature("Bound Remnant", 3)
-        c.set_sprite(CreatureSprite((48,60,12,12), (12,0,12,12)))
+        c.set_sprite(CreatureSprite((48,36,12,12), (36,0,12,12)))
         c.set_description("Reinforced with iron rods piercing its limbs, giving it a hulking, unnatural stance. "
                           "It wields a crude warhammer, the head a block of rust-streaked stone lashed to a thick, splintering wooden shaft.")
         c.set_defensive_stats(base_hp=14, defense=12, dodge=2, will=1, endurance=2)
@@ -202,7 +202,7 @@ class CreatureFactory:
 
     def new_bound_remnant_axe(self):
         c = Creature("Bound Remnant", 3)
-        c.set_sprite(CreatureSprite((60,60,12,12), (12,0,12,12)))
+        c.set_sprite(CreatureSprite((60,36,12,12), (36,0,12,12)))
         c.set_description("a lopsided horror, its arms unevenly sized, with the larger one fused to a massive battle axe forged from jagged steel. "
                           "Its ribcage is exposed, with faintly glowing runes etched into the bone, pulsing with necrotic energy.")
         c.set_defensive_stats(base_hp=12, defense=14, dodge=2, will=1, endurance=2)
@@ -215,7 +215,7 @@ class CreatureFactory:
 
     def new_soul_tethered_herald(self):
         c = Creature("Soul-Tethered Herald", 5)
-        c.set_sprite(CreatureSprite((96,48,12,12), (60,12,12,12)))
+        c.set_sprite(CreatureSprite((24,48,12,12), (60,12,12,12)))
         c.set_description("A twisted undead being that was once a priest or holy figure in life. "
                           "In death, it has become a conduit for the endless waves of necromantic energy that have corrupted the cemetery.")
         c.set_defensive_stats(base_hp=28, defense=24, dodge=3, will=4, endurance=6)
@@ -230,7 +230,7 @@ class CreatureFactory:
 
     def new_bandit_grunt_1(self):
         c = Creature("Bandit Grunt", 0)
-        c.set_sprite(CreatureSprite((0,72,12,12),(72,12,12,12)))
+        c.set_sprite(CreatureSprite((0,72,12,12),(96,0,12,12)))
         c.set_description("A burly brute with a chipped cudgel, his tunic still bearing the crest of a past employer.")
         c.set_defensive_stats(base_hp=6,defense=5,dodge=2,will=1,endurance=1)
         c.set_offensive_stats(speed=3,strength=3,dexterity=2,intelligence=1)
@@ -242,7 +242,7 @@ class CreatureFactory:
 
     def new_bandit_grunt_2(self):
         c = Creature("Bandit Grunt", 0)
-        c.set_sprite(CreatureSprite((12,72,12,12),(72,12,12,12)))
+        c.set_sprite(CreatureSprite((12,72,12,12),(96,0,12,12)))
         c.set_description("A ragged swordsman with mismatched armor, more used to shaking down travelers than actual combat.")
         c.set_defensive_stats(base_hp=6,defense=7,dodge=2,will=1,endurance=1)
         c.set_offensive_stats(speed=3,strength=3,dexterity=2,intelligence=1)
@@ -252,19 +252,8 @@ class CreatureFactory:
         c.set_ai(BasicAI(c))
         return c
 
-    def new_harold(self):
-        harold = Creature("Harold", 1)
-        harold.set_sprite(CreatureSprite((0,84,12,12), (48,0,12,12)))
-        harold.set_defensive_stats(base_hp=5, defense=4, dodge=1, will=2, endurance=1)
-        harold.set_resistances(physical=20)
-        harold.set_offensive_stats(speed=1, strength=4, dexterity=1, intelligence=1)
-        harold.add_ability(abilities.basic_attack(1, 3))
-        harold.set_ai(BasicAI(harold))
-        return harold
-
     def new_elder_varik(self):
         varik = NPC("Elder Varik", 0)
-        varik.set_sprite(CreatureSprite((12,60,12,12), None))
         varik.dialog_function = elder_varik_dialog
         return varik
 

@@ -44,7 +44,7 @@ options:
 ![Dungeon.png](resources/screenshots/dungeon.png)
 
 - Using a modified version of Urizen 1Bit Tileset: https://vurmux.itch.io/urizen-onebit-tileset
-- Using a modified version of Kenney 1-Big Pack: https://kenney-assets.itch.io/1-bit-pack
+- Using a modified version of Kenney 1-Bit Pack: https://kenney-assets.itch.io/1-bit-pack
 - Using ChatGPT for placeholder dialogue and for fleshing out the game design documents.
 - Using [mermaid.js](https://mermaid.js.org/) to visualize dialog trees using the script found in [dialog/dialog_display.py](dialog/dialog_display.py).
 
