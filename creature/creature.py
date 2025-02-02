@@ -80,9 +80,13 @@ class Creature:
 
     def set_sprite(self, sprite: CreatureSprite):
         self.sprite = sprite
+        self.update_sprite()
 
-    def get_sprite_rect(self):
-        return self.sprite.get(self)
+    def get_sprite(self):
+        return self.sprite.get_sprite(self)
+
+    def update_sprite(self):
+        self.sprite.update(self)
 
     def set_profession(self, profession):
         self.profession = profession
@@ -198,6 +202,7 @@ class Creature:
         if self.equipment[item.slot]:
             old = self.equipment[item.slot]
         self.equipment[item.slot] = item
+        self.update_sprite()
         return old
 
     def set_ai(self, ai):

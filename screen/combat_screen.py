@@ -280,10 +280,10 @@ class CombatScreen(Screen):
         dx, dy = 0, 0
         if creature in self.bump_locations and self.bump_locations[creature]:
             dx,dy = self.bump_locations[creature].get_pos_delta()
-        cr = creature.get_sprite_rect()
         if not creature.is_alive() and not creature.has_corpse:
-            cr = EXPLODED_CORPSE
-        draw_sprite(self.canvas, creature_sprites, cr, cx + dx, cy + dy + y_offset, scale=6)
+            draw_sprite(self.canvas, creature_sprites, EXPLODED_CORPSE, cx + dx, cy + dy + y_offset, scale=6)
+        else:
+            draw_creature(self.canvas, creature.get_sprite(), creature.sprite.dimensions(), (cx+dx, cy+dy+y_offset), scale=6)
 
         cy = y - (FONT_HEIGHT + 2)
         for e in creature.effects:

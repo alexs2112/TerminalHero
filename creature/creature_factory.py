@@ -1,11 +1,11 @@
 from creature.creature import Creature
 from creature.player import Player
 from creature.npc import NPC
-from creature.creature_sprite import CreatureSprite
+from creature.creature_sprite import CreatureSprite, ModularSprite
 from creature.profession_factory import get_profession_factory
-from item.item_factory import get_item_factory
 from creature.level_up_handler import get_level_up_handler
 from creature.ai.basic_ai import BasicAI
+from item.item_factory import get_item_factory
 from combat.ability_factory import get_ability_factory
 from dialog.dialog_loader import *
 
@@ -28,7 +28,7 @@ class CreatureFactory:
     def new_player(self):
         player = Player("Player")
         player.set_description("A fine specimen of an adventurer, if 'fine' means covered in dirt, blood, and questionable life choices.")
-        player.set_sprite(CreatureSprite(-1, (0,0,12,12)))
+        player.set_sprite(ModularSprite((0,24,12,12), (0,0,12,12)))
         player.set_defensive_stats(base_hp=10, defense=0, dodge=2, will=2, endurance=2)
         player.set_offensive_stats(speed=5, strength=3, dexterity=2, intelligence=1)
         #player.equip_item(items.new_sword())
@@ -42,7 +42,7 @@ class CreatureFactory:
 
     def new_companion_1(self):
         c = Creature("Companion", 1)
-        c.set_sprite(CreatureSprite((0,36,12,12), (0,12,12,12)))
+        c.set_sprite(ModularSprite((12,24,12,12), (0,12,12,12)))
         c.set_defensive_stats(base_hp=6, defense=2, dodge=3, will=3, endurance=1)
         c.set_offensive_stats(speed=4, strength=1, dexterity=2, intelligence=3)
         c.add_ability(abilities.basic_attack(1, 2))
@@ -270,7 +270,7 @@ class CreatureFactory:
 
     def new_gorren(self):
         gorren = NPC("Gorren", 1)
-        gorren.set_sprite(CreatureSprite(-1, (0,0,12,12)))
+        gorren.set_sprite(ModularSprite((0,24,12,12), (0,0,12,12)))
         gorren.set_description("A wiry, pale-skinned young man who looks as though he hasn't seen sunlight in years. "
                                "A faint aura of cold seems to cling to him, as if the magic he wields has leeched warmth from his very being.")
         gorren.set_defensive_stats(base_hp=7, defense=0, dodge=2, will=3, endurance=1)
@@ -285,7 +285,7 @@ class CreatureFactory:
 
     def new_rangu(self):
         rangu = Creature("Rangu", 1)
-        rangu.set_sprite(CreatureSprite(-1, (0,0,12,12)))
+        rangu.set_sprite(ModularSprite((24,24,12,12), (24,12,12,12)))
         rangu.set_description("Wrapped in a weathered cloak, Rangu's presence is both imposing and effortless. "
                               "His twin hunting knives rest at his hips, and a musky scent of charred wood clings to him—like a fire that never fully goes out.")
         rangu.set_defensive_stats(base_hp=8, defense=0, dodge=3, will=2, endurance=2)

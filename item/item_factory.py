@@ -16,35 +16,35 @@ class ItemFactory:
     # WEAPONS
     def new_sword(self):
         i = Item("Sword", WEAPON, (0,0,12,12))
-        i.set_equipped_sprite_rect((12,24,12,12))
+        i.set_equipped_sprite_rect((0,0,12,12))
         i.add_ability(abilities.basic_attack(1,3))
         i.add_ability(abilities.disarming_strike(1,3))
         return i
 
     def new_hammer(self):
         i = Item("Hammer", WEAPON, (0,12,12,12))
-        i.set_equipped_sprite_rect((24,24,12,12))
+        i.set_equipped_sprite_rect((0,12,12,12))
         i.add_ability(abilities.basic_attack(1,3))
         i.add_ability(abilities.heavy_blow(1,3,80))
         return i
 
     def new_axe(self):
         i = Item("Axe", WEAPON, (0,24,12,12))
-        i.set_equipped_sprite_rect((36,24,12,12))
+        i.set_equipped_sprite_rect((0,24,12,12))
         i.add_ability(abilities.basic_attack(1,3))
         i.add_ability(abilities.cleave(1,3,0))
         return i
 
     def new_staff(self):
         i = Item("Staff", WEAPON, (0,36,12,12))
-        i.set_equipped_sprite_rect((48,24,12,12))
+        i.set_equipped_sprite_rect((0,36,12,12))
         i.add_ability(abilities.basic_attack(1,2))
         i.set_stats(intelligence=1)
         return i
 
     def new_shortbow(self):
         i = Item("Shortbow", WEAPON, (0,48,12,12))
-        i.set_equipped_sprite_rect((60,24,12,12))
+        i.set_equipped_sprite_rect((0,48,12,12))
         i.add_ability(abilities.dexterity_attack(1,3))
         i.add_ability(abilities.power_shot(2,5))
         return i
@@ -57,6 +57,7 @@ class ItemFactory:
 
     def new_robe(self):
         i = Item("Robe", ARMOR, (0,84,12,12))
+        i.set_equipped_sprite_rect((0,84,12,12))
         i.set_stats(defense=3, dodge=3, speed=1)
         return i
 

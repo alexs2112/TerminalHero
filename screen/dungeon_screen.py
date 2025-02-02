@@ -204,7 +204,7 @@ class DungeonScreen(Screen):
         sx, sy = room.unscaled_position
         px, py = room.player_position[0], room.player_position[1]
         dx, dy = (sx + px - 7) * DUNGEON_SCALE, (sy + py - 8) * DUNGEON_SCALE
-        draw_sprite(self.canvas, creature_sprites, self.player.get_sprite_rect(), x+dx, y+dy, scale=DUNGEON_SCALE)
+        draw_creature(self.canvas, self.player.get_sprite(), self.player.sprite.dimensions(), (x+dx, y+dy), scale=DUNGEON_SCALE)
 
     def update_message(self, message):
         self.message = message

@@ -57,7 +57,7 @@ class EquipItemScreen(Screen):
         self.draw_box((x, y, self.box_width, SCREEN_HEIGHT - 72), colour=c)
         offset_x = (self.box_width - 92) / 2
         self.draw_box((x + offset_x, y + 16, 92, 92), 4)
-        draw_sprite(self.canvas, creature_sprites, creature.get_sprite_rect(), x + offset_x + 10, y + 26, scale=6)
+        draw_creature(self.canvas, creature.get_sprite(), creature.sprite.dimensions(), (x+offset_x+10, y+26), scale=6)
         y += 118
         self.write_center_x(creature.name, (x + self.box_width / 2, y), c)
         y += FONT_HEIGHT + 4

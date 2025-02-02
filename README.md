@@ -120,7 +120,6 @@ options:
 **Creatures**:
 - Get secondary stats and resistances correctly to account for base (str,dex,int) stats
   - ie. getting a creature's fire resistance should include the benefit from having high int
-- Modular companion sprites that draws equipment on top of each other, instead of changing the sprite entirely 
 - Since creature turns are determined based on their abilities, we might not need to give them specific AIs anymore
 
 **Saving**
@@ -134,3 +133,4 @@ options:
   - The frog says random sentences at you in dialogue that sound very wise but are either nonsense or unrelated.
 - I wonder if we should store creatures, encounters, dungeons, areas, all in their own quest packages
 - We probably just don't need the EffectFactory lol
+- Rename draw_sprite to draw_from_rect, rename draw_creature to draw_sprite, handle dest coords better

@@ -46,3 +46,7 @@ def draw_sprite(surface, sprite_sheet, sprite_rect, x, y, scale=4):
     cropped.blit(sprite_sheet, (0,0), sprite_rect)
     scaled = pygame.transform.scale(cropped, (width * scale, height * scale))
     surface.blit(scaled, (x,y))
+
+def draw_creature(surface, sprite, dimensions, destination, scale=4):
+    scaled = pygame.transform.scale(sprite, (dimensions[0] * scale, dimensions[1] * scale))
+    surface.blit(scaled, destination)

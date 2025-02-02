@@ -1,7 +1,7 @@
 import pygame
 from main.constants import *
 from main.colour import *
-from main.util import world_sprites, creature_sprites, draw_sprite
+from main.util import world_sprites, draw_sprite, draw_creature
 from main.clock import get_clock
 from screen.screen import Screen
 from screen.area_screen import AreaScreen
@@ -97,7 +97,7 @@ class WorldScreen(Screen):
             cx, cy = self.pos_by_index(self.index)
             player_x = start_x + cx * (WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2)
             player_y = start_y + cy * (WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2)
-            draw_sprite(self.canvas, creature_sprites, self.world.player.get_sprite_rect(), player_x, player_y, scale=4)
+            draw_creature(self.canvas, self.world.player.get_sprite(), self.world.player.sprite.dimensions(), (player_x, player_y), scale=4)
 
     def pos_by_index(self, index):
         areas = list(self.known_areas)
