@@ -34,3 +34,6 @@ class EffectFactory:
 
     def create_drained_effect(self, duration, strength):
         return DrainedEffect(duration, strength)
+
+    def create_blinded_effect(self, duration, strength):
+        return BlindedEffect(duration, strength)

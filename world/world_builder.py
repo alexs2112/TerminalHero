@@ -94,6 +94,14 @@ class WorldBuilder:
         ]
         self.world.areas[3][5] = area
 
+        area = Area("Caravan Wreckage", (48,0,12,12))
+        area.add_description(
+            "The remains of the caravan smolder in the midday sun—charred wagons overturned, splintered crates spilling their contents across the dirt. "
+            "The stench of burnt wood and flesh lingers in the air, and blood darkens the earth where the traders made their last stand.")
+        area.dungeon = dungeon_builder.new_caravan_wreckage(area)
+        area.condition = 'known_caravan_wreckage'
+        self.world.areas[3][6] = area
+
         area = Area("Plains", (24,24,12,12))
         area.add_description(
             "A monotonous expanse of grass punctuated by small, jagged rocks protruding from the ground. "

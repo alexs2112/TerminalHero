@@ -21,10 +21,10 @@ def get_ability_factory():
 
 # A whole bunch of ability functions that are used many times
 # pylint: disable=unused-argument
-def attack_roll(c: Creature):
-    return random() * (100 + 5 * c.stat('accuracy'))
+def attack_roll(c: Creature, base=100):
+    return random() * (base + 5 * c.stat('accuracy'))
 
-def strength_melee_attack(c: Creature, t: Creature):
+def basic_attack_roll(c: Creature, t: Creature):
     success = attack_roll(c) > t.stat('dodge') * 5
     if not success:
         messenger.add(f"{c.name} misses {t.name} with an attack.")
@@ -70,7 +70,7 @@ class AbilityFactory:
         a.set_description("Melee attack an enemy.")
         a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
-            if strength_melee_attack(c, t):
+            if basic_attack_roll(c, t):
                 dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
                 messenger.add(f"{c.name} attacks {t.name} for {dam} damage!")
                 t.take_damage(dam, 'physical')
@@ -88,7 +88,7 @@ class AbilityFactory:
         a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             for _ in range(num_attacks):
-                if strength_melee_attack(c, t):
+                if basic_attack_roll(c, t):
                     dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
                     messenger.add(f"{c.name} attacks {t.name} for {dam} damage!")
                     t.take_damage(dam, 'physical')
@@ -110,17 +110,15 @@ class AbilityFactory:
         a.set_effect(effect)
         return a
 
-    def flickering_flames(self, base_hit_chance):
-        a = Ability("Flickering Flames", cooldown=3)
-        a.set_description("Attempt to light an enemy on fire.")
+    def dexterity_attack(self, min_damage, max_damage):
+        a = Ability("Attack", cooldown=1, cost=1)
+        a.set_description("Attack an enemy from range.")
         a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
-            success = attack_roll(c) > (100-base_hit_chance) + t.stat('dodge') * 5 - c.stat('intelligence') * 5
-            if success:
-                messenger.add(f"{c.name} casts Flickering Flames.")
-                t.add_effect(effects.create_burning_effect(c.stat('intelligence'), 2 + c.stat('intelligence')))
-            else:
-                messenger.add(f"{c.name} throws flame at {t.name} but misses.")
+            if basic_attack_roll(c,t):
+                dam = randint(min_damage + c.stat('dexterity'), max_damage + c.stat('dexterity'))
+                messenger.add(f"{c.name} attacks {t.name} for {dam} damage!")
+                t.take_damage(dam, 'physical')
         a.set_effect(effect)
         return a
 
@@ -130,7 +128,7 @@ class AbilityFactory:
         a.set_description("A precise hit that lowers your targets Accuracy.")
         a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
-            if strength_melee_attack(c,t):
+            if basic_attack_roll(c,t):
                 dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
                 messenger.add(f"{c.name} attacks {t.name} for {dam} damage!")
                 t.take_damage(dam, 'physical')
@@ -145,7 +143,7 @@ class AbilityFactory:
         a.set_description("Swing a heavy blow to stun your target.")
         a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
-            if strength_melee_attack(c,t):
+            if basic_attack_roll(c,t):
                 dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
                 messenger.add(f"{c.name} heavy attacks {t.name} for {dam} damage!")
                 t.take_damage(dam, 'physical')
@@ -164,7 +162,7 @@ class AbilityFactory:
         a.set_description("Cleave through your target, dealing damage to each other enemy.")
         a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
-            if strength_melee_attack(c,t):
+            if basic_attack_roll(c,t):
                 dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
                 messenger.add(f"{c.name} attacks {t.name} for {dam} damage!")
                 t.take_damage(dam, 'physical')
@@ -181,6 +179,13 @@ class AbilityFactory:
                             messenger.add(f"{e.name} takes {dam} cleave damage!")
                             e.take_damage(dam, 'physical')
         a.set_effect(effect)
+        return a
+
+    # Shortbow
+    def power_shot(self, min_damage, max_damage):
+        a = self.dexterity_attack(min_damage, max_damage)
+        a.name = "Power Shot"
+        a.action_points = 3
         return a
 
     # Soulwarden
@@ -251,6 +256,35 @@ class AbilityFactory:
                 t.add_effect(effects.create_decaying_effect(4, c.stat('intelligence') * 3))
             else:
                 messenger.add(f"{c.name} casts Curse of Decay. {t.name} resists.")
+        a.set_effect(effect)
+        return a
+
+    # Ashen Stalker
+    def blinding_smoke(self, base_accuracy):
+        a = Ability("Blinding Smoke", cooldown=3, cost=1)
+        a.set_description("Conjure a cloud of blinding smoke, reducing the targets accuracy for a turn.")
+        a.set_target_priority(default_offensive_priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            success = attack_roll(c, base_accuracy) > t.stat('dodge') * 5
+            if success:
+                messenger.add(f"{c.name} conjurs a cloud of Blinding Smoke.")
+                t.take_damage(1, 'physical')
+                t.add_effect(effects.create_blinded_effect(1, 60))
+            else:
+                messenger.add(f"{c.name} conjurs a cloud of Blinding Smoke but {t.name} dodges it.")
+        a.set_effect(effect)
+        return a
+    def flickering_flames(self, base_hit_chance):
+        a = Ability("Flickering Flames", cooldown=3)
+        a.set_description("Attempt to light an enemy on fire.")
+        a.set_target_priority(default_offensive_priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            success = attack_roll(c) > (100-base_hit_chance) + t.stat('dodge') * 5 - c.stat('intelligence') * 5
+            if success:
+                messenger.add(f"{c.name} casts Flickering Flames.")
+                t.add_effect(effects.create_burning_effect(c.stat('intelligence'), 2 + c.stat('intelligence')))
+            else:
+                messenger.add(f"{c.name} throws flame at {t.name} but misses.")
         a.set_effect(effect)
         return a
 
@@ -518,5 +552,18 @@ class AbilityFactory:
             messenger.add(f"A :BLUEVIOLET:{s.name}:BLUEVIOLET: awakens.")
             a.get_encounter().add_enemies(s)
             c.add_effect(effects.create_armor_effect(4, 8))
+        a.set_effect(effect)
+        return a
+
+    # Bandits
+    def bolster(self, strength, armour):
+        a = Ability("Bolster", cooldown=3, cost=1)
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            if c.armor < c.max_armor() * 0.5:
+                return [ Priority(a, c, 4) ]
+            return [ Priority(a, c, 0) ]
+        a.set_target_priority(priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            c.add_effect(effects.create_bolstered_effect(3, strength, armour))
         a.set_effect(effect)
         return a

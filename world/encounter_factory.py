@@ -199,3 +199,25 @@ class EncounterFactory:
             update_log('soul_tethered_herald_defeated')
         e.set_completed_function(complete)
         return e
+
+    # Caravan Wreckage
+    def caravan_wreckage_1(self):
+        e = Encounter("Attack Bandits")
+        e.add_enemies(
+            creature_factory.new_bandit_grunt_1(),
+            creature_factory.new_bandit_grunt_2()
+        )
+        e.block_exit = True
+        e.reward_xp = 200
+        return e
+
+    def caravan_wreckage_2(self):
+        e = Encounter("Attack Bandits")
+        e.add_enemies(
+            creature_factory.new_bandit_grunt_1(),
+            creature_factory.new_bandit_grunt_2(),
+            creature_factory.new_bandit_grunt_1()
+        )
+        e.block_exit = True
+        e.reward_xp = 300
+        return e

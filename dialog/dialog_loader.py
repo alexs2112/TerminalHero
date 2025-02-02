@@ -28,3 +28,6 @@ def gorren_banishment_ritual():
     if player_log['soul_tethered_herald_defeated']:
         return load_dialog('resources/dialog/gorren_banishment_ritual.json')['victory_start']
     return load_dialog('resources/dialog/gorren_banishment_ritual.json')['start']
+
+def rangu_initial_meeting():
+    return load_dialog('resources/dialog/rangu_initial_meeting.json')['start']

@@ -4,8 +4,7 @@
             "name": "Elder Varik",
             "text": "Welcome, wanderer, to the Mining Village of Arad. Not many outsiders come through here. What brings you to our humble village?",
             "children": [
-                ["I'm just passing through. What's this place like?", "village_info"],
-                ["TEST", "test_int_5"]
+                ["I'm just passing through. What's this place like?", "village_info"]
             ],
             "function": "set_met_elder_varik"
         },
@@ -13,8 +12,7 @@
             "name": "Elder Varik",
             "text": "Greetings again, wanderer. Is there anything I can help you with?",
             "children": [
-                ["Can you tell me about the village?", "village_info"],
-                ["TEST", "test_int_5"]
+                ["Can you tell me about the village?", "village_info"]
             ],
             "condition": "met_elder_varik"
         },
@@ -102,11 +100,19 @@
         },
         "scales_and_spurs_info": {
             "name": "System",
-            "text": "This is a stub",
+            "text": "An import caravan from the capital has been ambushed just outside of town. There were only a few survivors. We rely on those import caravans to continue doing our work here.",
             "children": [
+                ["Accept Quest", "accept_scales_spurs"],
                 ["Back", "quests"],
                 ["Leave", "None"]
-            ]
+            ],
+            "unless": "accepted_scales_spurs"
+        },
+        "accept_scales_spurs": {
+            "name": "System",
+            "text": "None",
+            "children": [],
+            "function": "add_quest_scales_spurs"
         }
     }
 }

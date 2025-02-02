@@ -220,3 +220,27 @@ class DrainedEffect(Effect):
             self.effect_start(creature)
             return True
         return False
+
+class BlindedEffect(Effect):
+    def __init__(self, duration, strength):
+        super().__init__("Blinded", duration, GRAY)
+        self.strength = strength
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} is blinded.")
+        creature.add_temp_stats(accuracy=-self.strength)
+
+    def effect_turn(self, _):
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        creature.add_temp_stats(accuracy=self.strength)
+
+    def combine(self, creature, other_effect):
+        if other_effect.name == self.name:
+            self.effect_end(creature)
+            self.duration = max(other_effect.duration, self.duration)
+            self.strength = max(other_effect.strength, self.strength)
+            self.effect_start(creature)
+            return True
+        return False

@@ -99,6 +99,8 @@ class Game:
         elif dungeon_name == 'cemetery':
             d = DungeonBuilder().new_arad_cemetery(None)
             add_quest_grave_concerns(self.player)
+        elif dungeon_name == 'caravan':
+            d = DungeonBuilder().new_caravan_wreckage(None)
         else:
             print(f"Error: Could not find dungeon {dungeon_name}")
             exit(1)

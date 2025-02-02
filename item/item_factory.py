@@ -42,6 +42,13 @@ class ItemFactory:
         i.set_stats(intelligence=1)
         return i
 
+    def new_shortbow(self):
+        i = Item("Shortbow", WEAPON, (0,48,12,12))
+        i.set_equipped_sprite_rect((60,24,12,12))
+        i.add_ability(abilities.dexterity_attack(1,3))
+        i.add_ability(abilities.power_shot(2,5))
+        return i
+
     # ARMOR
     def new_leather_armor(self):
         i = Item("Leather Armor", ARMOR, (0,72,12,12))

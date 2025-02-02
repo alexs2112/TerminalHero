@@ -3,7 +3,7 @@ from quests.quest_step import QuestStep
 
 #pylint: disable=line-too-long
 def grave_concerns():
-    q = Quest("Grave Concerns?")
+    q = Quest("Grave Concerns")
     q.set_description("Elder Varik has asked you to aid in finding Gorren, the Soulwarden of Arad and find out what he has been up to.")
 
     step1 = QuestStep("Find Gorren, the Grave-Touched")
@@ -32,4 +32,16 @@ def grave_concerns():
 
     q.steps = [ step1, step2, step3, step4, step5 ]
     q.required_steps = [ step1, step2, step3, step4, step5 ]
+    return q
+
+def scales_and_spurs():
+    q = Quest("Scales and Spurs")
+    q.set_description("Elder Varik notified you of a raided import caravan outside of town.")
+
+    step1 = QuestStep("Investigate the Wreckage")
+    step1.set_description("Examine the area of the caravan wreckage South-West of the Village of Arad.")
+    step1.set_log_completion("met_rangu")
+
+    q.steps = [ step1 ]
+    q.required_steps = [ step1 ]
     return q

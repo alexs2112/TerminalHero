@@ -159,3 +159,52 @@ class DungeonBuilder:
         d.add_room((1,2), ritual_room)
 
         return d
+
+    def new_caravan_wreckage(self, area):
+        d = Dungeon("Caravan Wreckage",
+                    "The remains of the caravan smolder in the midday sun—charred wagons overturned, splintered crates spilling their contents across the dirt. "
+                    "The stench of burnt wood and flesh lingers in the air, and blood darkens the earth where the traders made their last stand.",
+                    area, 2, 2)
+        d.set_unscaled_size(64,64)
+        d.start_player_pos = (0,0)
+
+        entrance = Room("Caravan Wreckage", (1,111,32,32))
+        entrance.add_description("Wagon wheels lie shattered, their cargo scattered and looted. "
+                                 "A strongbox sits pried open and empty, its lock twisted and broken. "
+                                 "Among the wreckage, a few bodies remain—stripped of valuables, left to the scavengers.")
+        entrance.set_unscaled_position(0,0)
+        entrance.set_player_position(16,21)
+        entrance.exits = [ EXIT_RIGHT, EXIT_DOWN ]
+        entrance.exit_dungeon_direction = EXIT_LEFT
+        d.add_room((0,0), entrance)
+
+        raider = Room("Raider Hiding Spot", (1,144,32,32))
+        raider.add_description("The scattered remains of a small camp sit nestled between the boulders. "
+                               "Burnt-out torches, discarded arrow shafts, and a crude firepit long gone cold. "
+                               "Whoever was here has already moved on.")
+        raider.set_unscaled_position(0,32)
+        raider.set_player_position(16,17)
+        raider.exits = [ EXIT_UP ]
+        raider.encounters = [ encounter_factory.caravan_wreckage_1() ]
+        d.add_room((0,1), raider)
+
+        second = Room("Caravan Wreckage", (34,111,32,32))
+        second.add_description("The ground is littered with torn banners and trampled supplies. "
+                               "A set of bloodied footprints lead away from the scene, vanishing into the undergrowth beyond.")
+        second.set_unscaled_position(32,0)
+        second.set_player_position(12,21)
+        second.exits = [ EXIT_LEFT, EXIT_DOWN ]
+        second.encounters = [ encounter_factory.caravan_wreckage_2() ]
+        d.add_room((1,0), second)
+
+        forest = Room("Forest Road", (34,144,32,32))
+        forest.add_description("A thick canopy of leaves sways overhead, casting flickering shadows on the path. "
+                               "The air is thick with the scent of damp earth and old blood, the silence broken only by the distant call of carrion birds. "
+                               "The bandit trail ends here...")
+        forest.set_unscaled_position(32,32)
+        forest.set_player_position(12,17)
+        forest.exits = [ EXIT_UP ]
+        forest.features = [ feature_factory.rangu_initial_meeting() ]
+        d.add_room((1,1), forest)
+
+        return d

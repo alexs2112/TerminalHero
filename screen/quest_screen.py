@@ -14,7 +14,7 @@ class QuestScreen(Screen):
         self.center_point = SCREEN_WIDTH / 3
 
         self.index = 0
-        self.quest_num = len(quest_handler.get())
+        self.quest_num = len(quest_handler.get()) + len(quest_handler.get_done())
         self.selected = self.get_selected_quest()
 
     def check_events(self, events):

@@ -16,6 +16,8 @@ def initialize_player_log():
         'known_tavern': False,
         'known_crypt': False,
         'known_shrine': False,
+        'known_caravan_wreckage': False,
+        'known_bandit_camp': False,
 
         'tavern_open': False,
         'tavern_room_unlocked': False,
@@ -38,6 +40,12 @@ def initialize_player_log():
         'gorren_ritual_interrupted': False,
         'soul_tethered_herald_defeated': False,
         'finish_cemetery_stage_3': False,       # Finished when the player completes the banishment ritual with Gorren
+
+        # Scales and Spurs Questline
+        'accepted_scales_spurs': False,
+        'met_rangu': False,
+        'knows_who_rangu_is': False,
+        'knows_the_black_pyre': False,
 
         # Food Related Logs
         'food_mushroom': False,

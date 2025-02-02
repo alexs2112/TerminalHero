@@ -67,6 +67,7 @@ options:
 - Flee combat? Or just reload previous save lol
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
+  - Make Armor much higher, this doesn't matter to enemies but will make balancing dungeons more manageable
 - Dark Souls weapon scaling? Each weapon scales weapon skills by stats multiplied by some decimal (and those skills also multiply by some decimal)
   - Magic Weapons increase scaling of spells
   - Non-magic skills just have high base scaling?
@@ -82,6 +83,7 @@ options:
   - Prevents pseudo save-scumming by finishing each encounter and returning to tavern to full heal before coming back
 - Only show the big dungeon entrance notification the very first time that dungeon is entered
 - A Bloodstone Pouch that allows the party to full-heal during dungeons. This can increase in size over time. You unlock the pouch the first time you get a companion.
+- Make the dungeon exit an actual feature instead of a funny "walk this way to leave" thing
 
 **World**
 - Draw the world like how dungeons are drawn, instead of using tiles
@@ -95,6 +97,7 @@ options:
 - Show the sprite of the NPC you are talking to
 - Instead of NPCs with dialogue, just make them DialogueFeatures?
 - Coloured text should wrap properly
+- Dialogue player stats: Persuasion, Intimidation, Insight, Investigation, Stealth, History, Survival, Religion
 
 **Items**
 - Magic weapons buff damage of a particular type?
@@ -118,6 +121,7 @@ options:
 - Get secondary stats and resistances correctly to account for base (str,dex,int) stats
   - ie. getting a creature's fire resistance should include the benefit from having high int
 - Modular companion sprites that draws equipment on top of each other, instead of changing the sprite entirely 
+- Since creature turns are determined based on their abilities, we might not need to give them specific AIs anymore
 
 **Saving**
 - This is going to be a bit of an issue
@@ -128,3 +132,5 @@ options:
 - Mouse controls
 - If you have unlocked all 6 companions, you unlock a bonus area of a pond with a magic frog.
   - The frog says random sentences at you in dialogue that sound very wise but are either nonsense or unrelated.
+- I wonder if we should store creatures, encounters, dungeons, areas, all in their own quest packages
+- We probably just don't need the EffectFactory lol

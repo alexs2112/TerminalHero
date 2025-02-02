@@ -93,3 +93,11 @@ class FeatureFactory():
             return False
         f.set_enabled_function(enabled)
         return f
+
+    def rangu_initial_meeting(self):
+        f = DialogFeature("Talk to Rangu")
+        f.set_dialog_function(rangu_initial_meeting)
+        def enabled():
+            return not player_log['met_rangu']
+        f.set_enabled_function(enabled)
+        return f
