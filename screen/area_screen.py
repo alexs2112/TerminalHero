@@ -25,7 +25,7 @@ class AreaScreen(Screen):
         self.features = self.area.enabled_features()
         self.description_lines = fit_text(self.area.get_description())
         self.index = 0
-        self.dialog = {}                        # dict of {index: npc/dialog_feature}
+        self.dialog = {}                        # dict of {index: dialog_feature}
         self.stores = {}                        # dict of {index: store_feature}
         self.features = {}                      # dict of {index: function_feature}
         self.options = self.define_options()    # (text, function, <colour_str>)
@@ -45,16 +45,6 @@ class AreaScreen(Screen):
                 opts.append((node.area_option, self.start_dialog, 'yellow'))
             else:
                 opts.append((f.name, self.start_dialog, 'yellow'))
-
-        for npc in self.area.npcs:
-            if npc.has_dialog():
-                self.dialog[i] = npc
-                i += 1
-                node = npc.get_dialog_node()
-                if node.area_option:
-                    opts.append((node.area_option, self.start_dialog, 'cyan'))
-                else:
-                    opts.append((f"Speak to {npc.name}", self.start_dialog, 'cyan'))
 
         for f in self.area.get_function_features():
             self.features[i] = f

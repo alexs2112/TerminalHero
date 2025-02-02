@@ -59,9 +59,6 @@ class Creature:
         for slot in ITEM_SLOTS:
             self.equipment[slot] = None
 
-        # For NPCs
-        self.dialog_function = None
-
         # Combat Status effects
         self.effects: list[Effect] = []
         self.skip_next_turn = False

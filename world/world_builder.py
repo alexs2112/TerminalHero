@@ -27,7 +27,7 @@ class WorldBuilder:
             "The Mining Village of Arad is a harsh, desolate settlement, built around the remnants of a fallen Bloodstone meteorite. "
             "This rare and magical gemstone, prized for its powerful healing properties, is the lifeblood of the village - and its curse. "
             "Life in Arad is bleak, with the villagers, known as Meldspawn, toiling endlessly in the dangerous mines to meet the Capital's unrelenting demands.")
-        area.npcs = [creature_factory.new_elder_varik()]
+        area.features = [ feature_factory.elder_varik() ]
         self.world.areas[3][4] = area
 
         area = Area("The Cemetery", (24,0,12,12))

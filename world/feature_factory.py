@@ -19,8 +19,13 @@ def get_feature_factory():
     return _feature_factory
 
 class FeatureFactory():
+    def elder_varik(self):
+        f = DialogFeature("Speak to Elder Varik")
+        f.set_dialog_function(elder_varik_dialog)
+        return f
+
     def bartender_doran(self):
-        f = DialogFeature("Doran the Red")
+        f = DialogFeature("Speak to Doran the Red")
         f.set_dialog_function(doran_dialogue)
         def enabled():
             return player_log['tavern_open']
@@ -55,7 +60,7 @@ class FeatureFactory():
         return f
 
     def gorren_initial_meeting(self):
-        f = DialogFeature("Talk to Gorren")
+        f = DialogFeature("Speak to Gorren")
         f.set_dialog_function(gorren_initial_meeting)
         def enabled():
             if player_log['gorren_leaves_church']:
@@ -95,7 +100,7 @@ class FeatureFactory():
         return f
 
     def rangu_initial_meeting(self):
-        f = DialogFeature("Talk to Rangu")
+        f = DialogFeature("Speak to Rangu")
         f.set_dialog_function(rangu_initial_meeting)
         def enabled():
             return not player_log['met_rangu']

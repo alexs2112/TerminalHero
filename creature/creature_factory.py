@@ -1,6 +1,5 @@
 from creature.creature import Creature
 from creature.player import Player
-from creature.npc import NPC
 from creature.creature_sprite import CreatureSprite, ModularSprite
 from creature.profession_factory import get_profession_factory
 from creature.level_up_handler import get_level_up_handler
@@ -252,13 +251,8 @@ class CreatureFactory:
         c.set_ai(BasicAI(c))
         return c
 
-    def new_elder_varik(self):
-        varik = NPC("Elder Varik", 0)
-        varik.dialog_function = elder_varik_dialog
-        return varik
-
     def new_gorren(self):
-        gorren = NPC("Gorren", 1)
+        gorren = Creature("Gorren", 1)
         gorren.set_sprite(ModularSprite((0,24,12,12), (0,0,12,12)))
         gorren.set_description("A wiry, pale-skinned young man who looks as though he hasn't seen sunlight in years. "
                                "A faint aura of cold seems to cling to him, as if the magic he wields has leeched warmth from his very being.")

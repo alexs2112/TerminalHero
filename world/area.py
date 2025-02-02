@@ -1,4 +1,3 @@
-from creature.npc import NPC
 from world.encounter import Encounter
 from world.feature import *
 from main.player_log import get_player_log, update_log
@@ -10,7 +9,6 @@ class Area:
         self.name: str = name
         self.sprite_rect: str = sprite_rect
         self.player = None
-        self.npcs: list[NPC] = []
         self.encounters: list[Encounter] = []
         self.features: list[Feature] = []
         self.dungeon = None
