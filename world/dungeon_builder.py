@@ -208,3 +208,48 @@ class DungeonBuilder:
         d.add_room((1,1), forest)
 
         return d
+
+    def new_bandit_camp(self, area):
+        d = Dungeon("Bandit Camp",
+                    "placeholder text",
+                    area, 2, 3)
+        d.set_unscaled_size(64, 96)
+        d.start_player_pos = (1,0)
+
+        entrance = Room("Hidden Path", (100,78,32,32))
+        entrance.add_description("placeholder text")
+        entrance.set_unscaled_position(32,0)
+        entrance.set_player_position(18,14)
+        entrance.exits = [ EXIT_LEFT ]
+        entrance.exit_dungeon_direction = EXIT_UP
+        d.add_room((1,0), entrance)
+
+        watchtower = Room("Makeshift Watchtower", (67,78,32,32))
+        watchtower.add_description("placeholder text")
+        watchtower.set_unscaled_position(0,0)
+        watchtower.set_player_position(16,14)
+        watchtower.exits = [ EXIT_DOWN, EXIT_RIGHT ]
+        d.add_room((0,0), watchtower)
+
+        pool = Room("Bandit Camp", (67,111,32,32))
+        pool.add_description("placeholder text")
+        pool.set_unscaled_position(0,32)
+        pool.set_player_position(16,16)
+        pool.exits = [ EXIT_UP, EXIT_RIGHT, EXIT_DOWN ]
+        d.add_room((0,1), pool)
+
+        fire = Room("Bandit Camp", (100,111,32,32))
+        fire.add_description("placeholder text")
+        fire.set_unscaled_position(32,32)
+        fire.set_player_position(12,16)
+        fire.exits = [ EXIT_LEFT ]
+        d.add_room((1,1), fire)
+
+        boss = Room("Bandit Camp", (67,144,32,32))
+        boss.add_description("placeholder text")
+        boss.set_unscaled_position(0,64)
+        boss.set_player_position(16,14)
+        boss.exits = [ EXIT_UP ]
+        d.add_room((0,2), boss)
+
+        return d

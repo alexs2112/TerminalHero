@@ -68,9 +68,8 @@ options:
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
   - Make Armor much higher, this doesn't matter to enemies but will make balancing dungeons more manageable
-- Dark Souls weapon scaling? Each weapon scales weapon skills by stats multiplied by some decimal (and those skills also multiply by some decimal)
-  - Magic Weapons increase scaling of spells
-  - Non-magic skills just have high base scaling?
+- Dark Souls weapon scaling on abilities? Each ability scales with stats multiplied by some decimal
+  - Each ability has a `get_damage(creature, target)` to calculate min and max damage given the owner and the target
 - Only show the name of targeted creatures or the active creature
   - This means we don't need to stagger their positions anymore
 - Combat backgrounds: Creatures stand on a floor and have some darkened background art
@@ -95,9 +94,9 @@ options:
     - Mark the NPC if they have unread dialogue
     - Arrow-key control for dialogue options
 - Show the sprite of the NPC you are talking to
-- Instead of NPCs with dialogue, just make them DialogueFeatures?
 - Coloured text should wrap properly
 - Dialogue player stats: Persuasion, Intimidation, Insight, Investigation, Stealth, History, Survival, Religion
+- Dialogue that loads directly into combat or other screens
 
 **Items**
 - Magic weapons buff damage of a particular type?
@@ -121,6 +120,7 @@ options:
 - Get secondary stats and resistances correctly to account for base (str,dex,int) stats
   - ie. getting a creature's fire resistance should include the benefit from having high int
 - Since creature turns are determined based on their abilities, we might not need to give them specific AIs anymore
+- Add Wisdom as another primary stat that increases non-physical resistances
 
 **Saving**
 - This is going to be a bit of an issue
