@@ -1,0 +1,1 @@
+A grizzled ex-mercenary with a scar over one eye, now serving drinks and stories to weary miners. He gets his nickname, "The Red", as parts of his body are permanently stained a deep red hue from using large amounts of Bloodstone during his mercenary days.

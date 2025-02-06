@@ -60,7 +60,7 @@ class CreatureScreen(Screen):
         y += FONT_HEIGHT + 16
 
     def draw_combat_stats(self, x, y):
-        self.draw_box((x, y, 224, 174))
+        self.draw_box((x, y, 224, 196))
         x += 10
         y += 10
         for stat in [
@@ -68,6 +68,7 @@ class CreatureScreen(Screen):
             ("Strength", self.creature.stat('strength')),
             ("Dexterity", self.creature.stat('dexterity')),
             ("Intelligence", self.creature.stat('intelligence')),
+            ("Wisdom", self.creature.stat('wisdom')),
             ("Dodge", self.creature.stat('dodge')),
             ("Will", self.creature.stat('will')),
             ("Endurance", self.creature.stat('endurance'))

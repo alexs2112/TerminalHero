@@ -27,18 +27,19 @@ class Game:
             messenger.set_verbose()
         messenger.clear()
 
-        self.player = creature_factory.new_player()
+        if self.args.profession:
+            prof = self.args.profession
+        else:
+            prof = 'champion'
+        self.player = creature_factory.new_player(prof)
         self.world = self.generate_world()
         self.world.player = self.player
+
         if self.args.stats:
             for s in self.player.stats:
                 self.player.stats[s] += 30
             self.player.hp = self.player.max_hp()
             self.player.armor = self.player.max_armor()
-
-        if self.args.companion:
-            # This will currently break the first quest when you get a second companion
-            self.player.party.append(creature_factory.new_companion_1())
 
         if args_list.all:
             # pylint: disable=import-outside-toplevel,ungrouped-imports
@@ -133,7 +134,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true', help='log debug and info statements')
     parser.add_argument('-d', '--dialog', action='store_true', help='test dialog')
-    parser.add_argument('-c', '--companion', action='store_true', help='test a companion in the player party')
+    parser.add_argument('-p', '--profession', help='set the starting profession of the player')
     parser.add_argument('-a', '--all', action='store_true', help='enable "all" player_log fields')
     parser.add_argument('-l', '--log', help='comma separated list of player_log entries to start with')
     parser.add_argument('-u', '--dungeon', help='test dungeon display by name')

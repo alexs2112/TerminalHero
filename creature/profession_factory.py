@@ -16,11 +16,32 @@ class ProfessionFactory:
         # We don't want enemy professions to add abilities and stats as those should be manually assigned
         return Profession(name)
 
-    def new_test_warrior(self):
-        p = Profession("Test Warrior")
+    def champion(self):
+        p = Profession("Champion")
         p.set_stats(strength=2, endurance=1)
         p.add_ability(abilities.multi_attack(1,3))
-        p.add_ability(abilities.bolster(1,4))
+        p.add_ability(abilities.bolster(1,5))
+        return p
+
+    def dualist(self):
+        p = Profession("Dualist")
+        p.set_stats(strength=1, dexterity=1, dodge=1, speed=1)
+        p.add_ability(abilities.defensive_strike(1,3))
+        p.add_ability(abilities.challenge(2, 30))
+        return p
+
+    def elementalist(self):
+        p = Profession("Elementalist")
+        p.set_stats(intelligence=2, will=2, dodge=1)
+        p.add_ability(abilities.rainstorm())
+        p.add_ability(abilities.lightning_strike(0,2,90))
+        return p
+
+    def luminarch(self):
+        p = Profession("Luminarch")
+        p.set_stats(strength=1, wisdom=1, endurance=2)
+        p.add_ability(abilities.rallying_cry())
+        p.add_ability(abilities.enchant_weapon())
         return p
 
     def soulwarden(self):

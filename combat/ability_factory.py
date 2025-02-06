@@ -4,6 +4,7 @@ from creature.player import Player
 from creature.ai.priority import Priority
 from combat.ability import Ability
 from combat.effect_factory import get_effect_factory
+from combat.effect_subclasses import *
 from world.area import Area
 from world.encounter import Encounter
 from main.messenger import get_messenger
@@ -22,7 +23,7 @@ def get_ability_factory():
 # A whole bunch of ability functions that are used many times
 # pylint: disable=unused-argument
 def attack_roll(c: Creature, base=100):
-    return random() * (base + 5 * c.stat('accuracy'))
+    return random() * (base + c.stat('accuracy'))
 
 def basic_attack_roll(c: Creature, t: Creature):
     success = attack_roll(c) > t.stat('dodge') * 5
@@ -37,6 +38,12 @@ def default_offensive_priority(a: Ability, c: Creature, p: Player, e: Encounter)
         if a.can_target(c, ally):
             # Priority 1 of using this ability on that ally
             out.append(Priority(a, ally, 1))
+
+    for e in c.effects:
+        if e.name == "Challenged":
+            for prio in out:
+                if prio.target == e.creature:
+                    prio.priority += 2
     return out
 
 def high_offensive_priority(a: Ability, c: Creature, p: Player, e: Encounter):
@@ -140,7 +147,7 @@ class AbilityFactory:
     # Hammer
     def heavy_blow(self, min_damage, max_damage, base_stun_chance):
         a = Ability("Heavy Blow", cooldown=2, cost=2)
-        a.set_description("Swing a heavy blow to stun your target.")
+        a.set_description("Swing a heavy blow to daze your target.")
         a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
             if basic_attack_roll(c,t):
@@ -150,9 +157,9 @@ class AbilityFactory:
                 if t.is_alive():
                     roll = random() * 100
                     if roll < base_stun_chance - t.stat('endurance') * 5 + c.stat('strength') * 5:
-                        t.add_effect(effects.create_stun_effect(1))
+                        t.add_effect(DazedEffect(1))
                     else:
-                        messenger.add(f"{t.name} shrugs off the stun.")
+                        messenger.add(f"{t.name} shrugs off the daze.")
         a.set_effect(effect)
         return a
 
@@ -202,6 +209,111 @@ class AbilityFactory:
         a.set_target_priority(priority)
         def effect(c: Creature, t: Creature, a: Area):
             c.add_effect(effects.create_bolstered_effect(3, strength, armour))
+        a.set_effect(effect)
+        return a
+
+    # Dualist
+    def defensive_strike(self, min_damage, max_damage):
+        a = Ability("Defensive Strike", cooldown=2, cost=2)
+        a.set_description("Strike with your weapon and recover some armor.")
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            out = default_offensive_priority(a,c,p,e)
+            if c.armor < c.max_armor() * 0.6:
+                i = 2
+            else:
+                i = -1
+            for prio in out:
+                prio.priority += i
+            return out
+        a.set_target_priority(priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            if basic_attack_roll(c,t):
+                dam = randint(min_damage + c.stat('strength'), max_damage + c.stat('strength'))
+                messenger.add(f"{c.name} strikes {t.name} for {dam} damage!")
+                t.take_damage(dam, 'physical')
+                diff = c.gain_armor(c.stat('dexterity') + c.level)
+                messenger.add(f"{c.name} recovers {diff} armor.")
+        a.set_effect(effect)
+        return a
+    def challenge(self, duration, strength):
+        a = Ability("Challenge", cooldown=4, cost=1)
+        a.set_description("Challenge the target, incentivizing them to attack you while dealing bonus damage to them.")
+        def effect(c: Creature, t: Creature, a: Area):
+            t.add_effect(ChallengedEffect(duration, strength, c))
+        a.set_effect(effect)
+        return a
+
+    # Elementalist
+    def rainstorm(self):
+        a = Ability("Rainstorm", cooldown=3, cost=2)
+        a.set_description("Call upon a torrent of rain, reducing armor of all enemies and making them Wet.")
+        def can_target(c: Creature, o: Creature):
+            return o == c
+        a.set_can_target(can_target)
+        def effect(c: Creature, t: Creature, a: Area):
+            messenger.add(f"{c.name} calls down a torrent of rain.")
+            at_least_one = False
+            for e in a.get_encounter().enemies:
+                if e.is_alive() and attack_roll(c) > e.stat('endurance') * 5:
+                    at_least_one = True
+                    e.add_effect(WetEffect(2, c.stat('intelligence') - 2, 20))
+            if not at_least_one:
+                messenger.add("Everyone resists.")
+        a.set_effect(effect)
+        return a
+    def lightning_strike(self, min_damage, max_damage, base_effect_chance):
+        a = Ability("Lightning Strike", cooldown=3, cost=2)
+        a.set_description("Strike your target with lightning, shocking them.")
+        a.set_target_priority(default_offensive_priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            if basic_attack_roll(c,t):
+                base_dam = randint(min_damage + c.stat('intelligence'), max_damage + c.stat('intelligence'))
+                if t.is_alive():
+                    # If wet, deal bonus damage and stun them
+                    if t.has_effect("Wet"):
+                        dam = base_dam + c.level * 2
+                        messenger.add(f"{c.name} blasts {t.name} for {dam} ({base_dam} + {c.level * 2}) Air damage!")
+                        t.take_damage(dam, 'air')
+                        success = True
+                    else:
+                        messenger.add(f"{c.name} blasts {t.name} for {base_dam} Air damage!")
+                        t.take_damage(base_dam, 'air')
+                        roll = random() * 100
+                        success = roll < base_effect_chance - t.stat('endurance') * 5
+                    if t.is_alive():
+                        if success:
+                            t.add_effect(ShockEffect(1))
+                        else:
+                            messenger.add(f"{t.name} shrugs off the shock.")
+        a.set_effect(effect)
+        return a
+
+    # Luminarch
+    def rallying_cry(self):
+        a = Ability("Rallying Cry", cooldown=4, cost=2)
+        a.set_description("Rally your companions, bolstering each party member.")
+        def can_target(c: Creature, o: Creature):
+            return o == c
+        a.set_can_target(can_target)
+        def effect(c: Creature, t: Creature, a: Area):
+            # For now, just assume only a party member will ever use this
+            strength = int((c.level + 1) / 2)
+            armor = c.stat('wisdom')
+            for p in a.player.party:
+                if p.is_alive():
+                    p.add_effect(BolsteredEffect(3, strength, armor))
+        a.set_effect(effect)
+        return a
+    def enchant_weapon(self):
+        a = Ability("Enchant Weapon", cooldown=4, cost=1)
+        a.set_description("Enchant your weapon with holy light, causing your attacks to deal bonus damage based on your Wisdom.")
+        def can_target(c: Creature, o: Creature):
+            return o == c
+        a.set_can_target(can_target)
+        def effect(c: Creature, t: Creature, a: Area):
+            # We will need to fix this when we change ability scaling
+            # For now, just increase strength by wisdom
+            t.add_effect(EnchantedWeaponEffect(2, c.stat('wisdom')))
         a.set_effect(effect)
         return a
 
@@ -260,7 +372,7 @@ class AbilityFactory:
         a.set_effect(effect)
         return a
     def curse_of_decay(self):
-        a = Ability("Curse of Decay", cooldown=4)
+        a = Ability("Curse of Decay", cooldown=4, cost=1)
         a.set_description("Target creature gains the Decaying status, reducing their resistance every turn.")
         a.set_target_priority(default_offensive_priority)
         def effect(c: Creature, t: Creature, a: Area):
@@ -391,8 +503,7 @@ class AbilityFactory:
                 messenger.add(f"{c.name} lashes out with :CYAN:Runic Chains:CYAN: at {t.name} for {dam} damage!")
                 t.take_damage(dam, 'physical')
                 if t.is_alive():
-                    t.action_points -= 2
-                    t.add_effect(effects.create_stun_effect(1))
+                    t.add_effect(StunEffect(1))
             else:
                 messenger.add(f"{c.name} lashes out with :CYAN:Runic Chains:CYAN: but misses {t.name}")
         a.set_effect(effect)
@@ -441,7 +552,7 @@ class AbilityFactory:
                 t.take_damage(dam, 'dark')
                 if t.is_alive():
                     if random() * 100 < stun_chance:
-                        t.add_effect(effects.create_stun_effect(1))
+                        t.add_effect(StunEffect(1))
                     else:
                         messenger.add(f"{t.name} resists the chains effects.")
             else:
@@ -513,7 +624,7 @@ class AbilityFactory:
                 messenger.add(f"{t.name} takes {dam} dark damage!")
                 t.take_damage(dam, 'dark')
                 if t.is_alive():
-                    t.add_effect(effects.create_stun_effect(1))
+                    t.add_effect(StunEffect(1))
                     t.action_points -= 2
             else:
                 messenger.add(f"{t.name} resists.")

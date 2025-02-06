@@ -3,6 +3,7 @@ from main.colour import *
 from main.messenger import get_messenger
 messenger = get_messenger()
 
+# Take fire damage at the start of the effect and at the start of each turn
 class BurningEffect(Effect):
     def __init__(self, duration, strength):
         super().__init__("Burning", duration, ORANGE)
@@ -29,6 +30,7 @@ class BurningEffect(Effect):
             return True
         return False
 
+# Drastically reduce your accuracy
 class DisarmedEffect(Effect):
     def __init__(self, duration, strength):
         super().__init__("Disarmed", duration, DIMGRAY)
@@ -51,16 +53,17 @@ class DisarmedEffect(Effect):
             return True
         return False
 
-class StunEffect(Effect):
+# Skip your turn, still gain AP
+class DazedEffect(Effect):
     def __init__(self, duration):
-        super().__init__("Stunned", duration, CYAN)
+        super().__init__("Dazed", duration, GRAY)
 
     def effect_start(self, creature):
-        messenger.add(f"{creature.name} is :CYAN:stunned:CYAN:.")
+        messenger.add(f"{creature.name} is :GRAY:Dazed:GRAY:.")
         # skip_next_turn gets reset at the start of a creatures turn, doesn't need to go here
 
     def effect_turn(self, creature):
-        messenger.add(f"{creature.name} is :CYAN:stunned:CYAN:.")
+        messenger.add(f"{creature.name} is :GRAY:Dazed:GRAY:.")
         creature.skip_next_turn = True
         self.duration -= 1
 
@@ -73,6 +76,52 @@ class StunEffect(Effect):
             return True
         return False
 
+# Gain no AP this turn
+class ShockEffect(Effect):
+    def __init__(self, duration):
+        super().__init__("Shocked", duration, CYAN)
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} is :CYAN:Shocked:CYAN:.")
+        # skip_next_turn gets reset at the start of a creatures turn, doesn't need to go here
+
+    def effect_turn(self, creature):
+        messenger.add(f"{creature.name} is :CYAN:Shocked:CYAN:.")
+
+        # There is probably a better way to do this, but this works for now
+        creature.action_points -= creature.action_point_replenish
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        messenger.add(f"{creature.name} recovers from the shock.")
+
+# Skip your turn and gain no AP
+class StunEffect(Effect):
+    def __init__(self, duration):
+        super().__init__("Stunned", duration, CYAN)
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} is :CYAN:Stunned:CYAN:.")
+        # skip_next_turn gets reset at the start of a creatures turn, doesn't need to go here
+
+    def effect_turn(self, creature):
+        messenger.add(f"{creature.name} is :CYAN:Stunned:CYAN:.")
+        creature.skip_next_turn = True
+
+        # There is probably a better way to do this, but this works for now
+        creature.action_points -= creature.action_point_replenish
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        messenger.add(f"{creature.name} recovers from the stun.")
+
+    def combine(self, _, other_effect):
+        if other_effect.name == self.name:
+            self.duration += other_effect.duration
+            return True
+        return False
+
+# Reduce all resistances by an increasing amount every turn
 class DecayingEffect(Effect):
     def __init__(self, duration, strength):
         super().__init__("Decaying", duration, BLUEVIOLET)
@@ -115,6 +164,7 @@ class DecayingEffect(Effect):
             return True
         return False
 
+# Buff your offensive stats and recover some armor
 class BolsteredEffect(Effect):
     def __init__(self, duration, str_buff, armor_buff):
         super().__init__("Bolstered", duration, LIGHTGRAY)
@@ -127,7 +177,8 @@ class BolsteredEffect(Effect):
         creature.add_temp_stats(
             strength=self.str_buff,
             dexterity=self.str_buff,
-            intelligence=self.str_buff
+            intelligence=self.str_buff,
+            wisdom=self.str_buff
         )
 
     def effect_turn(self, _):
@@ -137,7 +188,8 @@ class BolsteredEffect(Effect):
         creature.add_temp_stats(
             strength=-self.str_buff,
             dexterity=-self.str_buff,
-            intelligence=-self.str_buff
+            intelligence=-self.str_buff,
+            wisdom=-self.str_buff
         )
 
     def combine(self, creature, other_effect):
@@ -150,6 +202,7 @@ class BolsteredEffect(Effect):
             return True
         return False
 
+# Take physical damage every turn, ignoring armor
 class BleedEffect(Effect):
     def __init__(self, duration, strength):
         super().__init__("Bleeding", duration, RED)
@@ -173,6 +226,7 @@ class BleedEffect(Effect):
             return True
         return False
 
+# Boosts your armor, can go past your usual maximum
 class ArmorEffect(Effect):
     def __init__(self, duration, strength):
         super().__init__("Armored", duration, LIGHTGRAY)
@@ -197,6 +251,7 @@ class ArmorEffect(Effect):
             return True
         return False
 
+# Reduce resistance to dark damage
 class DrainedEffect(Effect):
     def __init__(self, duration, strength):
         super().__init__("Drained", duration, BLUEVIOLET)
@@ -221,6 +276,7 @@ class DrainedEffect(Effect):
             return True
         return False
 
+# Reduce your accuracy
 class BlindedEffect(Effect):
     def __init__(self, duration, strength):
         super().__init__("Blinded", duration, GRAY)
@@ -241,6 +297,93 @@ class BlindedEffect(Effect):
             self.effect_end(creature)
             self.duration = max(other_effect.duration, self.duration)
             self.strength = max(other_effect.strength, self.strength)
+            self.effect_start(creature)
+            return True
+        return False
+
+# Higher priority to the target that challenged them, the challenger deals additional percentage damage to this creature
+class ChallengedEffect(Effect):
+    # Checked when calculating default_offensive_priority
+    def __init__(self, duration, strength, creature):
+        super().__init__("Challenged", duration, YELLOW)
+        self.strength = strength
+        self.creature = creature
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} is :YELLOW:Challenged:YELLOW: by {self.creature.name}")
+
+    def effect_turn(self, _):
+        self.duration -= 1
+
+    def combine(self, creature, other_effect):
+        if other_effect.name == self.name:
+            self.effect_end(creature)
+            self.duration = other_effect.duration
+            self.strength = other_effect.strength
+            self.creature = other_effect.creature
+            self.effect_start(creature)
+            return True
+        return False
+
+# Reduce accuracy and armor, increase fire resistance, if shocked by lightning you become stunned instead
+class WetEffect(Effect):
+    def __init__(self, duration, damage, strength):
+        super().__init__("Wet", duration, BLUE)
+        self.damage = damage
+        self.strength = strength
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} is :BLUE:Wet:BLUE:.")
+        creature.add_temp_stats(accuracy=-self.strength)
+        creature.add_temp_resistances(fire=25)
+        creature.armor = max(creature.armor - self.damage, 0)
+
+    def effect_turn(self, _):
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        creature.add_temp_stats(accuracy=self.strength)
+        creature.add_temp_resistances(fire=-25)
+
+    def combine(self, creature, other_effect):
+        if other_effect.name == self.name:
+            self.effect_end(creature)
+            self.duration = max(other_effect.duration, self.duration)
+            self.strength = max(other_effect.strength, self.strength)
+            self.damage = other_effect.damage
+            self.effect_start(creature)
+            return True
+        elif other_effect.name == "Shocked":
+            self.effect_end(creature)
+            creature.effects.remove(self)
+            creature.add_effect(StunEffect(1))
+            messenger.add(f"Electricity runs through the water and :CYAN:Stuns:CYAN: {creature.name}.")
+            return True
+        return False
+
+# Increase weapon ability scaling damage by Wisdom
+# Since we don't have ability scaling implemented yet, simply increase Strength by Wisdom
+class EnchantedWeaponEffect(Effect):
+    def __init__(self, duration, strength):
+        super().__init__("Holy Weapon", duration, YELLOW)
+        self.strength = strength
+
+    def effect_start(self, creature):
+        creature.add_temp_stats(strength=self.strength)
+        messenger.add(f"{creature.name} imbues their weapon with a holy light.")
+
+    def effect_turn(self, _):
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        creature.add_temp_stats(strength=-self.strength)
+        messenger.add(f"The holy light of {creature.name}'s weapon fades.")
+
+    def combine(self, creature, other_effect):
+        if other_effect.name == self.name:
+            self.effect_end(creature)
+            self.duration = other_effect.duration
+            self.strength = other_effect.strength
             self.effect_start(creature)
             return True
         return False

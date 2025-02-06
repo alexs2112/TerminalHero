@@ -59,7 +59,7 @@ class QuestScreen(Screen):
             if i == self.index:
                 return quest_handler.get(i)
         for j in range(len(quest_handler.get_done())):
-            if j + self.quest_num == self.index:
+            if j + len(quest_handler.get()) == self.index:
                 return quest_handler.get_done(j)
         return None
 

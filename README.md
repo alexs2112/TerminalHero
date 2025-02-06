@@ -68,8 +68,6 @@ options:
 - Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
 - When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
   - Make Armor much higher, this doesn't matter to enemies but will make balancing dungeons more manageable
-- Dark Souls weapon scaling on abilities? Each ability scales with stats multiplied by some decimal
-  - Each ability has a `get_damage(creature, target)` to calculate min and max damage given the owner and the target
 - Only show the name of targeted creatures or the active creature
   - This means we don't need to stagger their positions anymore
 - Combat backgrounds: Creatures stand on a floor and have some darkened background art
@@ -77,6 +75,10 @@ options:
 - When there is a lot of text it goes by very quickly, maybe stagger it better with timing if multiple things happen at once?
   - Move the combat log to the top of the screen?
 - Position enemy sprites bottom aligned, so that we can have enemies bigger than 12x12 (bosses should be 16x16)
+- Have a target_highlight function or something so that abilities like Rainstorm and Rallying Cry will show what creatures they will affect, even though you target yourself
+- Dark Souls weapon scaling on abilities? Each ability scales with stats multiplied by some decimal
+  - Each ability has a `get_damage(creature, target)` to calculate min and max damage given the owner and the target
+  - When you do this, also make sure "Challenged" and enchanted weapon effects are applied
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
@@ -118,10 +120,10 @@ options:
   - To be used in combat, but also during dialogue and main screens
 
 **Creatures**:
-- Get secondary stats and resistances correctly to account for base (str,dex,int) stats
-  - ie. getting a creature's fire resistance should include the benefit from having high int
+- Get secondary stats and resistances correctly to account for base (str,dex,int,wis) stats
+  - ie. getting a creature's fire resistance should include the benefit from having high wisdom
 - Since creature turns are determined based on their abilities, we might not need to give them specific AIs anymore
-- Add Wisdom as another primary stat that increases non-physical resistances
+- Professions should give the creature starting equipment
 
 **Saving**
 - This is going to be a bit of an issue

@@ -39,7 +39,8 @@ class Creature:
             'accuracy': 0,
             'strength': 0,
             'dexterity': 0,
-            'intelligence': 0
+            'intelligence': 0,
+            'wisdom': 0
         }
         self.temporary_stats = {}
 
@@ -102,7 +103,7 @@ class Creature:
 
         self.hp = self.max_hp()
 
-    def set_offensive_stats(self, speed, strength, dexterity, intelligence):
+    def set_offensive_stats(self, speed, strength, dexterity, intelligence, wisdom):
         # Determines turn order
         self.stats['speed'] = speed
 
@@ -110,6 +111,7 @@ class Creature:
         self.stats['strength'] = strength
         self.stats['dexterity'] = dexterity
         self.stats['intelligence'] = intelligence
+        self.stats['wisdom'] = wisdom
 
     def add_temp_stats(self, **kwargs):
         old_hp = self.max_hp()
@@ -149,10 +151,14 @@ class Creature:
         return self.stat('defense') + self.level
 
     def gain_hp(self, num):
-        self.hp = min(self.hp + num, self.max_hp())
+        diff = min(self.max_hp() - self.hp, num)
+        self.hp += diff
+        return diff
 
     def gain_armor(self, num):
-        self.armor = min(self.armor + num, self.max_armor())
+        diff = min(self.max_armor() - self.armor, num)
+        self.armor += diff
+        return diff
 
     def set_resistances(self, **kwargs):
         for key, value in kwargs.items():
@@ -254,12 +260,15 @@ class Creature:
         self.effects.clear()
 
     def add_effect(self, effect: Effect):
+        dont_apply = False
         for e in self.effects:
             # If this new effect successfully combines with a current one, don't apply it
             if e.combine(self, effect):
-                return
-        self.effects.append(effect)
-        effect.effect_start(self)
+                dont_apply = True
+
+        if not dont_apply:
+            self.effects.append(effect)
+            effect.effect_start(self)
 
     def has_effect(self, effect_name: str):
         for e in self.effects:
