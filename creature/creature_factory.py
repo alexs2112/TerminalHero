@@ -34,10 +34,10 @@ class CreatureFactory:
             player.equip_item(items.new_axe())
             player.equip_item(items.new_leather_armor())
             player.set_profession(professions.champion())
-        elif profession == 'dualist':
+        elif profession == 'duelist':
             player.equip_item(items.new_sword())
             player.equip_item(items.new_leather_armor())
-            player.set_profession(professions.dualist())
+            player.set_profession(professions.duelist())
         elif profession == 'elementalist':
             player.equip_item(items.new_staff())
             player.equip_item(items.new_robe())

@@ -212,7 +212,7 @@ class AbilityFactory:
         a.set_effect(effect)
         return a
 
-    # Dualist
+    # Duelist
     def defensive_strike(self, min_damage, max_damage):
         a = Ability("Defensive Strike", cooldown=2, cost=2)
         a.set_description("Strike with your weapon and recover some armor.")

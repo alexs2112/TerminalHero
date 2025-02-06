@@ -1,6 +1,7 @@
 import pygame
 from screen.screen import Screen
 from screen.world_screen import WorldScreen
+from screen.profession_screen import ProfessionScreen
 from main.constants import *
 from main.colour import *
 
@@ -14,7 +15,10 @@ class StartScreen(Screen):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return None
-                return WorldScreen(self.canvas, self.world)
+                if self.world.player:
+                    # If the player is already assigned via commands
+                    return WorldScreen(self.canvas, self.world)
+                return ProfessionScreen(self.canvas, self.world)
         return self
 
     def display(self):

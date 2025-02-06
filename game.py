@@ -27,25 +27,29 @@ class Game:
             messenger.set_verbose()
         messenger.clear()
 
-        if self.args.profession:
-            prof = self.args.profession
-        else:
-            prof = 'champion'
-        self.player = creature_factory.new_player(prof)
         self.world = self.generate_world()
-        self.world.player = self.player
+
+        if self.args.profession:
+            self.player = creature_factory.new_player(self.args.profession)
+            self.world.player = self.player
+        else:
+            # This still needs to be set for other cmd line args
+            self.player = creature_factory.new_player('champion')
 
         if self.args.stats:
+            print("Increasing all player stats by 30")
             for s in self.player.stats:
                 self.player.stats[s] += 30
             self.player.hp = self.player.max_hp()
             self.player.armor = self.player.max_armor()
+            if not self.args.profession:
+                print("[WARNING] Player profession not set, stats will be overwritten when profession is selected.")
 
         if args_list.all:
             # pylint: disable=import-outside-toplevel,ungrouped-imports
             from dialog.dialog_functions import set_initial_village, add_quest_grave_concerns
             set_initial_village(None)
-            add_quest_grave_concerns(self.player)
+            add_quest_grave_concerns(None)
             update_log('tavern_open')
             update_log('tavern_store_unlocked')
             update_log('tavern_room_unlocked')
@@ -99,7 +103,7 @@ class Game:
             update_log('runebound_stalker_defeated')
         elif dungeon_name == 'cemetery':
             d = DungeonBuilder().new_arad_cemetery(None)
-            add_quest_grave_concerns(self.player)
+            add_quest_grave_concerns(None)
         elif dungeon_name == 'caravan':
             d = DungeonBuilder().new_caravan_wreckage(None)
         elif dungeon_name == 'camp':
@@ -140,7 +144,7 @@ if __name__ == "__main__":
     parser.add_argument('-u', '--dungeon', help='test dungeon display by name')
     parser.add_argument('-r', '--revealed', action='store_true', help='for dungeon mode, set all rooms as revealed')
     parser.add_argument('-e', '--no-enemies', action='store_true', help='for dungeon mode, remove all encounters')
-    parser.add_argument('-s', '--stats', action='store_true', help='gives the player massively enhanced stats')
+    parser.add_argument('-s', '--stats', action='store_true', help='gives the player massively enhanced stats, must be used with the profession option')
     parser.add_argument('-i', '--inventory', action='store_true', help='show the inventory test screen')
     args = parser.parse_args()
 

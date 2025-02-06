@@ -123,7 +123,7 @@ options:
 - Get secondary stats and resistances correctly to account for base (str,dex,int,wis) stats
   - ie. getting a creature's fire resistance should include the benefit from having high wisdom
 - Since creature turns are determined based on their abilities, we might not need to give them specific AIs anymore
-- Professions should give the creature starting equipment
+- Professions should give the creature starting equipment, rather than the creature factory doing it
 
 **Saving**
 - This is going to be a bit of an issue

@@ -18,13 +18,25 @@ class ProfessionFactory:
 
     def champion(self):
         p = Profession("Champion")
+        p.set_description(
+            "A hardened warrior forged by battle and hardship. "
+            "You wield your axe with brutal efficiency, cutting down all who stand in your path."
+            "Steel in your hands, fire in your heart. "
+            "You are the wall that will not break, the force that will not falter."
+        )
         p.set_stats(strength=2, endurance=1)
         p.add_ability(abilities.multi_attack(1,3))
         p.add_ability(abilities.bolster(1,5))
         return p
 
-    def dualist(self):
-        p = Profession("Dualist")
+    def duelist(self):
+        p = Profession("Duelist")
+        p.set_description(
+            "A master of the blade, swift and calculating. "
+            "Every fight is a duel in your eyes, and you never strike without intent."
+            "Honour, skill, and cunning define you. "
+            "To face you in combat is to accept an unwinnable wager."
+        )
         p.set_stats(strength=1, dexterity=1, dodge=1, speed=1)
         p.add_ability(abilities.defensive_strike(1,3))
         p.add_ability(abilities.challenge(2, 30))
@@ -32,6 +44,11 @@ class ProfessionFactory:
 
     def elementalist(self):
         p = Profession("Elementalist")
+        p.set_description(
+            "The elements answer your call, shaping fire, ice, and storm at your fingertips. "
+            "Magic is not a tool to you - it is an extension of your will. "
+            "With each spell, you unravel the secrets of creation itself."
+        )
         p.set_stats(intelligence=2, will=2, dodge=1)
         p.add_ability(abilities.rainstorm())
         p.add_ability(abilities.lightning_strike(0,2,90))
@@ -39,6 +56,12 @@ class ProfessionFactory:
 
     def luminarch(self):
         p = Profession("Luminarch")
+        p.set_description(
+            "A beacon in the darkness, clad in shining steel. "
+            "You wield your faith like a weapon, striking down those who would defy the light. "
+            "Your presence alone is enough to rally the weary. "
+            "In battle, you are both shield and hammer, standing unshaken against the tide."
+        )
         p.set_stats(strength=1, wisdom=1, endurance=2)
         p.add_ability(abilities.rallying_cry())
         p.add_ability(abilities.enchant_weapon())
