@@ -55,7 +55,7 @@ class QuestScreen(Screen):
             self.write_center_x("[escape] to exit", (x,y), GRAY)
 
     def get_selected_quest(self):
-        for i in range(self.quest_num):
+        for i in range(len(quest_handler.get())):
             if i == self.index:
                 return quest_handler.get(i)
         for j in range(len(quest_handler.get_done())):

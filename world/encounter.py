@@ -64,6 +64,7 @@ class Encounter:
 
     def add_enemies(self, *enemies):
         for e in enemies:
+            e.refresh()
             self.enemies.append(e)
         for e in self.enemies:
             e.allies = self.enemies

@@ -87,8 +87,9 @@ class CreatureScreen(Screen):
             self.draw_line((x,y), (SCREEN_WIDTH - 30, y), width=4)
             y += 8
             self.write(ability.name, (x + 10,y))
-            y += FONT_HEIGHT + 2
-            lines = fit_text(ability.description, SCREEN_WIDTH - 256 - 20 - 24 - 20)
-            for line in lines:
-                self.write(line, (x + 20, y), LIGHTGRAY)
+            if ability.description:
                 y += FONT_HEIGHT + 2
+                lines = fit_text(ability.description, SCREEN_WIDTH - 256 - 20 - 24 - 20)
+                for line in lines:
+                    self.write(line, (x + 20, y), LIGHTGRAY)
+                    y += FONT_HEIGHT + 2

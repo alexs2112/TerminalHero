@@ -52,13 +52,13 @@ class ItemFactory:
     # ARMOR
     def new_leather_armor(self):
         i = Item("Leather Armor", ARMOR, (0,72,12,12))
-        i.set_stats(defense=5, dodge=1)
+        i.set_stats(defense=9, dodge=1)
         return i
 
     def new_robe(self):
         i = Item("Robe", ARMOR, (0,84,12,12))
         i.set_equipped_sprite_rect((0,84,12,12))
-        i.set_stats(defense=3, dodge=3, speed=1)
+        i.set_stats(defense=4, dodge=3, speed=1)
         return i
 
     # KEY ITEMS

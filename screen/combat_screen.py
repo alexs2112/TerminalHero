@@ -101,8 +101,8 @@ class CombatScreen(Screen):
                                 a = c.get_abilities()[i]
                                 if a.is_usable(c):
                                     self.selected_ability = a
-                                    self.legal_targets = self.get_legal_targets()
-                                    self.target_index = self.get_target_index()
+                                    self.legal_targets = self.get_legal_targets(c)
+                                    self.target_index = self.get_target_index(c)
                                     return self
                                 else:
                                     if a.cooldown > 0:
@@ -203,15 +203,15 @@ class CombatScreen(Screen):
         q.sort(key=lambda c: c.creature.stat('speed'), reverse=True)
         self.queue = q
 
-    def get_legal_targets(self):
+    def get_legal_targets(self, creature):
         # This might need to move to each Ability when AOEs are added
-        return [ c for c in self.player.party + self.encounter.enemies if self.selected_ability.can_target(c) ]
+        return [ o for o in self.player.party + self.encounter.enemies if self.selected_ability.can_target(creature, o) ]
 
-    def get_target_index(self):
+    def get_target_index(self, creature):
         # This can be revised when we add buffing allies
         i = 0
-        for c in self.player.party:
-            if self.selected_ability.can_target(c):
+        for o in self.player.party:
+            if self.selected_ability.can_target(creature, o):
                 i += 1
         if i >= len(self.legal_targets):
             i = 0

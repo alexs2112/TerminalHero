@@ -42,12 +42,7 @@ class FeatureFactory():
             add_notification([':GREEN:Party Rested!:GREEN:',
                               'Party healed to full HP, any lingering conditions have ended.'])
             for c in player.party:
-                c.temporary_stats = {}
-                c.temporary_resistances = {}
-                c.effects = []
-                c.hp = c.max_hp()
-                c.armor = c.max_armor()
-                c.food = None
+                c.refresh()
         f.set_function(func)
         return f
 

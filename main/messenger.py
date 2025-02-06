@@ -29,12 +29,18 @@ class Messenger:
         else:
             level = logging.DEBUG
         logger = logging.getLogger(LOG_NAME)
-        logger.setLevel(level)
+        logger.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('[%(levelname)s] %(message)s')
+
         ch = logging.StreamHandler()
         ch.setLevel(level)
-        formatter = logging.Formatter('[%(levelname)s] %(message)s')
         ch.setFormatter(formatter)
         logger.addHandler(ch)
+
+        fh = logging.FileHandler(LOG_NAME)
+        fh.setLevel(logging.DEBUG)
+        fh.setFormatter(formatter)
+        logger.addHandler(fh)
         return logger
 
     def clear(self):

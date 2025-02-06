@@ -3,7 +3,7 @@
         "start": {
             "option": "Speak to the Lizardman",
             "name": "Rangu",
-            "text": "Howdy. Not often I see another traveler out here. Thought you might be another one of theirs at first. Name's Rangu, the Drifting Fang. Been tracking this bandit lot for a while now. They hit the import caravan hard—same way they've hit plenty before. Not just common raiders either. They're tied to the :BLUEVIOLET:Black-Pyre Crime Syndicate:BLUEVIOLET:.",
+            "text": "Howdy. Not often I see another traveler out here. Thought you might be another one of theirs at first. Name's Rangu, the Drifting Fang. Been tracking this bandit lot for a while now. They hit the import caravan hard-same way they've hit plenty before. Not just common raiders either. They're tied to the :BLUEVIOLET:Black-Pyre Crime Syndicate:BLUEVIOLET:.",
             "children": [
                 ["Who are you?", "rangu_identity"],
                 ["The Black-Pyre Syndicate?", "rangu_blackpyre"],
@@ -32,11 +32,16 @@
         },
         "rangu_next_step": {
             "name": "Rangu",
-            "text": "I tracked them to a small camp not far from here. Could strike at them now, but after a raid, they'll be on edge. Not the smartest move. Better to wait, learn what we can. If you're up for it, let's head back to [[The Lifeblood Tavern]]. Get a drink, trade what we know. The bigger hideout they stage from is still out there—finding it will take time.",
+            "text": "I tracked them to a small camp not far from here. Could strike at them now, but after a raid, they'll be on edge. Not the smartest move. Better to wait, learn what we can. If you're up for it, let's head back to The Lifeblood Tavern. Get a drink, trade what we know. The bigger hideout they stage from is still out there-finding it will take time.",
             "children": [
-                ["Alright, let's go.", "None"],
-                ["I'll meet you there later.", "None"]
-            ],
+                ["Alright, let's go.", "fin"],
+                ["I'll meet you there later.", "fin"]
+            ]
+        },
+        "fin": {
+            "name": "System",
+            "text": "None",
+            "children": [],
             "function": "finish_rangu_initial"
         }
     }

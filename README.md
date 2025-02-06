@@ -76,6 +76,7 @@ options:
 - Actual ability animations
 - When there is a lot of text it goes by very quickly, maybe stagger it better with timing if multiple things happen at once?
   - Move the combat log to the top of the screen?
+- Position enemy sprites bottom aligned, so that we can have enemies bigger than 12x12 (bosses should be 16x16)
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
@@ -124,6 +125,7 @@ options:
 
 **Saving**
 - This is going to be a bit of an issue
+- This should be figured out sooner rather than later for balance testing
 
 **Other**
 - Set Item as superclass of new Equipment and Food classes

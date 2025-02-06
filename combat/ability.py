@@ -38,10 +38,10 @@ class Ability:
             s += f" ({self.cooldown})"
         return s
 
-    def can_target(self, creature):
+    def can_target(self, creature, other):
         if self.can_target_func:
-            return self.can_target_func(creature)
-        return creature.is_alive()
+            return self.can_target_func(creature, other)
+        return other.is_alive()
 
     def set_can_target(self, func):
         self.can_target_func = func

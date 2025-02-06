@@ -96,7 +96,7 @@ class WorldBuilder:
 
         area = Area("Caravan Wreckage", (48,0,12,12))
         area.add_description(
-            "The remains of the caravan smolder in the midday sun—charred wagons overturned, splintered crates spilling their contents across the dirt. "
+            "The remains of the caravan smolder in the midday sun-charred wagons overturned, splintered crates spilling their contents across the dirt. "
             "The stench of burnt wood and flesh lingers in the air, and blood darkens the earth where the traders made their last stand.")
         area.dungeon = dungeon_builder.new_caravan_wreckage(area)
         area.condition = 'known_caravan_wreckage'

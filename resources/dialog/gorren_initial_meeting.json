@@ -76,7 +76,7 @@
         },
         "dark_wave": {
             "name": "Gorren",
-            "text": "Wait... do you feel that? The air shifts... darker. Something is wrong. Something is—",
+            "text": "Wait... do you feel that? The air shifts... darker. Something is wrong. Something is-",
             "children": [
                 [ "What's happening?", "wave_impact" ]
             ]

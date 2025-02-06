@@ -24,6 +24,8 @@ class Player(Creature):
         for c in self.party:
             if not c.is_alive():
                 pass
+            for e in c.effects:
+                e.effect_end(c)
             c.effects.clear()
             c.action_points = 0
 

@@ -44,7 +44,7 @@
         },
         "node2_1": {
             "name": "Elder",
-            "text": "Ah, the mind is a powerful ally. To gain wisdom, you must listen to the world around you—its people, its nature, and its history. Seek out the library in the northern hills for more knowledge.",
+            "text": "Ah, the mind is a powerful ally. To gain wisdom, you must listen to the world around you-its people, its nature, and its history. Seek out the library in the northern hills for more knowledge.",
             "children": [
                 [ "I'll head to the library.", "None" ],
                 [ "I have other matters to attend to.", "None" ]

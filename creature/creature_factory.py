@@ -22,19 +22,19 @@ def get_creature_factory():
     return _creature_factory
 
 #pylint: disable=line-too-long
-# If names are currently longer than 8 characters we get some visual overlap, fix later
 class CreatureFactory:
     def new_player(self):
         player = Player("Player")
         player.set_description("A fine specimen of an adventurer, if 'fine' means covered in dirt, blood, and questionable life choices.")
         player.set_sprite(ModularSprite((0,24,12,12), (0,0,12,12)))
         player.set_defensive_stats(base_hp=10, defense=0, dodge=2, will=2, endurance=2)
-        player.set_offensive_stats(speed=5, strength=3, dexterity=2, intelligence=1)
+        player.set_offensive_stats(speed=5, strength=2, dexterity=2, intelligence=1)
         #player.equip_item(items.new_sword())
         player.equip_item(items.new_hammer())
         #player.equip_item(items.new_axe())
         player.equip_item(items.new_leather_armor())
-        player.set_profession(professions.new_test_wizard())
+        player.set_profession(professions.new_test_warrior())
+        player.refresh()
         player.allied = True
         level_handler.add_creature(player)
         return player
@@ -56,10 +56,10 @@ class CreatureFactory:
         c.set_description("Sloppily assembled from discarded remains, this undead barely holds together. "
                           "A missing eye socket leaks dark fluid, and its left arm is attached at an unnatural angle. "
                           "It takes a step, and something wet and rotten falls from its torso, but it shuffles on undeterred.")
-        c.set_defensive_stats(base_hp=4, defense=1, dodge=0, will=0, endurance=1)
-        c.set_offensive_stats(speed=2, strength=1, dexterity=0, intelligence=0)
+        c.set_defensive_stats(base_hp=5, defense=3, dodge=0, will=0, endurance=1)
+        c.set_offensive_stats(speed=2, strength=2, dexterity=0, intelligence=0)
         c.set_profession(professions.enemy_profession("Shuffler"))
-        c.add_ability(abilities.slow_attack(1, 3))
+        c.add_ability(abilities.slow_attack(0, 2))      # 2-4
         c.set_ai(BasicAI(c))
         return c
 
@@ -67,12 +67,12 @@ class CreatureFactory:
         c = Creature("Patchwork Dead", 0)
         c.set_sprite(CreatureSprite((12,36,12,12), (36,0,12,12)))
         c.set_description("This crude abomination is hastily sewn together, its seams splitting with every jerky movement. "
-                          "Its face is an awful mismatch—one eye wide and unblinking, the other sunken and dead. "
+                          "Its face is an awful mismatch-one eye wide and unblinking, the other sunken and dead. "
                           "Its mouth stretches too far, pulled open by uneven stitches, revealing a grotesque attempt at a snarl.")
-        c.set_defensive_stats(base_hp=4, defense=3, dodge=0, will=0, endurance=1)
+        c.set_defensive_stats(base_hp=6, defense=4, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=2, dexterity=0, intelligence=0)
         c.set_profession(professions.enemy_profession("Brute"))
-        c.add_ability(abilities.slow_attack(1, 3))
+        c.add_ability(abilities.slow_attack(0, 2))      # 2-4
         c.set_ai(BasicAI(c))
         return c
 
@@ -82,10 +82,10 @@ class CreatureFactory:
         c.set_description("This undead creature lurches forward on uneven legs, its body stitched together from mismatched limbs. "
                           "One arm is bloated and bruised, the other little more than bone. "
                           "Its head is loosely attached, lolling to the side as it groans mindlessly.")
-        c.set_defensive_stats(base_hp=4, defense=0, dodge=0, will=0, endurance=1)
+        c.set_defensive_stats(base_hp=5, defense=3, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=1, dexterity=0, intelligence=0)
         c.set_profession(professions.enemy_profession("Shambler"))
-        c.add_ability(abilities.slow_attack(1, 3))
+        c.add_ability(abilities.slow_attack(0, 2))      # 1-3
         c.set_ai(BasicAI(c))
         return c
 
@@ -97,8 +97,8 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=5,defense=3,dodge=1,will=3,endurance=2)
         c.set_offensive_stats(speed=4, strength=1, dexterity=1, intelligence=3)
         c.set_profession(professions.enemy_profession("Guide of Lost Souls"))
-        c.add_ability(abilities.basic_attack(1,3))
-        c.add_ability(abilities.drain_life(85, 1, 2))
+        c.add_ability(abilities.basic_attack(1,3))      # 2-4
+        c.add_ability(abilities.drain_life(85, 0, 2))   # 3-5
         c.add_ability(abilities.pale_light())
         c.set_ai(BasicAI(c))
         return c
@@ -110,8 +110,8 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=4, defense=3, dodge=3, will=0, endurance=1)
         c.set_offensive_stats(speed=4, strength=2, dexterity=1, intelligence=1)
         c.set_profession(professions.enemy_profession("Hound"))
-        c.add_ability(abilities.basic_attack(1,3))
-        c.add_ability(abilities.rabid_bite(1,3))
+        c.add_ability(abilities.basic_attack(0,2))      # 2-4
+        c.add_ability(abilities.rabid_bite(0,2))        # 2-4 + bleed(1)
         c.add_ability(abilities.chilling_howl('Rotten Stray'))
         c.set_ai(BasicAI(c))
         return c
@@ -121,12 +121,12 @@ class CreatureFactory:
         c.set_sprite(CreatureSprite((0,84,12,12), (108,0,12,12)))
         c.set_description("A massive, four-armed feline-like predator, its body wrapped in broken runic chains that float around it. "
                           "Its face is hidden beneath an imperial mask, engraved with the Vaelthorne crest, but cracks in it's body reveal shifting eyes underneath.")
-        c.set_defensive_stats(base_hp=25, defense=10, dodge=2, will=4, endurance=2)
+        c.set_defensive_stats(base_hp=15, defense=15, dodge=2, will=4, endurance=2)
         c.set_offensive_stats(speed=4, strength=3, dexterity=3, intelligence=4)
         c.set_profession(professions.enemy_profession("Astral Predator"))
-        c.add_ability(abilities.basic_attack(2, 4))
-        c.add_ability(abilities.astral_lightning())
-        c.add_ability(abilities.runic_chains())
+        c.add_ability(abilities.basic_attack(2, 4))     # 5-7
+        c.add_ability(abilities.astral_lightning())     # 4-6 to everyone
+        c.add_ability(abilities.runic_chains())         # 4-6 + stun(1)
         c.set_ai(BasicAI(c))
         c.action_point_replenish = 3
         return c
@@ -231,11 +231,10 @@ class CreatureFactory:
         c = Creature("Bandit Grunt", 0)
         c.set_sprite(CreatureSprite((0,72,12,12),(96,0,12,12)))
         c.set_description("A burly brute with a chipped cudgel, his tunic still bearing the crest of a past employer.")
-        c.set_defensive_stats(base_hp=6,defense=5,dodge=2,will=1,endurance=1)
-        c.set_offensive_stats(speed=3,strength=3,dexterity=2,intelligence=1)
-        c.add_ability(abilities.slow_attack(1,3))
-        c.add_ability(abilities.basic_attack(-1,1))
-        c.add_ability(abilities.bolster(1, 4))
+        c.set_defensive_stats(base_hp=5,defense=5,dodge=2,will=1,endurance=1)
+        c.set_offensive_stats(speed=3,strength=2,dexterity=2,intelligence=1)
+        c.add_ability(abilities.slow_attack(0,2))
+        c.add_ability(abilities.bolster(1, 3))
         c.set_ai(BasicAI(c))
         return c
 
@@ -243,11 +242,10 @@ class CreatureFactory:
         c = Creature("Bandit Grunt", 0)
         c.set_sprite(CreatureSprite((12,72,12,12),(96,0,12,12)))
         c.set_description("A ragged swordsman with mismatched armor, more used to shaking down travelers than actual combat.")
-        c.set_defensive_stats(base_hp=6,defense=7,dodge=2,will=1,endurance=1)
-        c.set_offensive_stats(speed=3,strength=3,dexterity=2,intelligence=1)
-        c.add_ability(abilities.slow_attack(1,3))
-        c.add_ability(abilities.basic_attack(-1,1))
-        c.add_ability(abilities.bolster(1, 4))
+        c.set_defensive_stats(base_hp=5,defense=6,dodge=2,will=1,endurance=1)
+        c.set_offensive_stats(speed=3,strength=2,dexterity=2,intelligence=1)
+        c.add_ability(abilities.slow_attack(0,2))
+        c.add_ability(abilities.bolster(1, 3))
         c.set_ai(BasicAI(c))
         return c
 
@@ -261,7 +259,7 @@ class CreatureFactory:
         gorren.equip_item(items.new_staff())
         gorren.equip_item(items.new_robe())
         gorren.set_profession(professions.soulwarden())
-        gorren.hp = gorren.max_hp()
+        gorren.refresh()
         gorren.allied = True
         level_handler.add_creature(gorren)
         return gorren
@@ -270,13 +268,13 @@ class CreatureFactory:
         rangu = Creature("Rangu", 1)
         rangu.set_sprite(ModularSprite((24,24,12,12), (24,12,12,12)))
         rangu.set_description("Wrapped in a weathered cloak, Rangu's presence is both imposing and effortless. "
-                              "His twin hunting knives rest at his hips, and a musky scent of charred wood clings to him—like a fire that never fully goes out.")
+                              "His twin hunting knives rest at his hips, and a musky scent of charred wood clings to him-like a fire that never fully goes out.")
         rangu.set_defensive_stats(base_hp=8, defense=0, dodge=3, will=2, endurance=2)
         rangu.set_offensive_stats(speed=4, strength=2, dexterity=2, intelligence=2)
         rangu.equip_item(items.new_shortbow())
         rangu.equip_item(items.new_leather_armor())
         rangu.set_profession(professions.ashen_stalker())
-        rangu.hp = rangu.max_hp()
+        rangu.refresh()
         rangu.allied = True
         level_handler.add_creature(rangu)
         return rangu

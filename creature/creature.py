@@ -143,10 +143,10 @@ class Creature:
         return s
 
     def max_hp(self):
-        return self.base_hp + self.stat('endurance') * 2
+        return self.base_hp + self.stat('endurance') * self.level
 
     def max_armor(self):
-        return self.stat('defense')
+        return self.stat('defense') + self.level
 
     def gain_hp(self, num):
         self.hp = min(self.hp + num, self.max_hp())
@@ -271,3 +271,11 @@ class Creature:
         self.food = food
         self.add_temp_stats(**food.stats)
         self.add_temp_resistances(**food.resistances)
+
+    def refresh(self):
+        self.temporary_stats = {}
+        self.temporary_resistances = {}
+        self.effects = []
+        self.hp = self.max_hp()
+        self.armor = self.max_armor()
+        self.food = None

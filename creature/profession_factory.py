@@ -16,10 +16,11 @@ class ProfessionFactory:
         # We don't want enemy professions to add abilities and stats as those should be manually assigned
         return Profession(name)
 
-    def new_test_wizard(self):
-        p = Profession("Test Wizard")
-        p.set_stats(intelligence=1, will=1)
-        p.add_ability(abilities.flickering_flames(85))
+    def new_test_warrior(self):
+        p = Profession("Test Warrior")
+        p.set_stats(strength=2, endurance=1)
+        p.add_ability(abilities.multi_attack(1,3))
+        p.add_ability(abilities.bolster(1,4))
         return p
 
     def soulwarden(self):

@@ -162,7 +162,7 @@ class DungeonBuilder:
 
     def new_caravan_wreckage(self, area):
         d = Dungeon("Caravan Wreckage",
-                    "The remains of the caravan smolder in the midday sun—charred wagons overturned, splintered crates spilling their contents across the dirt. "
+                    "The remains of the caravan smolder in the midday sun-charred wagons overturned, splintered crates spilling their contents across the dirt. "
                     "The stench of burnt wood and flesh lingers in the air, and blood darkens the earth where the traders made their last stand.",
                     area, 2, 2)
         d.set_unscaled_size(64,64)
@@ -171,7 +171,7 @@ class DungeonBuilder:
         entrance = Room("Caravan Wreckage", (1,111,32,32))
         entrance.add_description("Wagon wheels lie shattered, their cargo scattered and looted. "
                                  "A strongbox sits pried open and empty, its lock twisted and broken. "
-                                 "Among the wreckage, a few bodies remain—stripped of valuables, left to the scavengers.")
+                                 "Among the wreckage, a few bodies remain-stripped of valuables, left to the scavengers.")
         entrance.set_unscaled_position(0,0)
         entrance.set_player_position(16,21)
         entrance.exits = [ EXIT_RIGHT, EXIT_DOWN ]

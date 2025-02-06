@@ -34,7 +34,7 @@ def default_offensive_priority(a: Ability, c: Creature, p: Player, e: Encounter)
     # Assume they will only target creatures allied to the player
     out = []
     for ally in p.party:
-        if a.can_target(ally):
+        if a.can_target(c, ally):
             # Priority 1 of using this ability on that ally
             out.append(Priority(a, ally, 1))
     return out
@@ -49,7 +49,7 @@ def default_bolstered_priority(a: Ability, c: Creature, p: Player, e: Encounter)
     # Assume they will only target creatures friendly to the enemy
     out = []
     for enemy in e.enemies:
-        if a.can_target(enemy):
+        if a.can_target(c, enemy):
             if enemy.has_effect('Bolstered'):
                 if enemy.armor < enemy.max_armor() / 2:
                     prio = 2
@@ -188,6 +188,23 @@ class AbilityFactory:
         a.action_points = 3
         return a
 
+    # Warrior
+    def bolster(self, strength, armour):
+        a = Ability("Bolster", cooldown=3, cost=1)
+        a.set_description("Recover some of your armor and increase strength for a time.")
+        def can_target(c: Creature, o: Creature):
+            return o == c
+        a.set_can_target(can_target)
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            if c.armor < c.max_armor() * 0.5:
+                return [ Priority(a, c, 4) ]
+            return [ Priority(a, c, 0) ]
+        a.set_target_priority(priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            c.add_effect(effects.create_bolstered_effect(3, strength, armour))
+        a.set_effect(effect)
+        return a
+
     # Soulwarden
     def drain_life(self, base_hit_chance, min_damage, max_damage):
         a = Ability("Drain Life", cooldown=2)
@@ -217,8 +234,8 @@ class AbilityFactory:
     def corpse_explosion(self, min_damage, max_damage):
         a = Ability("Corpse Explosion", cooldown=4, cost=3)
         a.set_description("Explode target inert corpse, dealing Dark damage to each enemy.")
-        def can_target(t: Creature):
-            return not t.is_alive() and t.has_corpse
+        def can_target(c: Creature, o: Creature):
+            return not o.is_alive() and o.has_corpse
         a.set_can_target(can_target)
         def effect(c: Creature, t: Creature, a: Area):
             messenger.add(f"{c.name} gestures and the corpse of {t.name} explodes!")
@@ -552,18 +569,5 @@ class AbilityFactory:
             messenger.add(f"A :BLUEVIOLET:{s.name}:BLUEVIOLET: awakens.")
             a.get_encounter().add_enemies(s)
             c.add_effect(effects.create_armor_effect(4, 8))
-        a.set_effect(effect)
-        return a
-
-    # Bandits
-    def bolster(self, strength, armour):
-        a = Ability("Bolster", cooldown=3, cost=1)
-        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
-            if c.armor < c.max_armor() * 0.5:
-                return [ Priority(a, c, 4) ]
-            return [ Priority(a, c, 0) ]
-        a.set_target_priority(priority)
-        def effect(c: Creature, t: Creature, a: Area):
-            c.add_effect(effects.create_bolstered_effect(3, strength, armour))
         a.set_effect(effect)
         return a
