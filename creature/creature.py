@@ -56,7 +56,7 @@ class Creature:
         }
         self.temporary_resistances = {}
 
-        self.equipment: dict[str, Item] = {}
+        self.equipment: dict[str, Equipment] = {}
         for slot in ITEM_SLOTS:
             self.equipment[slot] = None
 
@@ -200,7 +200,7 @@ class Creature:
                 return True
         return False
 
-    def equip_item(self, item: Item):
+    def equip_item(self, item: Equipment):
         old = None
         if self.equipment[item.slot]:
             old = self.equipment[item.slot]

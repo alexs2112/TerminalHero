@@ -15,35 +15,35 @@ def get_item_factory():
 class ItemFactory:
     # WEAPONS
     def new_sword(self):
-        i = Item("Sword", WEAPON, (0,0,12,12))
+        i = Equipment("Sword", (0,0,12,12), WEAPON)
         i.set_equipped_sprite_rect((0,0,12,12))
         i.add_ability(abilities.basic_attack(1,3))
         i.add_ability(abilities.disarming_strike(1,3))
         return i
 
     def new_hammer(self):
-        i = Item("Hammer", WEAPON, (0,12,12,12))
+        i = Equipment("Hammer", (0,12,12,12), WEAPON)
         i.set_equipped_sprite_rect((0,12,12,12))
         i.add_ability(abilities.basic_attack(1,3))
         i.add_ability(abilities.heavy_blow(1,3,80))
         return i
 
     def new_axe(self):
-        i = Item("Axe", WEAPON, (0,24,12,12))
+        i = Equipment("Axe", (0,24,12,12), WEAPON)
         i.set_equipped_sprite_rect((0,24,12,12))
         i.add_ability(abilities.basic_attack(1,3))
         i.add_ability(abilities.cleave(1,3,0))
         return i
 
     def new_staff(self):
-        i = Item("Staff", WEAPON, (0,36,12,12))
+        i = Equipment("Staff", (0,36,12,12), WEAPON)
         i.set_equipped_sprite_rect((0,36,12,12))
         i.add_ability(abilities.basic_attack(1,2))
         i.set_stats(intelligence=1)
         return i
 
     def new_shortbow(self):
-        i = Item("Shortbow", WEAPON, (0,48,12,12))
+        i = Equipment("Shortbow", (0,48,12,12), WEAPON)
         i.set_equipped_sprite_rect((0,48,12,12))
         i.add_ability(abilities.dexterity_attack(1,3))
         i.add_ability(abilities.power_shot(2,5))
@@ -51,19 +51,19 @@ class ItemFactory:
 
     # ARMOR
     def new_leather_armor(self):
-        i = Item("Leather Armor", ARMOR, (0,72,12,12))
+        i = Equipment("Leather Armor", (0,72,12,12), ARMOR)
         i.set_stats(defense=9, dodge=1)
         return i
 
     def new_robe(self):
-        i = Item("Robe", ARMOR, (0,84,12,12))
+        i = Equipment("Robe", (0,84,12,12), ARMOR)
         i.set_equipped_sprite_rect((0,84,12,12))
         i.set_stats(defense=4, dodge=3, speed=1)
         return i
 
     # KEY ITEMS
     def new_vaelthorne_seal(self):
-        i = Item("Vaelthorne Seal", TRINKET, (0,120,12,12))
+        i = Equipment("Vaelthorne Seal", (0,120,12,12), TRINKET)
         i.set_resistances(
             fire=20,
             cold=20,
@@ -74,7 +74,7 @@ class ItemFactory:
         return i
 
     def new_obsidian_lantern(self):
-        i = Item("Obsidian Lantern", TRINKET, (12,120,12,12))
+        i = Equipment("Obsidian Lantern", (12,120,12,12), TRINKET)
         i.set_stats(defense=5)
         i.set_resistances(dark=15)
         return i

@@ -130,7 +130,6 @@ options:
 - This should be figured out sooner rather than later for balance testing
 
 **Other**
-- Set Item as superclass of new Equipment and Food classes
 - New constant of `FONT_HEIGHT + 2`
 - Mouse controls
 - If you have unlocked all 6 companions, you unlock a bonus area of a pond with a magic frog.

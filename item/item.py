@@ -7,15 +7,24 @@ WEAPON = 'Weapon'
 ARMOR = 'Armor'
 TRINKET = 'Trinket'
 ITEM_SLOTS = [ WEAPON, ARMOR, TRINKET ]
+EQUIPMENT = 'Equipment'
 FOOD = 'Food'
 
 class Item:
-    def __init__(self, name, slot, sprite_rect):
+    def __init__(self, name, item_type, sprite_rect):
         self.name = name
-        self.slot = slot
+        self.type = item_type
         self.sprite_rect = sprite_rect
-        self.equipped_sprite_rect = None
+        self.description = ""
 
+    def set_description(self, desc):
+        self.description = desc
+
+class Equipment(Item):
+    def __init__(self, name, sprite_rect, slot):
+        super().__init__(name, EQUIPMENT, sprite_rect)
+        self.slot = slot
+        self.equipped_sprite_rect = None
         self.abilities = []
         self.stats = {}
         self.resistances = {}
@@ -38,13 +47,17 @@ class Food(Item):
         self.name = name
         self.cost = cost
         self.sprite_rect = sprite_rect
-        self.description = ""
+        self.stats = {}
+        self.resistances = {}
 
         # If the player has eaten this before or not
         self.log_entry = log_entry
 
-    def set_description(self, desc):
-        self.description = desc
+    def set_stats(self, **kwargs):
+        self.stats = kwargs
+
+    def set_resistances(self, **kwargs):
+        self.resistances = kwargs
 
     def is_known(self):
         return player_log[self.log_entry]
