@@ -5,6 +5,7 @@ from creature.profession_factory import get_profession_factory
 from creature.level_up_handler import get_level_up_handler
 from creature.ai.basic_ai import BasicAI
 from item.item_factory import get_item_factory
+from combat.damage import Damage
 from combat.ability_factory import get_ability_factory
 from dialog.dialog_loader import *
 
@@ -64,7 +65,8 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=5, defense=3, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=2, dexterity=0, intelligence=0, wisdom=0)
         c.set_profession(professions.enemy_profession("Shuffler"))
-        c.add_ability(abilities.slow_attack(0, 2))      # 2-4
+        c.set_base_damage(Damage(0, 2, 'physical'))
+        c.add_ability(abilities.slow_attack(strength=1))
         c.set_ai(BasicAI(c))
         return c
 
@@ -77,7 +79,8 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=6, defense=4, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=2, dexterity=0, intelligence=0, wisdom=0)
         c.set_profession(professions.enemy_profession("Brute"))
-        c.add_ability(abilities.slow_attack(0, 2))      # 2-4
+        c.set_base_damage(Damage(0, 2, 'physical'))
+        c.add_ability(abilities.slow_attack(strength=1))
         c.set_ai(BasicAI(c))
         return c
 
@@ -90,7 +93,8 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=5, defense=3, dodge=0, will=0, endurance=1)
         c.set_offensive_stats(speed=2, strength=1, dexterity=0, intelligence=0, wisdom=0)
         c.set_profession(professions.enemy_profession("Shambler"))
-        c.add_ability(abilities.slow_attack(0, 2))      # 1-3
+        c.set_base_damage(Damage(0, 2, 'physical'))
+        c.add_ability(abilities.slow_attack(strength=1))
         c.set_ai(BasicAI(c))
         return c
 
@@ -102,8 +106,9 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=5,defense=3,dodge=1,will=3,endurance=2)
         c.set_offensive_stats(speed=4, strength=1, dexterity=1, intelligence=3, wisdom=2)
         c.set_profession(professions.enemy_profession("Guide of Lost Souls"))
-        c.add_ability(abilities.basic_attack(1,3))      # 2-4
-        c.add_ability(abilities.drain_life(85, 0, 2))   # 3-5
+        c.set_base_damage(Damage(0, 2, 'dark'))
+        c.add_ability(abilities.basic_attack(intelligence=0.8))
+        c.add_ability(abilities.drain_life(85, Damage(0,2, 'dark'), intelligence=1))
         c.add_ability(abilities.pale_light())
         c.set_ai(BasicAI(c))
         return c
@@ -115,8 +120,9 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=4, defense=3, dodge=3, will=0, endurance=1)
         c.set_offensive_stats(speed=4, strength=2, dexterity=1, intelligence=1, wisdom=1)
         c.set_profession(professions.enemy_profession("Hound"))
-        c.add_ability(abilities.basic_attack(0,2))      # 2-4
-        c.add_ability(abilities.rabid_bite(0,2))        # 2-4 + bleed(1)
+        c.set_base_damage(Damage(0, 2, 'physical'))
+        c.add_ability(abilities.basic_attack(strength=1))      # 2-4
+        c.add_ability(abilities.rabid_bite(strength=1))        # 2-4 + bleed(1)
         c.add_ability(abilities.chilling_howl('Rotten Stray'))
         c.set_ai(BasicAI(c))
         return c
@@ -129,9 +135,10 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=15, defense=15, dodge=2, will=4, endurance=2)
         c.set_offensive_stats(speed=4, strength=3, dexterity=3, intelligence=4, wisdom=3)
         c.set_profession(professions.enemy_profession("Astral Predator"))
-        c.add_ability(abilities.basic_attack(2, 4))     # 5-7
-        c.add_ability(abilities.astral_lightning())     # 4-6 to everyone
-        c.add_ability(abilities.runic_chains())         # 4-6 + stun(1)
+        c.set_base_damage(Damage(2, 4, 'physical'))
+        c.add_ability(abilities.basic_attack(strength=1))       # 5-7
+        c.add_ability(abilities.astral_lightning(Damage(0,2,'air'), intelligence=1)) # 4-6 to everyone
+        c.add_ability(abilities.runic_chains(strength=0.8))     # 4-6 + stun(1)
         c.set_ai(BasicAI(c))
         c.action_point_replenish = 3
         return c
@@ -143,8 +150,9 @@ class CreatureFactory:
         c.set_defensive_stats(base_hp=16,defense=8,dodge=2,will=1,endurance=3)
         c.set_offensive_stats(speed=3, strength=3, dexterity=2, intelligence=2, wisdom=1)
         c.set_profession(professions.enemy_profession("Servitor"))
-        c.add_ability(abilities.basic_attack(2,4))
-        c.add_ability(abilities.multi_attack(2,4))
+        c.set_base_damage(Damage(2, 4, 'physical'))
+        c.add_ability(abilities.basic_attack(strength=1))
+        c.add_ability(abilities.multi_attack(strength=1))
         c.add_ability(abilities.bone_shield(5))
         c.set_ai(BasicAI(c))
         return c
@@ -155,9 +163,10 @@ class CreatureFactory:
         c.set_description("A rotting figure with glowing eyes and remnants of priestly robes.")
         c.set_defensive_stats(base_hp=12,defense=12,dodge=2,will=4,endurance=2)
         c.set_offensive_stats(speed=4, strength=2, dexterity=3, intelligence=4, wisdom=3)
-        c.add_ability(abilities.elemental_attack(1, 3, 'dark', 'intelligence'))
-        c.add_ability(abilities.hollow_gaze(1, 3, 30))
-        c.add_ability(abilities.necrotic_chains(1, 3, 80))
+        c.set_base_damage(Damage(1, 3, 'dark'))
+        c.add_ability(abilities.basic_attack(intelligence=1))
+        c.add_ability(abilities.hollow_gaze(Damage(1, 3, 'dark'), 30, intelligence=1))
+        c.add_ability(abilities.necrotic_chains(Damage(1, 3, 'dark'), 80, intelligence=0.8))
         c.set_ai(BasicAI(c))
         return c
 
@@ -167,11 +176,12 @@ class CreatureFactory:
         c.set_description("A massive undead knight, clad in ancient armor that bears the Vaelthorne Crest. Bound to the crypt to defend the Vaelthorne remains.")
         c.set_defensive_stats(base_hp=30, defense=14, dodge=2, will=5, endurance=4)
         c.set_offensive_stats(speed=3, strength=5, dexterity=3, intelligence=5, wisdom=3)
-        c.add_ability(abilities.basic_attack(2,4))
-        c.add_ability(abilities.multi_attack(2,4))
-        c.add_ability(abilities.greataxe_slash(2,4))
+        c.set_base_damage(Damage(1,3,'physical'))
+        c.add_ability(abilities.basic_attack(strength=1))
+        c.add_ability(abilities.multi_attack(strength=0.8))
+        c.add_ability(abilities.greataxe_slash(strength=0.8))
         c.add_ability(abilities.bone_shield(8))
-        c.add_ability(abilities.soul_drain(1,2,2))
+        c.add_ability(abilities.soul_drain(Damage(1, 3, 'dark'), 2, intelligence=0.8))
         c.action_point_replenish = 3
         c.set_ai(BasicAI(c))
         return c
@@ -184,10 +194,11 @@ class CreatureFactory:
                           "Scraps of rotted leather dangle from its shoulders, as if mocking the memory of a warrior.")
         c.set_defensive_stats(base_hp=12, defense=12, dodge=2, will=1, endurance=2)
         c.set_offensive_stats(speed=3, strength=4, dexterity=2, intelligence=2, wisdom=1)
-        c.add_ability(abilities.basic_attack(1,3))
-        c.add_ability(abilities.disarming_strike(1,3))
+        c.set_base_damage(Damage(1,3,'physical'))
+        c.add_ability(abilities.basic_attack(strength=1))
+        c.add_ability(abilities.disarming_strike(strength=1))
         c.add_ability(abilities.bone_shield(5))
-        c.add_ability(abilities.multi_attack(1,3))
+        c.add_ability(abilities.multi_attack(strength=1))
         c.set_ai(BasicAI(c))
         return c
 
@@ -198,9 +209,10 @@ class CreatureFactory:
                           "It wields a crude warhammer, the head a block of rust-streaked stone lashed to a thick, splintering wooden shaft.")
         c.set_defensive_stats(base_hp=14, defense=12, dodge=2, will=1, endurance=2)
         c.set_offensive_stats(speed=3, strength=4, dexterity=2, intelligence=2, wisdom=1)
-        c.add_ability(abilities.basic_attack(1,3))
-        c.add_ability(abilities.heavy_blow(1,3,70))
-        c.add_ability(abilities.multi_attack(1,3))
+        c.set_base_damage(Damage(1,3,'physical'))
+        c.add_ability(abilities.basic_attack(strength=1))
+        c.add_ability(abilities.heavy_blow(70, strength=1))
+        c.add_ability(abilities.multi_attack(strength=1))
         c.set_ai(BasicAI(c))
         return c
 
@@ -211,9 +223,10 @@ class CreatureFactory:
                           "Its ribcage is exposed, with faintly glowing runes etched into the bone, pulsing with necrotic energy.")
         c.set_defensive_stats(base_hp=12, defense=14, dodge=2, will=1, endurance=2)
         c.set_offensive_stats(speed=3, strength=4, dexterity=2, intelligence=2, wisdom=1)
-        c.add_ability(abilities.basic_attack(1,3))
-        c.add_ability(abilities.cleave(1,3,3))
-        c.add_ability(abilities.multi_attack(1,3))
+        c.set_base_damage(Damage(1,3,'physical'))
+        c.add_ability(abilities.basic_attack(strength=1))
+        c.add_ability(abilities.cleave(0.75, strength=1))
+        c.add_ability(abilities.multi_attack(strength=1))
         c.set_ai(BasicAI(c))
         return c
 
@@ -224,9 +237,10 @@ class CreatureFactory:
                           "In death, it has become a conduit for the endless waves of necromantic energy that have corrupted the cemetery.")
         c.set_defensive_stats(base_hp=28, defense=24, dodge=3, will=4, endurance=6)
         c.set_offensive_stats(speed=4, strength=4, dexterity=2, intelligence=5, wisdom=5)
-        c.add_ability(abilities.elemental_attack(1, 3, 'dark', 'intelligence'))
-        c.add_ability(abilities.dark_tether(1,3))
-        c.add_ability(abilities.necrotic_wave(0,2,20))
+        c.set_base_damage(Damage(1,3,'dark'))
+        c.add_ability(abilities.basic_attack(intelligence=1))
+        c.add_ability(abilities.dark_tether(Damage(1,3,'dark'), intelligence=1))
+        c.add_ability(abilities.necrotic_wave(Damage(0,2,'dark'), 20, intelligence=0.8))
         c.add_ability(abilities.unholy_summons())
         c.action_point_replenish = 4
         c.set_ai(BasicAI(c))
@@ -238,7 +252,8 @@ class CreatureFactory:
         c.set_description("A burly brute with a chipped cudgel, his tunic still bearing the crest of a past employer.")
         c.set_defensive_stats(base_hp=5,defense=5,dodge=2,will=1,endurance=1)
         c.set_offensive_stats(speed=3,strength=2,dexterity=2,intelligence=1, wisdom=1)
-        c.add_ability(abilities.slow_attack(0,2))
+        c.set_base_damage(Damage(0, 2, 'physical'))
+        c.add_ability(abilities.slow_attack(strength=1))
         c.add_ability(abilities.bolster(1, 3))
         c.set_ai(BasicAI(c))
         return c
@@ -249,7 +264,8 @@ class CreatureFactory:
         c.set_description("A ragged swordsman with mismatched armor, more used to shaking down travelers than actual combat.")
         c.set_defensive_stats(base_hp=5,defense=6,dodge=2,will=1,endurance=1)
         c.set_offensive_stats(speed=3,strength=2,dexterity=2,intelligence=1, wisdom=1)
-        c.add_ability(abilities.slow_attack(0,2))
+        c.set_base_damage(Damage(0, 2, 'physical'))
+        c.add_ability(abilities.slow_attack(strength=1))
         c.add_ability(abilities.bolster(1, 3))
         c.set_ai(BasicAI(c))
         return c

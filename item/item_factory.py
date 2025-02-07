@@ -1,4 +1,5 @@
 from item.item import *
+from combat.damage import Damage
 from combat.ability_factory import get_ability_factory
 
 abilities = get_ability_factory()
@@ -15,38 +16,38 @@ def get_item_factory():
 class ItemFactory:
     # WEAPONS
     def new_sword(self):
-        i = Equipment("Sword", (0,0,12,12), WEAPON)
+        i = Weapon("Sword", (0,0,12,12), Damage(0, 2, 'physical'))
         i.set_equipped_sprite_rect((0,0,12,12))
-        i.add_ability(abilities.basic_attack(1,3))
-        i.add_ability(abilities.disarming_strike(1,3))
+        i.add_ability(abilities.basic_attack(strength=0.67, dexterity=0.67))
+        i.add_ability(abilities.disarming_strike(strength=0.67, dexterity=0.67))
         return i
 
     def new_hammer(self):
-        i = Equipment("Hammer", (0,12,12,12), WEAPON)
+        i = Weapon("Hammer", (0,12,12,12), Damage(0, 2, 'physical'))
         i.set_equipped_sprite_rect((0,12,12,12))
-        i.add_ability(abilities.basic_attack(1,3))
-        i.add_ability(abilities.heavy_blow(1,3,80))
+        i.add_ability(abilities.basic_attack(strength=1))
+        i.add_ability(abilities.heavy_blow(80, strength=1))
         return i
 
     def new_axe(self):
-        i = Equipment("Axe", (0,24,12,12), WEAPON)
+        i = Weapon("Axe", (0,24,12,12), Damage(0, 2, 'physical'))
         i.set_equipped_sprite_rect((0,24,12,12))
-        i.add_ability(abilities.basic_attack(1,3))
-        i.add_ability(abilities.cleave(1,3,0))
+        i.add_ability(abilities.basic_attack(strength=1))
+        i.add_ability(abilities.cleave(0.67, strength=1))
         return i
 
     def new_staff(self):
-        i = Equipment("Staff", (0,36,12,12), WEAPON)
+        i = Weapon("Staff", (0,36,12,12), Damage(0, 2, 'fire'))
         i.set_equipped_sprite_rect((0,36,12,12))
-        i.add_ability(abilities.basic_attack(1,2))
+        i.add_ability(abilities.basic_attack(intelligence=0.8))
         i.set_stats(intelligence=1)
         return i
 
     def new_shortbow(self):
-        i = Equipment("Shortbow", (0,48,12,12), WEAPON)
+        i = Weapon("Shortbow", (0,48,12,12), Damage(0, 2, 'physical'))
         i.set_equipped_sprite_rect((0,48,12,12))
-        i.add_ability(abilities.dexterity_attack(1,3))
-        i.add_ability(abilities.power_shot(2,5))
+        i.add_ability(abilities.basic_attack(dexterity=1))
+        i.add_ability(abilities.power_shot(dexterity=1.75))
         return i
 
     # ARMOR

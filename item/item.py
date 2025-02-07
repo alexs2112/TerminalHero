@@ -1,4 +1,5 @@
 from main.player_log import get_player_log
+from combat.damage import Damage
 
 player_log = get_player_log()
 
@@ -40,6 +41,14 @@ class Equipment(Item):
 
     def set_resistances(self, **kwargs):
         self.resistances = kwargs
+
+class Weapon(Equipment):
+    def __init__(self, name, sprite_rect, base_damage: Damage):
+        super().__init__(name, sprite_rect, WEAPON)
+        self.base_damage = base_damage
+
+    def get_damage(self):
+        return self.base_damage.clone()
 
 class Food(Item):
     def __init__(self, name, cost, sprite_rect, log_entry):

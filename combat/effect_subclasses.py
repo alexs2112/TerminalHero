@@ -315,6 +315,10 @@ class ChallengedEffect(Effect):
     def effect_turn(self, _):
         self.duration -= 1
 
+    def modify_total_damage(self, attacker, damage):
+        if attacker == self.creature:
+            damage.apply_multiplier(self.strength / 100)
+
     def combine(self, creature, other_effect):
         if other_effect.name == self.name:
             self.effect_end(creature)
@@ -361,22 +365,24 @@ class WetEffect(Effect):
             return True
         return False
 
-# Increase weapon ability scaling damage by Wisdom
-# Since we don't have ability scaling implemented yet, simply increase Strength by Wisdom
 class EnchantedWeaponEffect(Effect):
     def __init__(self, duration, strength):
         super().__init__("Holy Weapon", duration, YELLOW)
         self.strength = strength
 
     def effect_start(self, creature):
-        creature.add_temp_stats(strength=self.strength)
         messenger.add(f"{creature.name} imbues their weapon with a holy light.")
 
     def effect_turn(self, _):
         self.duration -= 1
 
+    def modify_base_damage(self, _, damage):
+        # Assume that physical damage is a weapon attack
+        if damage.type == 'physical':
+            damage.add_damage(self.strength)
+            damage.type = 'holy'
+
     def effect_end(self, creature):
-        creature.add_temp_stats(strength=-self.strength)
         messenger.add(f"The holy light of {creature.name}'s weapon fades.")
 
     def combine(self, creature, other_effect):

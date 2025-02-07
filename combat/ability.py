@@ -15,6 +15,9 @@ class Ability:
         # Function to be called to determine target priorities
         self.target_priority_func = None
 
+        # How the ability scales damage off of the stats of the user (as a decimal)
+        self.scaling = None
+
     def set_description(self, desc: str):
         self.description = desc
 
@@ -53,3 +56,11 @@ class Ability:
         if not self.target_priority_func:
             return []
         return self.target_priority_func(self, creature, player, encounter)
+
+    def set_scaling(self, scaling):
+        self.scaling = scaling
+
+    def scale_damage(self, damage, creature):
+        for s, v in self.scaling.items():
+            damage.add_damage(int(creature.stat(s) * v))
+        return damage

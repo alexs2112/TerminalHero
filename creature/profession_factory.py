@@ -1,4 +1,5 @@
 from creature.profession import Profession
+from combat.damage import Damage
 from combat.ability_factory import get_ability_factory
 
 abilities = get_ability_factory()
@@ -25,8 +26,8 @@ class ProfessionFactory:
             "You are the wall that will not break, the force that will not falter."
         )
         p.set_stats(strength=2, endurance=1)
-        p.add_ability(abilities.multi_attack(1,3))
-        p.add_ability(abilities.bolster(1,5))
+        p.add_ability(abilities.multi_attack(strength=1))
+        p.add_ability(abilities.bolster(1, 5))
         return p
 
     def duelist(self):
@@ -38,8 +39,8 @@ class ProfessionFactory:
             "To face you in combat is to accept an unwinnable wager."
         )
         p.set_stats(strength=1, dexterity=1, dodge=1, speed=1)
-        p.add_ability(abilities.defensive_strike(1,3))
-        p.add_ability(abilities.challenge(2, 30))
+        p.add_ability(abilities.defensive_strike(strength=0.67, dexterity=0.67))
+        p.add_ability(abilities.challenge(2, 300))
         return p
 
     def elementalist(self):
@@ -51,7 +52,7 @@ class ProfessionFactory:
         )
         p.set_stats(intelligence=2, will=2, dodge=1)
         p.add_ability(abilities.rainstorm())
-        p.add_ability(abilities.lightning_strike(0,2,90))
+        p.add_ability(abilities.lightning_strike(Damage(1,3,'air'), 90, intelligence=1))
         return p
 
     def luminarch(self):
@@ -71,9 +72,9 @@ class ProfessionFactory:
         p = Profession("Soulwarden")
         p.set_stats(intelligence=2, will=1, endurance=1)
         p.set_resistances(dark=10)
-        p.add_ability(abilities.drain_life(90, 1, 2))
-        p.add_ability(abilities.corpse_explosion(1, 3))
-        p.add_ability(abilities.curse_of_decay())
+        p.add_ability(abilities.drain_life(90, Damage(0, 2, 'dark'), intelligence=1))
+        p.add_ability(abilities.corpse_explosion(Damage(1,3,'dark'), intelligence=1.25))
+        p.add_ability(abilities.curse_of_decay(Damage(0, 2, 'dark'), intelligence=1))
         return p
 
     def ashen_stalker(self):
@@ -81,5 +82,4 @@ class ProfessionFactory:
         p.set_stats(dexterity=2, intelligence=1, speed=1, dodge=1)
         p.add_ability(abilities.blinding_smoke(80))
         p.add_ability(abilities.flickering_flames(80))
-        # Another ability?
         return p

@@ -1,6 +1,7 @@
 from main.messenger import *
 from combat.ability import Ability
 from combat.effect import Effect
+from combat.damage import Damage
 from creature.profession import Profession
 from creature.creature_sprite import CreatureSprite
 from item.item import *
@@ -26,6 +27,7 @@ class Creature:
         self.base_hp = 0
         self.hp = 0
         self.armor = 0
+        self.base_damage = Damage(0, 1, 'physical')
 
         self.stats = {
             # Defensive Stats
@@ -237,14 +239,38 @@ class Creature:
         ability.set_cooldown()
         ability.activate(self, target, area)
 
-    def take_damage(self, damage: int, dam_type: str, ignore_armor=False):
-        dam = int(damage * (100 - self.get_resistance(dam_type)) / 100)
-        total_dam = dam
+    def set_base_damage(self, damage: Damage):
+        self.base_damage = damage
+
+    def get_base_damage(self):
+        if self.equipment[WEAPON]:
+            dam = self.equipment[WEAPON].get_damage()
+        else:
+            dam = self.base_damage.clone()
+        return dam
+
+    def calculate_total_damage(self, target, damage: Damage):
+        # See if there are any effects on the attacker to modify base damage
+        for e in self.effects:
+            e.modify_base_damage(target, damage)
+
+        # See if there are any effects on the target to further modify base damage
+        for e in target.effects:
+            e.modify_total_damage(self, damage)
+
+        # Apply damage resistances
+        multiplier = (100 - target.get_resistance(damage.type)) / 100
+        damage.apply_multiplier(multiplier)
+
+        return damage
+
+    def take_damage(self, damage: int, ignore_armor=False):
+        total_dam = damage
         if not ignore_armor and self.armor > 0:
-            armor_dam = min(self.armor, dam)
+            armor_dam = min(self.armor, damage)
             self.armor -= armor_dam
-            dam -= armor_dam
-        self.hp -= dam
+            damage -= armor_dam
+        self.hp -= damage
         if self.hp <= 0:
             self.dies()
         return total_dam

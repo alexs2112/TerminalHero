@@ -22,3 +22,13 @@ class Effect:
     # If return True, the other effect is not applied
     def combine(self, creature, other_effect):
         pass
+
+    # Triggered when the attacker calculates weapon damage while this effect is active
+    def modify_base_damage(self, target, damage):
+        # Modify damage in place
+        pass
+
+    # Triggered when the target calculates total damage while this effect is active
+    def modify_total_damage(self, attacker, damage):
+        # Modify damage in place
+        pass

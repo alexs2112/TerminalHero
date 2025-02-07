@@ -65,20 +65,16 @@ options:
   - Hit chance should be a separate function that returns a percentage
   - Can also show a brief description here
 - Flee combat? Or just reload previous save lol
-- Print the correct post-resistance damage numbers in ability effects before the damage is dealt (in case they die)
-- When balancing, increase all numbers by a bit. This will allow resistances to actually be felt (10% resistance doesn't matter if the damage is like 4)
-  - Make Armor much higher, this doesn't matter to enemies but will make balancing dungeons more manageable
 - Only show the name of targeted creatures or the active creature
   - This means we don't need to stagger their positions anymore
 - Combat backgrounds: Creatures stand on a floor and have some darkened background art
 - Actual ability animations
+- Effects that trigger on taking damage (ex: take damage that would kill you, remove the effect and go to 1 hp instead)
 - When there is a lot of text it goes by very quickly, maybe stagger it better with timing if multiple things happen at once?
   - Move the combat log to the top of the screen?
 - Position enemy sprites bottom aligned, so that we can have enemies bigger than 12x12 (bosses should be 16x16)
 - Have a target_highlight function or something so that abilities like Rainstorm and Rallying Cry will show what creatures they will affect, even though you target yourself
-- Dark Souls weapon scaling on abilities? Each ability scales with stats multiplied by some decimal
-  - Each ability has a `get_damage(creature, target)` to calculate min and max damage given the owner and the target
-  - When you do this, also make sure "Challenged" and enchanted weapon effects are applied
+- Edit flickering_flames to pass it a Damage object instead of just a number
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
