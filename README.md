@@ -139,7 +139,6 @@ options:
 - Save and Load messages
 - An Escape screen that you can select Save or Load from, also Load from start screen
 - Set encounters to clone their enemies into the CombatScreen when combat begins
-	- We will need to investigate how to clone enemies
 - Remove Encounter.finished and instead populate the player log with it
 - Remove Room.revealed from dungeon rooms, instead store it in player_log like encounters
 - Fix locked doors

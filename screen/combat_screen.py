@@ -34,6 +34,7 @@ class CombatScreen(Screen):
         self.area = area
         self.player = player
         self.player.start_combat()
+        self.encounter.spawn_enemies()
 
         messenger.clear_latest()
 
