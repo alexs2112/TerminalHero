@@ -120,6 +120,7 @@ options:
   - ie. getting a creature's fire resistance should include the benefit from having high wisdom
 - Since creature turns are determined based on their abilities, we might not need to give them specific AIs anymore
 - Professions should give the creature starting equipment, rather than the creature factory doing it
+  - We could consider choosing a profession gives the abilities to the creature, rather than the creature listing off their abilities + professions abilities
 
 **Saving**
 - This is going to be a bit of an issue
@@ -131,5 +132,7 @@ options:
 - If you have unlocked all 6 companions, you unlock a bonus area of a pond with a magic frog.
   - The frog says random sentences at you in dialogue that sound very wise but are either nonsense or unrelated.
 - I wonder if we should store creatures, encounters, dungeons, areas, all in their own quest packages
-- We probably just don't need the EffectFactory lol
+  - We probably don't need factories at all since we are loading every one as _ anyway
+  - We probably just don't need the EffectFactory lol
 - Rename draw_sprite to draw_from_rect, rename draw_creature to draw_sprite, handle dest coords better
+- Separate combat log from dialogue log for recording history
