@@ -44,6 +44,7 @@ class Game:
         d = Deserializer(SAVE_FILE)
         d.load_companions()
         d.load_player_log()
+        d.load_inventory()
 
         if self.args.stats:
             print("Increasing all player stats by 30")

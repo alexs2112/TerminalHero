@@ -1,6 +1,8 @@
 import json
 from serialization.save_creature import load_creature
+from serialization.get_by_name import *
 from main.player_log import get_player_log
+from item.inventory import get_inventory
 
 class Deserializer:
     def __init__(self, file):
@@ -22,3 +24,9 @@ class Deserializer:
         log = get_player_log()
         for key, value in self.data['player_log'].items():
             log[key] = value
+
+    def load_inventory(self):
+        i = get_inventory()
+        i.items.clear()
+        for item_name in self.data['inventory']:
+            i.add(get_item_by_name(item_name))
