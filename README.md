@@ -138,7 +138,6 @@ options:
 - Save and Load Inventory
 - Save and Load messages
 - An Escape screen that you can select Save or Load from, also Load from start screen
-	- You can only Save from World, Dungeons, Area, you can Load from anywhere
 - Set encounters to clone their enemies into the CombatScreen when combat begins
 	- We will need to investigate how to clone enemies
 - Remove Encounter.finished and instead populate the player log with it
@@ -152,6 +151,9 @@ options:
 - Save and Load Level Up Handler, will need to reference each stored companion that has already been pickled
 	- Currently this is just the player, so we also need to handle all party members as party members are pickled under player
 	- Once we can store companions away, this will need to be slightly revisited
+- Fix Escape scren for loading, allow loading from non-world screens,
+  - World may need to be decoupled from Game
+  - You can only Save from World, Dungeons, Area, you can Load from anywhere
 - Unit Tests:
 	- Create a World, save World, load World, hash both objects and see if they are the same
 

@@ -10,6 +10,11 @@ class Deserializer:
         with open(self.file, encoding='utf-8') as f:
             self.data = json.load(f)
 
+    def deserialize(self, world):
+        world.player = self.load_companions()['Player']
+        self.load_player_log()
+        self.load_inventory()
+
     def load_companions(self):
         out = {}    # Dict of (id: Creature)
         for cid, creature_data in self.data['companions'].items():

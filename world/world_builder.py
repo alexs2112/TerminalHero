@@ -11,9 +11,9 @@ dungeon_builder = get_dungeon_builder()
 feature_factory = get_feature_factory()
 
 class WorldBuilder:
-    def __init__(self, width, height):
-        self.width: int = width
-        self.height: int = height
+    def __init__(self):
+        self.width: int = 9
+        self.height: int = 9
         self.world: World = None
         self.initialize_world()
 

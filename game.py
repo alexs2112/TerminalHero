@@ -10,8 +10,6 @@ from main.player_log import get_player_log, update_log
 from creature.creature_factory import get_creature_factory
 from world.world_builder import WorldBuilder
 from screen.start_screen import StartScreen
-from serialization.serializer import Serializer
-from serialization.deserializer import Deserializer
 
 clock = get_clock()
 creature_factory = get_creature_factory()
@@ -37,14 +35,6 @@ class Game:
         else:
             # This still needs to be set for other cmd line args
             self.player = creature_factory.new_player('champion')
-
-        # Temporary testing of saving and loading game state
-        s = Serializer(SAVE_FILE)
-        s.serialize(self.world)
-        d = Deserializer(SAVE_FILE)
-        d.load_companions()
-        d.load_player_log()
-        d.load_inventory()
 
         if self.args.stats:
             print("Increasing all player stats by 30")
@@ -78,7 +68,7 @@ class Game:
             self.inventory_test()
 
     def generate_world(self):
-        world_builder = WorldBuilder(9,9)
+        world_builder = WorldBuilder()
         return world_builder.build_world()
 
     def game_loop(self):
