@@ -43,6 +43,7 @@ class Game:
         s.serialize(self.world)
         d = Deserializer(SAVE_FILE)
         d.load_companions()
+        d.load_player_log()
 
         if self.args.stats:
             print("Increasing all player stats by 30")

@@ -1,6 +1,7 @@
 import json
 from serialization.save_creature import save_creature
 from world.world import World
+from main.player_log import get_player_log
 
 class Serializer:
     def __init__(self, file):
@@ -8,6 +9,8 @@ class Serializer:
         self.data = {}
 
     def serialize(self, world: World):
+        self.data['player_log'] = get_player_log()
+
         self.data['player'] = save_creature(world.player)
         self.data['companions'] = {}
         for p in world.player.party:
@@ -16,4 +19,4 @@ class Serializer:
             self.data['companions'][p.id] = save_creature(p)
 
         with open(self.file, 'w+', encoding='utf-8') as f:
-            json.dump(self.data, f)
+            json.dump(self.data, f, indent=2)
