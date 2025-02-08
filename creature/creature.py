@@ -10,6 +10,7 @@ messenger = get_messenger()
 
 class Creature:
     def __init__(self, name, level):
+        self.id = name      # Temporary
         self.name = name
         self.description = "placeholder text"
         self.type = 'creature'
@@ -70,10 +71,10 @@ class Creature:
         self.action_point_replenish = 2
 
         # The food the creature has eaten, stats will be stored in temporary_stats
-        self.food = None
+        self.food: Food = None
 
         # If this creature is allied with the player
-        self.allied = False
+        self.allied: bool = False
 
     def set_description(self, description):
         self.description = description

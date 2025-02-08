@@ -2,3 +2,4 @@ __pycache__
 diagrams/*.mermaid.md
 .VSCodeCounter
 game.log
+game.save

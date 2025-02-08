@@ -6,6 +6,7 @@ COMBAT_BUMP_DISTANCE = 24
 DIALOG_CHAR_TIME = 10          # How long it takes for each letter to appear in dialogue
 
 LOG_NAME = 'game.log'
+SAVE_FILE = 'game.save'
 
 FONT_PATH = 'resources/cp437.ttf'
 FONT_SIZE = 18

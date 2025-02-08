@@ -123,8 +123,37 @@ options:
   - We could consider choosing a profession gives the abilities to the creature, rather than the creature listing off their abilities + professions abilities
 
 **Saving**
-- This is going to be a bit of an issue
-- This should be figured out sooner rather than later for balance testing
+- Serialize Creatures:
+  - Store all atomic values
+  - Creature.sprite: Doesn't need to store the caches but need to store everything else
+  - Creature.abilities: Store by Ability name
+  - Creature.profession: Store by Profession name
+  - Creature.base_damage: Store this by calling Damage.get()
+  - Creature.equipment: Store as dict(str, Equipment.name)
+  - Creature.effects: This should always be empty
+  - Creature.food: Store as name instead of object
+  - Player.party: Store as creature ids
+  - Player.area: Store as None for now
+- Save and Load player_log
+- Save and Load Inventory
+- Save and Load messages
+- An Escape screen that you can select Save or Load from, also Load from start screen
+	- You can only Save from World, Dungeons, Area, you can Load from anywhere
+- Set encounters to clone their enemies into the CombatScreen when combat begins
+	- We will need to investigate how to clone enemies
+- Remove Encounter.finished and instead populate the player log with it
+- Remove Room.revealed from dungeon rooms, instead store it in player_log like encounters
+- Fix locked doors
+- Load the player in the correct area
+	- This means we will always load into either the World or the Dungeon screen, which is acceptable
+  - Set both Area.player and Player.area
+- Fix QuestSteps
+- Load Quests by name/id
+- Save and Load Level Up Handler, will need to reference each stored companion that has already been pickled
+	- Currently this is just the player, so we also need to handle all party members as party members are pickled under player
+	- Once we can store companions away, this will need to be slightly revisited
+- Unit Tests:
+	- Create a World, save World, load World, hash both objects and see if they are the same
 
 **Other**
 - New constant of `FONT_HEIGHT + 2`
