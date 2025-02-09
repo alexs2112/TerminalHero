@@ -43,10 +43,10 @@ class Encounter:
     def enabled(self):
         if self.log_completion in player_log:
             return False
-        if self.invalid_condition in player_log:
+        if self.invalid_condition and self.invalid_condition in player_log:
             if player_log[self.invalid_condition]:
                 return False
-        if self.valid_condition in player_log:
+        if self.valid_condition and self.valid_condition in player_log:
             return player_log[self.valid_condition]
         return True
 
@@ -75,7 +75,9 @@ class Encounter:
     def spawn_enemies(self):
         self.enemies.clear()
         for f in self.enemy_functions:
-            self.enemies.append(f())
+            e = f()
+            e.refresh()
+            self.enemies.append(e)
 
     def set_enemy_functions(self, *functions):
         self.enemy_functions = functions

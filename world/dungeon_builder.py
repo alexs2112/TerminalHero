@@ -116,8 +116,8 @@ class DungeonBuilder:
         entrance.set_unscaled_position(0,32)
         entrance.set_player_position(15,15)
         entrance.features = [ feature_factory.vaelthorne_crypt_entrance() ]
-        entrance.exits = [ EXIT_RIGHT ]
-        entrance.locked = [ EXIT_RIGHT ]
+        entrance.exits = [ ]
+        entrance.locked = [ (EXIT_RIGHT, 'crypt_unlocked') ]
         entrance.exit_dungeon_direction = EXIT_LEFT
         d.add_room((0,1), entrance)
 

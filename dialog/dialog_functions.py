@@ -1,7 +1,6 @@
 from main.player_log import get_player_log, update_log
 from main.notification import add_notification
 from world.encounter_factory import get_encounter_factory
-from world.dungeon_builder import EXIT_RIGHT
 from creature.creature_factory import get_creature_factory
 from creature.player import Player
 from quests.quest_factory import *
@@ -70,9 +69,7 @@ def add_gorren_to_party(_):
 def runebound_stalker(_):
     update_log('shrine_opened')
 
-def unlock_vaelthorne_crypt(player: Player):
-    player.area.exits.append(EXIT_RIGHT)
-    player.area.locked.clear()
+def unlock_vaelthorne_crypt(_):
     update_log('crypt_unlocked')
 
 def banishment_ritual_interrupted(_):

@@ -29,6 +29,7 @@ class Room(Area):
         self.exits = []
 
         # Which of the exits are currently locked
+        # Stored as [(direction, log_condition)]
         self.locked = []
 
         # The direction in which to leave the dungeon

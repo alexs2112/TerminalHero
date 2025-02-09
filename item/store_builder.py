@@ -15,10 +15,10 @@ class StoreBuilder:
     def tavern_store(self):
         s = Store("The Lifeblood Tavern")
         i = [
-            items.new_mushroom(),
-            items.new_carrot(),
-            items.new_steak(),
-            items.new_cheese()
+            items.new_plump_helmet(),
+            items.new_buried_torch(),
+            items.new_firecut(),
+            items.new_stonecurd()
         ]
         s.add_items(i)
         return s

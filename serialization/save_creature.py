@@ -46,6 +46,7 @@ def load_creature(creature_dict: dict):
     for slot, item_name in out['equipment'].items():
         c.equipment[slot] = get_item_by_name(item_name)
     c.set_sprite(unhash_creature_sprite(out['sprite']))
+    c.food = get_item_by_name(out['food'])
 
     # The party will need to be loaded once all characters are loaded in deserializer
 

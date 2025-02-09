@@ -153,9 +153,20 @@ class DungeonScreen(Screen):
             if e.block_exit:
                 self.update_message("Can't Leave: Enemies Present!")
                 return self
-        if direction in self.current_room.locked:
-            self.update_message("That Door is Locked!")
-        elif direction in self.current_room.exits:
+
+        # Check if we can get through a locked exit
+        for d, c in self.current_room.locked:
+            if d == direction:
+                if not player_log[c]:
+                    self.update_message("That Door is Locked!")
+                    return self
+                else:
+                    self.player_pos = (self.player_pos[0] + direction[0], self.player_pos[1] + direction[1])
+                    self.update_rooms()
+                    return self
+
+        # Check if we can get through an unlocked exit
+        if direction in self.current_room.exits:
             self.player_pos = (self.player_pos[0] + direction[0], self.player_pos[1] + direction[1])
             self.update_rooms()
             return self
