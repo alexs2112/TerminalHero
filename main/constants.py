@@ -14,8 +14,7 @@ FONT_HEIGHT = 18
 FONT_WIDTH = 10
 
 # World tile sizes are 12x12, multiply them by multiplier on world screen
-WORLD_TILE_WIDTH = 12
-WORLD_TILE_HEIGHT = 12
+WORLD_TILE_SIZE = 12
 WORLD_TILE_MODIFIER = 4
 
 # How large sprites are scaled by in the dungeon screen

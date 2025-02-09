@@ -141,7 +141,7 @@ class AreaScreen(Screen):
     # Some basic functions that are called by the option the player selects
     # pylint: disable=import-outside-toplevel
     def leave_area(self, *_):
-        self.prev_screen.refresh()
+        self.prev_screen.refresh(area=self.area)
         return self.prev_screen
 
     def begin_encounter(self, canvas, index):

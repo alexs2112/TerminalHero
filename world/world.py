@@ -2,19 +2,17 @@ from world.area import Area
 from creature.player import Player
 
 class World:
-    def __init__(self, width, height):
+    def __init__(self):
         self.player: Player = None
-        self.width: int = width
-        self.height: int = height
-        self.areas: list[list[Area]] = []
-        self.initialize_areas()
+        self.areas: list[Area] = []
+        self.positions: dict[Area, (int, int)] = {}
 
-    def initialize_areas(self):
-        for _ in range(self.width):
-            column = []
-            for _ in range(self.height):
-                column.append(None)
-            self.areas.append(column)
+    def add_area(self, position, area):
+        self.areas.append(area)
+        self.positions[area] = position
 
-    def get_area_sprite_rect(self, x, y):
-        return self.areas[x][y].sprite_rect
+    def get_areas(self):
+        return self.areas
+
+    def get_known_areas(self):
+        return [ a for a in self.areas if a.condition_met() and not a.is_filler ]

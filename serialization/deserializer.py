@@ -19,6 +19,7 @@ class Deserializer:
         self.load_inventory()
         self.load_quests()
         self.load_level_up_handler(world.player.party)
+        self.load_player_location(world, world.player)
 
     def load_companions(self):
         out = {}    # Dict of (id: Creature)
@@ -60,3 +61,11 @@ class Deserializer:
         # Instead of storing the party, just add all of them on load
         for c in party:
             levels.add_creature(c)
+
+    def load_player_location(self, world, player):
+        area_name = self.data['area_name']
+        for a in world.get_areas():
+            if a.name == area_name and a.condition_met():
+                player.area = a
+                a.player = player
+                break

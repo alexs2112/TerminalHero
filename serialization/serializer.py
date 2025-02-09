@@ -36,5 +36,7 @@ class Serializer:
         levels = get_level_up_handler()
         self.data['xp_tracker'] = levels.xp
 
+        self.data['area_name'] = world.player.area.name
+
         with open(self.file, 'w+', encoding='utf-8') as f:
             json.dump(self.data, f, indent=2)

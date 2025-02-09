@@ -8,7 +8,7 @@ class Area:
         self.type = 'Area'
         self.id: str = name.lower().replace(' ', '_')
         self.name: str = name
-        self.sprite_rect: str = sprite_rect
+        self.sprite_rect: tuple[int,int,int,int] = sprite_rect
         self.player = None
         self.encounters: list[Encounter] = []
         self.features: list[Feature] = []

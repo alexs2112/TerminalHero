@@ -14,37 +14,24 @@ from world.world import World
 clock = get_clock()
 
 class WorldScreen(Screen):
-    def __init__(self, canvas, world: World, start_area=None):
+    def __init__(self, canvas, world: World):
         super().__init__(canvas)
         self.world = world
+        self.player = self.world.player
         self.center_x = SCREEN_WIDTH / 2 + 64
         self.local_time = 0
         self.frame_num = 0
 
-        self.known_areas = self.initialize_areas()
-        self.index = self.index_by_area(start_area)
+        self.known_areas = []
+        self.index = 0
+        self.refresh()
 
     def refresh(self, **kwargs):
-        self.known_areas = self.initialize_areas()
-
-    def initialize_areas(self):
-        out = {}
-        for x in range(self.world.width):
-            for y in range(self.world.height):
-                if self.world.areas[x][y] and \
-                   self.world.areas[x][y].condition_met() and \
-                   not self.world.areas[x][y].is_filler:
-                    out[(x,y)] = self.world.areas[x][y]
-        return out
-
-    def index_by_area(self, area):
-        if area is None:
-            return 0
-        areas = list(self.known_areas.values())
-        for i in range(len(areas)):
-            if areas[i] == area:
-                return i
-        return 0
+        self.known_areas = self.world.get_known_areas()
+        if self.player.area:
+            self.index = self.known_areas.index(self.player.area)
+        else:
+            self.move_into(self.known_areas[0])
 
     def check_events(self, events):
         if self.check_notifications(events):
@@ -55,10 +42,12 @@ class WorldScreen(Screen):
                 self.local_time = 0
                 if event.key == pygame.K_DOWN:
                     self.index = min(self.index + 1, len(self.known_areas) - 1)
+                    self.move_into(self.known_areas[self.index])
                 elif event.key == pygame.K_UP:
                     self.index = max(self.index - 1, 0)
+                    self.move_into(self.known_areas[self.index])
                 elif event.key == pygame.K_RETURN:
-                    return AreaScreen(self.canvas, self.area_by_index(self.index), self.world.player, self)
+                    return AreaScreen(self.canvas, self.known_areas[self.index], self.world.player, self)
                 elif event.key == pygame.K_l:
                     return QuestScreen(self.canvas, self)
                 elif event.key == pygame.K_i:
@@ -68,6 +57,10 @@ class WorldScreen(Screen):
                 elif event.key == pygame.K_ESCAPE:
                     return EscapeScreen(self.canvas, self)
         return self
+
+    def move_into(self, area):
+        self.player.area = area
+        area.player = self.player
 
     def display(self):
         super().display()
@@ -83,42 +76,29 @@ class WorldScreen(Screen):
         self.display_notifications()
 
     def draw_world(self):
-        start_x = self.center_x / 2 - ((self.world.width / 2) * (WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2))
-        start_y = SCREEN_HEIGHT / 2 - ((self.world.height / 2) * (WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2))
-
-        draw_x = start_x
-        for x in range(self.world.width):
-            draw_y = start_y
-            for y in range(self.world.height):
-                if self.world.areas[x][y] and self.world.areas[x][y].condition_met():
-                    sprite_rect = self.world.get_area_sprite_rect(x, y)
-                    draw_sprite(self.canvas, world_sprites, sprite_rect, draw_x, draw_y, scale=4)
-                draw_y += WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2
-            draw_x += WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2
+        # For now, just start at (0,0)
+        # This can be revisited when we draw proper world sprites
+        tile_size = WORLD_TILE_SIZE * WORLD_TILE_MODIFIER + 2
+        for area in self.known_areas:
+            x,y = self.world.positions[area]
+            draw_sprite(self.canvas, world_sprites, area.sprite_rect, x * tile_size, y * tile_size, scale=WORLD_TILE_MODIFIER)
+        
+        # For now, just draw filler
+        for area in [ a for a in self.world.areas if a.is_filler ]:
+            x,y = self.world.positions[area]
+            draw_sprite(self.canvas, world_sprites, area.sprite_rect, x * tile_size, y * tile_size, scale=WORLD_TILE_MODIFIER)
 
         if self.frame_num == 0:
-            cx, cy = self.pos_by_index(self.index)
-            player_x = start_x + cx * (WORLD_TILE_WIDTH * WORLD_TILE_MODIFIER + 2)
-            player_y = start_y + cy * (WORLD_TILE_HEIGHT * WORLD_TILE_MODIFIER + 2)
-            draw_creature(self.canvas, self.world.player.get_sprite(), self.world.player.sprite.dimensions(), (player_x, player_y), scale=4)
-
-    def pos_by_index(self, index):
-        areas = list(self.known_areas)
-        if index >= 0 and index < len(areas):
-            return areas[index]
-        return areas[0]
-
-    def area_by_index(self, index):
-        areas = list(self.known_areas.values())
-        if index >= 0 and index < len(areas):
-            return areas[index]
-        return areas[0]
+            x,y = self.world.positions[self.player.area]
+            px = x * tile_size
+            py = y * tile_size
+            draw_creature(self.canvas, self.player.get_sprite(), self.player.sprite.dimensions(), (px,py), scale=4)
 
     def list_known_areas(self):
         i = 1
         x = self.center_x + 16
         y = 24
-        for area in self.known_areas.values():
+        for area in self.known_areas:
             colour = WHITE
             if (i - 1) == self.index:
                 colour = GREEN

@@ -85,8 +85,7 @@ options:
 
 **World**
 - Draw the world like how dungeons are drawn, instead of using tiles
-- This can't just turn into a dungeon because I still want Area Screens and you can't just walk around to explore it (ie. keep the interface the same for now)
-- Each world area should have a priority or something, sort the areas in the world screen by priority rather than index (Vaelthorne Shrine currently shows up first when unlocked)
+  - This can't just turn into a dungeon because I still want Area Screens and you can't just walk around to explore it (ie. keep the interface the same for now)
 
 **Dialogue**
 - Somehow mark dialogue options that have not been chosen yet
