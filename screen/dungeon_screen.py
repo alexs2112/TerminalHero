@@ -113,7 +113,7 @@ class DungeonScreen(Screen):
         self.current_room = self.dungeon.rooms[self.player_pos[0]][self.player_pos[1]]
         self.current_room.enter_area(self.player)
         self.room_description = fit_text(self.current_room.get_description(), SCREEN_WIDTH - self.divider_x - 32)
-        self.current_room.revealed = True
+        self.current_room.set_revealed()
         self.clear_message()
         self.define_options()
         self.update_sprite()
@@ -168,7 +168,7 @@ class DungeonScreen(Screen):
         w, h = self.dungeon.unscaled_width, self.dungeon.unscaled_height
         s = pygame.Surface((w,h))
         for room in self.dungeon.get_rooms():
-            if room.revealed:
+            if room.is_revealed():
                 s.blit(dungeon_sprites, room.unscaled_position, room.sprite_rect)
         scaled = pygame.transform.scale(s, (w * DUNGEON_SCALE, h * DUNGEON_SCALE))
         self.dungeon_sprite = scaled

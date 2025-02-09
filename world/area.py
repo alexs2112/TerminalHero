@@ -6,6 +6,7 @@ player_log = get_player_log()
 class Area:
     def __init__(self, name, sprite_rect):
         self.type = 'Area'
+        self.id: str = name.lower().replace(' ', '_')
         self.name: str = name
         self.sprite_rect: str = sprite_rect
         self.player = None

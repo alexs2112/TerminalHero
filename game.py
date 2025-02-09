@@ -114,7 +114,7 @@ class Game:
 
         if set_revealed:
             for r in d.get_rooms():
-                r.revealed = True
+                r.set_revealed()
 
         if no_enemies:
             for a in d.room_list:
