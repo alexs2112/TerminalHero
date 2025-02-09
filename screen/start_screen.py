@@ -6,11 +6,13 @@ from screen.profession_screen import ProfessionScreen
 from main.constants import *
 from main.colour import *
 from serialization.deserializer import Deserializer
+from world.world_builder import get_world
+
+world = get_world()
 
 class StartScreen(Screen):
-    def __init__(self, canvas, world):
+    def __init__(self, canvas):
         super().__init__(canvas)
-        self.world = world
         self.index = 0
         self.options = [
             "New Game"
@@ -34,14 +36,14 @@ class StartScreen(Screen):
                         self.index = 0
                 elif event.key == pygame.K_RETURN:
                     if self.options[self.index] == "New Game":
-                        if self.world.player:
+                        if world.player:
                             # If the player is already assigned via commands
-                            return WorldScreen(self.canvas, self.world)
-                        return ProfessionScreen(self.canvas, self.world)
+                            return WorldScreen(self.canvas, world)
+                        return ProfessionScreen(self.canvas, world)
                     elif self.options[self.index] == "Load Game":
                         d = Deserializer(SAVE_FILE)
-                        d.deserialize(self.world)
-                        return WorldScreen(self.canvas, self.world)
+                        d.deserialize(world)
+                        return WorldScreen(self.canvas, world)
                     elif self.options[self.index] == "Exit":
                         return None
         return self

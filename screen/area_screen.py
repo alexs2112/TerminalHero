@@ -5,6 +5,7 @@ from screen.combat_screen import CombatScreen
 from screen.quest_screen import QuestScreen
 from screen.inventory_screen import InventoryScreen
 from screen.creature_screen import CreatureScreen
+from screen.escape_screen import EscapeScreen
 from world.area import Area
 from main.constants import *
 from main.colour import *
@@ -84,6 +85,8 @@ class AreaScreen(Screen):
                     return InventoryScreen(self.canvas, self.player, self)
                 elif event.key == pygame.K_c:
                     return CreatureScreen(self.canvas, self.player, self)
+                elif event.key == pygame.K_ESCAPE:
+                    return EscapeScreen(self.canvas, self)
         return self
 
     def display(self):

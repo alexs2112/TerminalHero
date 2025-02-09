@@ -1,5 +1,6 @@
 import pygame
 from screen.screen import Screen
+from screen.escape_screen import EscapeScreen
 from main.constants import *
 from main.colour import *
 from main.util import *
@@ -92,6 +93,8 @@ class DialogScreen(Screen):
                         self.roller.roll()
                 # Otherwise, normal dialogue, select next option
                 elif self.finished:
+                    if event.key == pygame.K_ESCAPE:
+                        return EscapeScreen(self.canvas, self, can_save=False)
                     for i in range(len(self.children)):
                         if event.key == pygame.key.key_code(str(i + 1)):
                             return self.select_child(i)

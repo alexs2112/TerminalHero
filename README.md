@@ -146,10 +146,9 @@ options:
 - Fix locked doors
 - Fix QuestSteps
 - Load Quests by name/id
-- Save and Load Level Up Handler, will need to reference each stored companion that has already been pickled
-	- Currently this is just the player, so we also need to handle all party members as party members are pickled under player
-	- Once we can store companions away, this will need to be slightly revisited
-- Fix Escape screen for loading, allow loading from non-world screens,
+- Save and Load Level Up Handler, will need to reference each companion
+  - For now, don't bother saving companions. Each should already be referenced by this, so we can just use already loaded ones.
+- Fix Escape screen for loading, allow loading from non-world screens
   - World may need to be decoupled from Game
   - You can only Save from World, Dungeons, Area, you can Load from anywhere
 - Load the player in the correct area

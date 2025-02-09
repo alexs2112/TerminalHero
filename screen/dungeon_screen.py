@@ -11,6 +11,7 @@ from screen.dialog_screen import DialogScreen
 from screen.quest_screen import QuestScreen
 from screen.inventory_screen import InventoryScreen
 from screen.creature_screen import CreatureScreen
+from screen.escape_screen import EscapeScreen
 from creature.player import Player
 from world.dungeon import Dungeon
 from world.room import *
@@ -79,6 +80,8 @@ class DungeonScreen(Screen):
                     return InventoryScreen(self.canvas, self.player, self)
                 elif event.key == pygame.K_c:
                     return CreatureScreen(self.canvas, self.player, self)
+                elif event.key == pygame.K_ESCAPE:
+                    return EscapeScreen(self.canvas, self)
         return self
 
     def display(self):

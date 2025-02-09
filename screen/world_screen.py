@@ -66,7 +66,7 @@ class WorldScreen(Screen):
                 elif event.key == pygame.K_c:
                     return CreatureScreen(self.canvas, self.world.player, self)
                 elif event.key == pygame.K_ESCAPE:
-                    return EscapeScreen(self.canvas, self, self.world)
+                    return EscapeScreen(self.canvas, self)
         return self
 
     def display(self):

@@ -10,6 +10,21 @@ encounter_factory = get_encounter_factory()
 dungeon_builder = get_dungeon_builder()
 feature_factory = get_feature_factory()
 
+# pylint: disable=invalid-name
+_world_builder = None
+_world = None
+def get_world():
+    global _world_builder, _world
+    if not _world_builder:
+        _world_builder = WorldBuilder()
+        _world = _world_builder.build_world()
+    return _world
+
+def reset_world():
+    global _world_builder, _world
+    _world_builder = WorldBuilder()
+    _world = _world_builder.build_world()
+
 class WorldBuilder:
     def __init__(self):
         self.width: int = 9
