@@ -5,6 +5,7 @@ from main.player_log import get_player_log
 from item.inventory import get_inventory
 import quests.quest_factory
 from quests.quest_handler import get_quest_handler
+from creature.level_up_handler import get_level_up_handler
 
 class Deserializer:
     def __init__(self, file):
@@ -17,6 +18,7 @@ class Deserializer:
         self.load_player_log()
         self.load_inventory()
         self.load_quests()
+        self.load_level_up_handler(world.player.party)
 
     def load_companions(self):
         out = {}    # Dict of (id: Creature)
@@ -49,3 +51,12 @@ class Deserializer:
         for quest_id in self.data['done_quests']:
             func = getattr(quests.quest_factory, quest_id)
             q.add_done(func())
+
+    def load_level_up_handler(self, party):
+        levels = get_level_up_handler()
+        levels.creatures.clear()
+        levels.xp = self.data['xp_tracker']
+
+        # Instead of storing the party, just add all of them on load
+        for c in party:
+            levels.add_creature(c)

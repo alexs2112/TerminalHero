@@ -4,6 +4,7 @@ from world.world import World
 from main.player_log import get_player_log
 from item.inventory import get_inventory
 from quests.quest_handler import get_quest_handler
+from creature.level_up_handler import get_level_up_handler
 
 class Serializer:
     def __init__(self, file):
@@ -31,6 +32,9 @@ class Serializer:
             self.data['quests'].append(q.id)
         for q in quests.get_done():
             self.data['done_quests'].append(q.id)
+
+        levels = get_level_up_handler()
+        self.data['xp_tracker'] = levels.xp
 
         with open(self.file, 'w+', encoding='utf-8') as f:
             json.dump(self.data, f, indent=2)

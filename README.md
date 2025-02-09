@@ -121,6 +121,8 @@ options:
 - Since creature turns are determined based on their abilities, we might not need to give them specific AIs anymore
 - Professions should give the creature starting equipment, rather than the creature factory doing it
   - We could consider choosing a profession gives the abilities to the creature, rather than the creature listing off their abilities + professions abilities
+- Instead of storing open stat and ability points in Creature, we could store spent points. Then the level_up_handler could just keep track of total points that are allowed to be spent.
+  - Would be easier to keep track, then it wouldn't need to keep a reference to creatures
 
 **Saving**
 - Serialize Creatures:
@@ -147,7 +149,7 @@ options:
 - Save and Load Level Up Handler, will need to reference each stored companion that has already been pickled
 	- Currently this is just the player, so we also need to handle all party members as party members are pickled under player
 	- Once we can store companions away, this will need to be slightly revisited
-- Fix Escape scren for loading, allow loading from non-world screens,
+- Fix Escape screen for loading, allow loading from non-world screens,
   - World may need to be decoupled from Game
   - You can only Save from World, Dungeons, Area, you can Load from anywhere
 - Load the player in the correct area
