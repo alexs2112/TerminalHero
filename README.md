@@ -142,9 +142,6 @@ options:
 - Remove Encounter.finished and instead populate the player log with it
 - Remove Room.revealed from dungeon rooms, instead store it in player_log like encounters
 - Fix locked doors
-- Load the player in the correct area
-	- This means we will always load into either the World or the Dungeon screen, which is acceptable
-  - Set both Area.player and Player.area
 - Fix QuestSteps
 - Load Quests by name/id
 - Save and Load Level Up Handler, will need to reference each stored companion that has already been pickled
@@ -153,6 +150,11 @@ options:
 - Fix Escape scren for loading, allow loading from non-world screens,
   - World may need to be decoupled from Game
   - You can only Save from World, Dungeons, Area, you can Load from anywhere
+- Load the player in the correct area
+	- This means we will always load into either the World or the Dungeon screen, which is acceptable
+  - Set both Area.player and Player.area
+- Ensure that all of the handlers that get imported are reset upon loading.
+  - inventory, quest_handler, level_up_handler
 - Unit Tests:
 	- Create a World, save World, load World, hash both objects and see if they are the same
 

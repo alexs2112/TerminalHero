@@ -3,6 +3,7 @@ from serialization.save_creature import save_creature
 from world.world import World
 from main.player_log import get_player_log
 from item.inventory import get_inventory
+from quests.quest_handler import get_quest_handler
 
 class Serializer:
     def __init__(self, file):
@@ -22,6 +23,14 @@ class Serializer:
         self.data['inventory'] = []
         for i in get_inventory().items:
             self.data['inventory'].append(i.name)
+
+        self.data['quests'] = []
+        self.data['done_quests'] = []
+        quests = get_quest_handler()
+        for q in quests.get():
+            self.data['quests'].append(q.id)
+        for q in quests.get_done():
+            self.data['done_quests'].append(q.id)
 
         with open(self.file, 'w+', encoding='utf-8') as f:
             json.dump(self.data, f, indent=2)

@@ -3,7 +3,7 @@ from item.item_factory import get_item_factory
 
 professions = get_profession_factory()
 def get_profession_by_name(name: str):
-    func = getattr(professions, name.lower())
+    func = getattr(professions, name.lower().replace(' ', '_'))
     return func()
 
 items = get_item_factory()

@@ -5,7 +5,6 @@ class QuestStep:
     def __init__(self, name):
         self.name = name
         self.description = ""
-        self.complete = False
 
         # What needs to be True in the player_log for this one to show up
         self.required = []
@@ -20,12 +19,9 @@ class QuestStep:
         self.log_completion = player_log_field
 
     def check_completion(self):
-        if self.complete:
+        if self.log_completion in player_log and player_log[self.log_completion]:
             return True
-        if self.log_completion in player_log:
-            if player_log[self.log_completion]:
-                self.complete = True
-        return self.complete
+        return False
 
     def is_enabled(self):
         for q in self.required:

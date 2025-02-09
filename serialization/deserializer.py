@@ -3,6 +3,8 @@ from serialization.save_creature import load_creature
 from serialization.get_by_name import *
 from main.player_log import get_player_log
 from item.inventory import get_inventory
+import quests.quest_factory
+from quests.quest_handler import get_quest_handler
 
 class Deserializer:
     def __init__(self, file):
@@ -14,6 +16,7 @@ class Deserializer:
         world.player = self.load_companions()['Player']
         self.load_player_log()
         self.load_inventory()
+        self.load_quests()
 
     def load_companions(self):
         out = {}    # Dict of (id: Creature)
@@ -35,3 +38,14 @@ class Deserializer:
         i.items.clear()
         for item_name in self.data['inventory']:
             i.add(get_item_by_name(item_name))
+
+    def load_quests(self):
+        q = get_quest_handler()
+        q.quests.clear()
+        q.done.clear()
+        for quest_id in self.data['quests']:
+            func = getattr(quests.quest_factory, quest_id)
+            q.add(func())
+        for quest_id in self.data['done_quests']:
+            func = getattr(quests.quest_factory, quest_id)
+            q.add_done(func())
