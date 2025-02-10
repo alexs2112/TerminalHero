@@ -1,4 +1,4 @@
-import json
+import json, pathlib
 from dialog.dialog_node import DialogNode
 from dialog.dialog_roll import DialogRoll
 
@@ -34,10 +34,11 @@ def load_dialog(filename):
     # Load each node initially as { node_id: DialogNode }
     loaded_nodes = {}
     for node_id, node_data in data['nodes'].items():
+        log_id = f"{pathlib.Path(filename).stem}_{node_id}"
         if 'type' in node_data and node_data['type'] == "Roll":
-            loaded_nodes[node_id] = load_roll_initial(node_data)
+            loaded_nodes[node_id] = load_roll_initial(log_id, node_data)
         else:
-            loaded_nodes[node_id] = load_node_initial(node_data)
+            loaded_nodes[node_id] = load_node_initial(log_id, node_data)
 
     # Second pass: Structure node children properly
     for node in loaded_nodes.values():
@@ -55,7 +56,7 @@ def load_dialog(filename):
             node.failure = loaded_nodes[node.failure]
     return loaded_nodes
 
-def load_node_initial(node_data):
+def load_node_initial(log_id, node_data):
     condition = None
     if 'condition' in node_data:
         condition = node_data['condition']
@@ -71,16 +72,20 @@ def load_node_initial(node_data):
     stat_requirement = None
     if 'stats' in node_data:
         stat_requirement = node_data['stats']
+    only_once = False
+    if 'only_once' in node_data:
+        only_once = node_data['only_once']
 
-    d = DialogNode(node_data['name'], node_data['text'], node_data['children'])
+    d = DialogNode(log_id, node_data['name'], node_data['text'], node_data['children'])
     d.set_condition(condition)
     d.set_unless(unless)
     d.set_function_name(func)
     d.set_area_option(area_option)
     d.set_stat_requirement(stat_requirement)
+    d.set_only_once(only_once)
     return d
 
-def load_roll_initial(node_data):
+def load_roll_initial(log_id, node_data):
     name = 'System'
     if 'name' in node_data:
         name = node_data['name']
@@ -103,11 +108,15 @@ def load_roll_initial(node_data):
     stat_requirement = None
     if 'stats' in node_data:
         stat_requirement = node_data['stats']
+    only_once = False
+    if 'only_once' in node_data:
+        only_once = node_data['only_once']
 
-    d = DialogRoll(name, text, node_data['value'], node_data['stat'], node_data['success'], node_data['failure'])
+    d = DialogRoll(log_id, name, text, node_data['value'], node_data['stat'], node_data['success'], node_data['failure'])
     d.set_condition(condition)
     d.set_unless(unless)
     d.set_function_name(func)
     d.set_area_option(area_option)
     d.set_stat_requirement(stat_requirement)
+    d.set_only_once(only_once)
     return d

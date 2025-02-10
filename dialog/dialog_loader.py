@@ -31,3 +31,6 @@ def gorren_banishment_ritual():
 
 def rangu_initial_meeting():
     return load_dialog('resources/dialog/rangu_initial_meeting.json')['start']
+
+def rangu_tavern():
+    return load_dialog('resources/dialog/rangu_tavern.json')['start']

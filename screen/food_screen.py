@@ -3,14 +3,11 @@ from main.constants import *
 from main.colour import *
 from main.util import *
 from main.clock import get_clock
-from main.player_log import get_player_log, update_log
-from main.notification import add_notification
 from item.item import Food
 from creature.player import Player
 from creature.creature import Creature
 
 clock = get_clock()
-player_log = get_player_log()
 
 class FoodScreen(Screen):
     def __init__(self, canvas, food: Food, player: Player, last_screen: Screen):
@@ -60,9 +57,6 @@ class FoodScreen(Screen):
             return False
 
         creature.eat_food(self.food)
-        if not player_log[self.food.log_entry]:
-            update_log(self.food.log_entry)
-            add_notification([f':GREEN:{self.food.name}:GREEN:'] + self.food.get_stat_strings())
         return True
 
     def display(self):

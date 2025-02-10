@@ -6,7 +6,7 @@ from main.colour import *
 from main.util import *
 from main.messenger import get_messenger
 from main.clock import get_clock
-from main.player_log import get_player_log
+from main.player_log import get_player_log, update_log
 from dialog.dialog_node import DialogNode
 from dialog.dice_roller import DiceRoller
 from creature.player import Player
@@ -41,6 +41,8 @@ class DialogScreen(Screen):
 
     def select_node(self, node):
         self.current_node: DialogNode = node
+        if self.current_node.only_once:
+            update_log(self.current_node.id)
         self.children = self.get_valid_children()
         self.current_node.call_function(self.player)
         self.lines = fit_text(self.current_node.text, SCREEN_WIDTH - 32)

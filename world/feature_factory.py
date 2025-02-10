@@ -101,3 +101,11 @@ class FeatureFactory():
             return not player_log['met_rangu']
         f.set_enabled_function(enabled)
         return f
+
+    def rangu_tavern(self):
+        f = DialogFeature("Speak to Rangu")
+        f.set_dialog_function(rangu_tavern)
+        def enabled():
+            return player_log['met_rangu'] and not player_log['visit_bandit_camp']
+        f.set_enabled_function(enabled)
+        return f

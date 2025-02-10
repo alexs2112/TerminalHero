@@ -44,8 +44,7 @@ def initialize_player_log():
         # Scales and Spurs Questline
         'accepted_scales_spurs': False,
         'met_rangu': False,
-        'knows_who_rangu_is': False,
-        'knows_the_black_pyre': False,
+        'visit_bandit_camp': False,
 
         # Food Related Logs
         'food_mushroom': False,

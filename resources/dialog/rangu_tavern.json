@@ -1,0 +1,111 @@
+{
+    "nodes": {
+        "start": {
+            "name": "Rangu",
+            "text": "Ah, the :YELLOW:Lifeblood Tavern:YELLOW: I happen to spend a lot of time here whenever I am around. Thanks for helping me out with those :RED:Black-Pyre Mercenaries:RED:, I'll buy you a meal for your trouble?",
+            "children": [
+                ["The Black-Pyre Syndicate?", "blackpyre"],
+                ["Let's order some food.", "food"],
+                ["Leave", "None"]
+            ]
+        },
+        "main": {
+            "name": "Rangu",
+            "text": "What is our next move?",
+            "children": [
+                ["The Black-Pyre Syndicate?", "blackpyre"],
+                ["Let's order some food.", "food"],
+                ["Leave", "None"]
+            ]
+        },
+        "blackpyre": {
+            "name": "Rangu",
+            "text": "The Black-Pyre Syndicate runs smuggling routes and protection rackets. They originally took illegal :ORANGE:Bloodstone:ORANGE: shipments to those in need so they could charge extortionate prices but over the last few years something has changed...",
+            "children": [
+                ["Changed?", "blackpyre_2"]
+            ],
+            "only_once": true
+        },
+        "blackpyre_2": {
+            "name": "Rangu",
+            "text": "I don't know what happened, but they have been far more aggressive and violent. Mind you, they were never \"the good guys\", but now their trail of blood is long and deep. This caravan ambush is far from the worst, I have seen them raze entire villages to the ground.",
+            "children": [
+                ["Weird...", "main"],
+                ["You have known of them for a while?", "learn_more"]
+            ]
+        },
+        "learn_more": {
+            "type": "Roll",
+            "stat": "persuasion",
+            "value": 10,
+            "success": "rangu_says_more",
+            "failure": "rangu_dodges_question"
+        },
+        "rangu_dodges_question": {
+            "name": "Rangu",
+            "text": "I have been following them for a while yes. I don't like to talk about why.",
+            "children": [
+                ["Okay", "main"]
+            ]
+        },
+        "rangu_says_more": {
+            "name": "Rangu",
+            "text": "I have been following them for a while yes. I used to have dealings with them in the past, before the murders and destruction. They did good things for people, even though it was for their own gain.",
+            "children": [
+                ["Okay", "main"]
+            ]
+        },
+        "food": {
+            "name": "Rangu",
+            "text": "Order anything you want. It's on me.",
+            "children": [
+                ["Plump Helmet", "plump_helmet"],
+                ["Buried Torch", "buried_torch"],
+                ["Firecut", "firecut"],
+                ["Stonecurd", "stonecurd"],
+                ["I'm alright, thanks.", "no_food"]
+            ],
+            "only_once": true
+        },
+        "plump_helmet": {
+            "name": "System",
+            "text": "Your order comes to the table: stubby, dome-capped fungi found in damp caves and shadowed groves.",
+            "children": [
+                ["Continue", "main"]
+            ],
+            "function": "eat_plump_helmet"
+        },
+        "buried_torch": {
+            "name": "System",
+            "text": "Your order comes to the table: bright orange root vegetable, often unearthed with a satisfying pop.",
+            "children": [
+                ["Continue", "main"]
+            ],
+            "function": "eat_buried_torch"
+        },
+        "firecut": {
+            "name": "System",
+            "text": "Your order comes to the table: a thick slab of meat, seared over an open flame or hot stone.",
+            "children": [
+                ["Continue", "main"]
+            ],
+            "function": "eat_firecut"
+        },
+        "stonecurd": {
+            "name": "System",
+            "text": "Your order comes to the table: a hardened block of aged curd, ranging from smooth to crumbly in texture.",
+            "children": [
+                ["Continue", "main"]
+            ],
+            "function": "eat_plump_helmet"
+        },
+        "no_food": {
+            "name": "System",
+            "text": "Rangu orders off of the menu, his forked tongue snatching up the Buried Torch vegetable that was brought out.",
+            "children": [
+                ["Continue", "main"]
+            ],
+            "function": "rangu_eat_buried_torch"
+        }
+    }
+}

@@ -93,7 +93,6 @@ options:
     - Arrow-key control for dialogue options
 - Show the sprite of the NPC you are talking to
 - Coloured text should wrap properly
-- Dialogue player stats: Persuasion, Intimidation, Insight, Investigation, Stealth, History, Survival, Religion
 - Dialogue that loads directly into combat or other screens
 
 **Items**

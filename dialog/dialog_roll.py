@@ -15,8 +15,8 @@ RESULT_ODDS = {
 }
 
 class DialogRoll(DialogNode):
-    def __init__(self, name: str, text: str, value: int, stat: str, success: DialogNode, failure: DialogNode):
-        super().__init__(name, text, [])
+    def __init__(self, node_id: str, name: str, text: str, value: int, stat: str, success: DialogNode, failure: DialogNode):
+        super().__init__(node_id, name, text, [])
         self.type = "Roll"
         self.value = value
         self.stat = stat

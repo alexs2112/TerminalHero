@@ -5,10 +5,13 @@ from creature.creature_factory import get_creature_factory
 from creature.player import Player
 from quests.quest_factory import *
 from quests.quest_handler import get_quest_handler
+from item.item_factory import get_item_factory
+
 player_log = get_player_log()
 creature_factory = get_creature_factory()
 encounter_factory = get_encounter_factory()
 quest_handler = get_quest_handler()
+item_factory = get_item_factory()
 
 def set_met_elder_varik(_):
     player_log['met_elder_varik'] = True
@@ -85,12 +88,6 @@ def add_quest_scales_spurs(_):
     add_notification([":YELLOW:Quest Received!:YELLOW:", q.name])
     quest_handler.add(q)
 
-def set_knows_who_rangu_is(_):
-    update_log('knows_who_rangu_is')
-
-def set_knows_the_black_pyre(_):
-    update_log('knows_the_black_pyre')
-
 def finish_rangu_initial(player: Player):
     rangu = creature_factory.new_rangu()
     player.party.insert(0, rangu)
@@ -109,3 +106,17 @@ def finish_rangu_initial(player: Player):
         update_log('known_tavern')
         add_notification([':YELLOW:Area Unlocked!:YELLOW:',
                           'The :CYAN:Lifeblood Tavern:CYAN: is now open for business!'])
+
+def eat_plump_helmet(player: Player):
+    player.eat_food(item_factory.new_plump_helmet())
+def eat_buried_torch(player: Player):
+    player.eat_food(item_factory.new_buried_torch())
+def eat_firecut(player: Player):
+    player.eat_food(item_factory.new_firecut())
+def eat_stonecurd(player: Player):
+    player.eat_food(item_factory.new_stonecurd())
+def rangu_eat_buried_torch(player: Player):
+    for a in player.party:
+        if a.name == "Rangu":
+            a.eat_food(item_factory.new_plump_helmet())
+            return

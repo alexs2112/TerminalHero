@@ -4,8 +4,10 @@ player_log = get_player_log()
 messenger = get_messenger()
 
 class DialogNode:
-    def __init__(self, name: str, text: str, children):
+    def __init__(self, node_id: str, name: str, text: str, children):
         self.type = "Dialog"
+
+        self.id = node_id
 
         # Title of the dialogue box
         self.name: str = name
@@ -21,6 +23,9 @@ class DialogNode:
 
         # Condition that does not show this child node
         self.unless = None
+
+        # Only allow this dialog node to be selected once
+        self.only_once = False
 
         # Function called when this option is selected
         self.function_name = None
@@ -44,6 +49,9 @@ class DialogNode:
     def set_area_option(self, area_option: str):
         self.area_option = area_option
 
+    def set_only_once(self, only_once: bool):
+        self.only_once = only_once
+
     def set_stat_requirement(self, stat_requirement):
         self.stat_requirement = stat_requirement
 
@@ -65,10 +73,13 @@ class DialogNode:
         if self.unless:
             if player_log[self.unless]:
                 return False
+        if self.only_once:
+            if self.id in player_log:
+                return not player_log[self.id]
         if self.condition:
             if self.condition in player_log:
                 return player_log[self.condition]
-            messenger.warning(f"Can't find {self.condition} in player_log. Setting as True.")
+            return False
         return True
 
     def call_function(self, player):

@@ -58,7 +58,10 @@ class WorldBuilder:
         area.features = [
             feature_factory.bartender_doran(),
             feature_factory.tavern_rest(),
-            feature_factory.tavern_food()
+            feature_factory.tavern_food(),
+
+            # The player can speak to Rangu here after they meet him and before they progress to the bandit camp
+            feature_factory.rangu_tavern()
         ]
         self.world.add_area((3,5), area)
 

@@ -1,4 +1,6 @@
 from main.messenger import *
+from main.player_log import get_player_log, update_log
+from main.notification import add_notification
 from combat.ability import Ability
 from combat.effect import Effect
 from combat.damage import Damage
@@ -7,6 +9,7 @@ from creature.creature_sprite import CreatureSprite
 from item.item import *
 
 messenger = get_messenger()
+player_log = get_player_log()
 
 class Creature:
     def __init__(self, name, level):
@@ -43,7 +46,17 @@ class Creature:
             'strength': 0,
             'dexterity': 0,
             'intelligence': 0,
-            'wisdom': 0
+            'wisdom': 0,
+
+            # Dialogue Stats
+            'persuasion': 0,
+            'intimidation': 0,
+            'insight': 0,
+            'investigation': 0,
+            'stealth': 0,
+            'history': 0,
+            'survival': 0,
+            'religion': 0,
         }
         self.temporary_stats = {}
 
@@ -307,6 +320,9 @@ class Creature:
         self.food = food
         self.add_temp_stats(**food.stats)
         self.add_temp_resistances(**food.resistances)
+        if not player_log[self.food.log_entry]:
+            update_log(self.food.log_entry)
+        add_notification([f':GREEN:{self.food.name}:GREEN:'] + self.food.get_stat_strings())
 
     def refresh(self):
         self.temporary_stats = {}
