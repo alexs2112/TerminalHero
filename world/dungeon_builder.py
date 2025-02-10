@@ -169,6 +169,7 @@ class DungeonBuilder:
         d.start_player_pos = (0,0)
 
         entrance = Room("Caravan Wreckage", (1,111,32,32))
+        entrance.id = 'caravan_wreckage_1'
         entrance.add_description("Wagon wheels lie shattered, their cargo scattered and looted. "
                                  "A strongbox sits pried open and empty, its lock twisted and broken. "
                                  "Among the wreckage, a few bodies remain-stripped of valuables, left to the scavengers.")
@@ -189,6 +190,7 @@ class DungeonBuilder:
         d.add_room((0,1), raider)
 
         second = Room("Caravan Wreckage", (34,111,32,32))
+        second.id = 'caravan_wreckage_2'
         second.add_description("The ground is littered with torn banners and trampled supplies. "
                                "A set of bloodied footprints lead away from the scene, vanishing into the undergrowth beyond.")
         second.set_unscaled_position(32,0)
@@ -232,6 +234,7 @@ class DungeonBuilder:
         d.add_room((0,0), watchtower)
 
         pool = Room("Bandit Camp", (67,111,32,32))
+        pool.id = 'bandit_camp_1'
         pool.add_description("placeholder text")
         pool.set_unscaled_position(0,32)
         pool.set_player_position(16,16)
@@ -239,6 +242,7 @@ class DungeonBuilder:
         d.add_room((0,1), pool)
 
         fire = Room("Bandit Camp", (100,111,32,32))
+        fire.id = 'bandit_camp_2'
         fire.add_description("placeholder text")
         fire.set_unscaled_position(32,32)
         fire.set_player_position(12,16)
@@ -246,6 +250,7 @@ class DungeonBuilder:
         d.add_room((1,1), fire)
 
         boss = Room("Bandit Camp", (67,144,32,32))
+        boss.id = 'bandit_camp_3'
         boss.add_description("placeholder text")
         boss.set_unscaled_position(0,64)
         boss.set_player_position(16,14)
