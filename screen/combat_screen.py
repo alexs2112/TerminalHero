@@ -1,6 +1,7 @@
 import pygame
 from screen.screen import Screen
 from screen.game_over_screen import GameOverScreen
+from screen.escape_screen import EscapeScreen
 from main.constants import *
 from main.colour import *
 from main.messenger import get_messenger
@@ -34,6 +35,7 @@ class CombatScreen(Screen):
         self.area = area
         self.player = player
         self.player.start_combat()
+        self.encounter.spawn_enemies()
 
         messenger.clear_latest()
 
@@ -116,6 +118,9 @@ class CombatScreen(Screen):
                             c.end_turn()
                             self.queue.pop(0)
                             self.queue.insert(0, QueueWait(COMBAT_TURN_TIME))
+
+                        elif event.key == pygame.K_ESCAPE:
+                            return EscapeScreen(self.canvas, self, can_save=False)
 
                         # Add way to inspect a creature
                         # return CreatureScreen(self.canvas, self.get_creature_by_code(event.key), self)

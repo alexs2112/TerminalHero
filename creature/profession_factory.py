@@ -40,7 +40,7 @@ class ProfessionFactory:
         )
         p.set_stats(strength=1, dexterity=1, dodge=1, speed=1)
         p.add_ability(abilities.defensive_strike(strength=0.67, dexterity=0.67))
-        p.add_ability(abilities.challenge(2, 300))
+        p.add_ability(abilities.challenge(2, 30))
         return p
 
     def elementalist(self):

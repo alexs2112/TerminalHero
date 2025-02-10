@@ -21,21 +21,21 @@ def get_encounter_factory():
 class EncounterFactory:
     # Cemetery - First Stage
     def cemetery_first_stage_1(self):
-        e = Encounter("Attack Patchwork Dead")
-        e.add_enemies(
-            creature_factory.new_patchwork_dead_1(),
-            creature_factory.new_patchwork_dead_2()
+        e = Encounter('cemetery_1_1', "Attack Patchwork Dead")
+        e.set_enemy_functions(
+            creature_factory.new_patchwork_dead_1,
+            creature_factory.new_patchwork_dead_2
         )
         e.invalid_condition = 'finish_cemetery_stage_1'
         e.reward_xp = 200
         e.block_exit = True
         return e
     def cemetery_first_stage_2(self):
-        e = Encounter("Attack Patchwork Dead")
-        e.add_enemies(
-            creature_factory.new_patchwork_dead_1(),
-            creature_factory.new_patchwork_dead_2(),
-            creature_factory.new_patchwork_dead_3()
+        e = Encounter('cemetery_1_2', "Attack Patchwork Dead")
+        e.set_enemy_functions(
+            creature_factory.new_patchwork_dead_1,
+            creature_factory.new_patchwork_dead_2,
+            creature_factory.new_patchwork_dead_3
         )
         e.invalid_condition = 'finish_cemetery_stage_1'
         e.reward_xp = 300
@@ -44,11 +44,11 @@ class EncounterFactory:
 
     # Cemetery - Second Stage
     def cemetery_second_stage_ambush(self):
-        e = Encounter("Undead Ambush")
-        e.add_enemies(
-            creature_factory.new_patchwork_dead_2(),
-            creature_factory.new_lanternbearer(),
-            creature_factory.new_patchwork_dead_3()
+        e = Encounter('cemetery_2_0', "Undead Ambush")
+        e.set_enemy_functions(
+            creature_factory.new_patchwork_dead_2,
+            creature_factory.new_lanternbearer,
+            creature_factory.new_patchwork_dead_3
         )
         e.valid_condition = 'finish_cemetery_stage_1'
         def complete(*_):
@@ -58,11 +58,11 @@ class EncounterFactory:
         e.block_exit = True
         return e
     def cemetery_second_stage_1(self):
-        e = Encounter("Attack Undead")
-        e.add_enemies(
-            creature_factory.new_patchwork_dead_1(),
-            creature_factory.new_rotten_stray(),
-            creature_factory.new_lanternbearer()
+        e = Encounter('cemetery_2_1', "Attack Undead")
+        e.set_enemy_functions(
+            creature_factory.new_patchwork_dead_1,
+            creature_factory.new_rotten_stray,
+            creature_factory.new_lanternbearer
         )
         shuffle(e.enemies)
         e.valid_condition = 'finish_cemetery_stage_1'
@@ -71,11 +71,11 @@ class EncounterFactory:
         e.block_exit = True
         return e
     def cemetery_second_stage_2(self):
-        e = Encounter("Attack Rotten Strays")
-        e.add_enemies(
-            creature_factory.new_rotten_stray(),
-            creature_factory.new_rotten_stray(),
-            creature_factory.new_rotten_stray()
+        e = Encounter('cemetery_2_2', "Attack Rotten Strays")
+        e.set_enemy_functions(
+            creature_factory.new_rotten_stray,
+            creature_factory.new_rotten_stray,
+            creature_factory.new_rotten_stray
         )
         e.valid_condition = 'finish_cemetery_stage_1'
         e.invalid_condition = 'finish_cemetery_stage_2'
@@ -85,9 +85,9 @@ class EncounterFactory:
 
     # Vaelthorne Shrine
     def runebound_stalker(self):
-        e = Encounter("Attack Runebound Stalker")
-        e.add_enemies(
-            creature_factory.new_runebound_stalker()
+        e = Encounter('shrine_runebound_stalker', "Attack Runebound Stalker")
+        e.set_enemy_functions(
+            creature_factory.new_runebound_stalker
         )
         e.valid_condition = 'shrine_opened'
         e.block_exit = True
@@ -100,30 +100,30 @@ class EncounterFactory:
 
     # Vaelthorne Crypt
     def get_crypt_encounter_1(self):
-        e = Encounter("Attack Bone Servitors")
-        e.add_enemies(
-            creature_factory.new_patchwork_dead_1(),
-            creature_factory.new_bone_servitor(),
-            creature_factory.new_bone_servitor()
+        e = Encounter('crypt_1', "Attack Bone Servitors")
+        e.set_enemy_functions(
+            creature_factory.new_patchwork_dead_1,
+            creature_factory.new_bone_servitor,
+            creature_factory.new_bone_servitor
         )
         shuffle(e.enemies)
         e.block_exit = True
         e.reward_xp = 500
         return e
     def get_crypt_encounter_2(self):
-        e = Encounter("Attack Gravebound Watchers")
-        e.add_enemies(
-            creature_factory.new_gravebound_watcher(),
-            creature_factory.new_gravebound_watcher()
+        e = Encounter('crypt_2', "Attack Gravebound Watchers")
+        e.set_enemy_functions(
+            creature_factory.new_gravebound_watcher,
+            creature_factory.new_gravebound_watcher
         )
         e.block_exit = True
         e.reward_xp = 500
         return e
     def get_crypt_encounter_3(self):
-        e = Encounter("Attack Unhallowed Guardian")
-        e.add_enemies(
-            creature_factory.new_unhallowed_guardian(),
-            creature_factory.new_gravebound_watcher()
+        e = Encounter('crypt_3', "Attack Unhallowed Guardian")
+        e.set_enemy_functions(
+            creature_factory.new_unhallowed_guardian,
+            creature_factory.new_gravebound_watcher
         )
         def complete(*_):
             update_log('unhallowed_guardian_defeated')
@@ -142,11 +142,11 @@ class EncounterFactory:
 
     # Cemetery - Third Stage
     def cemetery_third_stage_1(self):
-        e = Encounter("Attack Bound Remnants")
-        e.add_enemies(
-            creature_factory.new_bound_remnant_sword(),
-            creature_factory.new_bound_remnant_hammer(),
-            creature_factory.new_bound_remnant_axe()
+        e = Encounter('cemetery_3_1', "Attack Bound Remnants")
+        e.set_enemy_functions(
+            creature_factory.new_bound_remnant_sword,
+            creature_factory.new_bound_remnant_hammer,
+            creature_factory.new_bound_remnant_axe
         )
         shuffle(e.enemies)
         e.block_exit = True
@@ -156,12 +156,12 @@ class EncounterFactory:
         return e
 
     def cemetery_third_stage_2(self):
-        e = Encounter("Attack Rotten Strays")
-        e.add_enemies(
-            creature_factory.new_rotten_stray(),
-            creature_factory.new_rotten_stray(),
-            creature_factory.new_rotten_stray(),
-            creature_factory.new_rotten_stray()
+        e = Encounter('cemetery_3_2', "Attack Rotten Strays")
+        e.set_enemy_functions(
+            creature_factory.new_rotten_stray,
+            creature_factory.new_rotten_stray,
+            creature_factory.new_rotten_stray,
+            creature_factory.new_rotten_stray
         )
         e.block_exit = True
         e.reward_xp = 550
@@ -170,12 +170,12 @@ class EncounterFactory:
         return e
 
     def cemetery_third_stage_3(self):
-        e = Encounter("Attack Bound Remnants")
-        e.add_enemies(
-            creature_factory.new_bound_remnant_sword(),
-            creature_factory.new_bound_remnant_sword(),
-            creature_factory.new_bound_remnant_hammer(),
-            creature_factory.new_bound_remnant_axe()
+        e = Encounter('cemetery_3_3', "Attack Bound Remnants")
+        e.set_enemy_functions(
+            creature_factory.new_bound_remnant_sword,
+            creature_factory.new_bound_remnant_sword,
+            creature_factory.new_bound_remnant_hammer,
+            creature_factory.new_bound_remnant_axe
         )
         shuffle(e.enemies)
         e.block_exit = True
@@ -188,9 +188,9 @@ class EncounterFactory:
         return e
 
     def soul_tethered_herald(self):
-        e = Encounter("Soul-Tethered Herald")
-        e.add_enemies(
-            creature_factory.new_soul_tethered_herald()
+        e = Encounter('cemetery_soul_tethered_herald', "Soul-Tethered Herald")
+        e.set_enemy_functions(
+            creature_factory.new_soul_tethered_herald
         )
         e.block_exit = True
         e.reward_xp = 800
@@ -202,21 +202,21 @@ class EncounterFactory:
 
     # Caravan Wreckage
     def caravan_wreckage_1(self):
-        e = Encounter("Attack Bandits")
-        e.add_enemies(
-            creature_factory.new_bandit_grunt_1(),
-            creature_factory.new_bandit_grunt_2()
+        e = Encounter('caravan_wreckage_1', "Attack Bandits")
+        e.set_enemy_functions(
+            creature_factory.new_bandit_grunt_1,
+            creature_factory.new_bandit_grunt_2
         )
         e.block_exit = True
         e.reward_xp = 200
         return e
 
     def caravan_wreckage_2(self):
-        e = Encounter("Attack Bandits")
-        e.add_enemies(
-            creature_factory.new_bandit_grunt_1(),
-            creature_factory.new_bandit_grunt_2(),
-            creature_factory.new_bandit_grunt_1()
+        e = Encounter('caravan_wreckage_2', "Attack Bandits")
+        e.set_enemy_functions(
+            creature_factory.new_bandit_grunt_1,
+            creature_factory.new_bandit_grunt_2,
+            creature_factory.new_bandit_grunt_1
         )
         e.block_exit = True
         e.reward_xp = 300

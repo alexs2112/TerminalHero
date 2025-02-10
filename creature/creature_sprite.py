@@ -7,6 +7,7 @@ class CreatureSprite:
     def __init__(self, sprite_rect, dead_rect):
         self.sprite_rect = sprite_rect
         self.dead_rect = dead_rect
+        self.type = 'default'
         self.cached = None
         self.dead_cached = None
         self.width = sprite_rect[2]
@@ -33,6 +34,10 @@ class CreatureSprite:
         return (self.width, self.height)
 
 class ModularSprite(CreatureSprite):
+    def __init__(self, sprite_rect, dead_rect):
+        super().__init__(sprite_rect, dead_rect)
+        self.type = 'modular'
+
     def update(self, creature):
         cached = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
         cached.blit(creature_sprites, (0,0), self.sprite_rect)

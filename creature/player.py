@@ -7,6 +7,7 @@ class Player(Creature):
     def __init__(self, name):
         super().__init__(name, 1)
         self.area = None
+        self.room = None
         self.type = 'player'
         self.party: list[Creature] = [self]
 

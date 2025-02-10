@@ -37,7 +37,7 @@ class StoreScreen(Screen):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    if self.item and self.item.slot == FOOD:
+                    if self.item and self.item.type == FOOD:
                         return FoodScreen(self.canvas, self.item, self.player, self)
                 elif event.key == pygame.K_ESCAPE:
                     return self.last_screen

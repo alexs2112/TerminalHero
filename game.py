@@ -8,12 +8,13 @@ from main.messenger import get_messenger
 from main.clock import get_clock
 from main.player_log import get_player_log, update_log
 from creature.creature_factory import get_creature_factory
-from world.world_builder import WorldBuilder
+from world.world_builder import get_world
 from screen.start_screen import StartScreen
 
 clock = get_clock()
 creature_factory = get_creature_factory()
 player_log = get_player_log()
+world = get_world()
 
 class Game:
     def __init__(self, args_list):
@@ -27,11 +28,9 @@ class Game:
             messenger.set_verbose()
         messenger.clear()
 
-        self.world = self.generate_world()
-
         if self.args.profession:
             self.player = creature_factory.new_player(self.args.profession)
-            self.world.player = self.player
+            world.player = self.player
         else:
             # This still needs to be set for other cmd line args
             self.player = creature_factory.new_player('champion')
@@ -59,17 +58,13 @@ class Game:
             for l in logs:
                 update_log(l)
 
-        self.screen = StartScreen(self.canvas, self.world)
+        self.screen = StartScreen(self.canvas)
 
         if args_list.dungeon:
             self.dungeon_test(args_list.dungeon, args_list.revealed, args_list.no_enemies)
 
         if args_list.inventory:
             self.inventory_test()
-
-    def generate_world(self):
-        world_builder = WorldBuilder(9,9)
-        return world_builder.build_world()
 
     def game_loop(self):
         while True:
@@ -114,7 +109,7 @@ class Game:
 
         if set_revealed:
             for r in d.get_rooms():
-                r.revealed = True
+                r.set_revealed()
 
         if no_enemies:
             for a in d.room_list:

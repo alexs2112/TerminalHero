@@ -81,28 +81,28 @@ class ItemFactory:
         return i
 
     # FOOD
-    def new_mushroom(self):
+    def new_plump_helmet(self):
         f = Food("Plump Helmet", 10, (0,132,12,12), 'food_mushroom')
         f.set_description("Stubby, dome-capped fungi found in damp caves and shadowed groves. "
                           "Commonly used in stews, though some varieties induce vivid hallucinations or, in unfortunate cases, brief conversations with the recently deceased.")
         f.set_stats(intelligence=1)
         return f
 
-    def new_carrot(self):
+    def new_buried_torch(self):
         f = Food("Buried Torch", 10, (12,132,12,12), 'food_carrot')
         f.set_description("Bright orange root vegetable, often unearthed with a satisfying pop. "
                           "Sweet, crisp, and rumored to improve night vision, though this may be a fabrication by desperate parents and dubious alchemists.")
         f.set_stats(dexterity=1)
         return f
 
-    def new_steak(self):
+    def new_firecut(self):
         f = Food("Firecut", 10, (24,132,12,12), 'food_steak')
         f.set_description("A thick slab of meat, seared over an open flame or hot stone. "
                           "A staple of hearty meals, best served with a flagon of something strong and a moment of silence for the beast it came from.")
         f.set_stats(strength=1)
         return f
 
-    def new_cheese(self):
+    def new_stonecurd(self):
         f = Food("Stonecurd", 10, (36,132,12,12), 'food_cheese')
         f.set_description("A hardened block of aged curd, ranging from smooth to crumbly in texture. "
                           "A common travel ration, as it keeps well and pairs with nearly anything, if one can handle its sometimes overpowering tang.")

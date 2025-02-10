@@ -1,0 +1,102 @@
+What do we need?
+- save file version number
+	- Should be stored in CONSTANTS
+- player_log
+- messages
+- Inventory
+	- Just a list of items
+	- Load items by Name
+- Serialize Creature (Player and Party Members):
+	- Store all atomic values
+	- Creature.sprite: Doesn't need to be stored, can be regenerated
+	- Creature.abilities: Store by Ability name
+	- Creature.profession: Store by Profession name
+	- Creature.base_damage: Store this by calling Damage.get()
+	- Creature.equipment: Store as dict(str, Equipment.name)
+	- Creature.effects: This should always be empty
+	- Creature.food: Store as name instead of object
+	- Player.party: Store as creature ids
+	- Player.area: Store as None for now
+- World
+	- Player State
+		- Party Member States
+		- Eventually we will need to store additional party members stored at the Tavern
+		- Store:
+			- Pretty much everything
+			- Honestly we might just want to serialize these from memory because it will get very complicated very quickly otherwise
+				- This will also store: Abilities, CreatureSprite, Profession, BaseDamage, Equipment, Effects
+					- Abilities can be stored and loaded by ID, they don't have a state we care about outside of combat
+					- CreatureSprite can be regenerated so doesn't need to be stored
+					- Profession can be by ID, however once we allow the player to select new abilities then we will need to figure out how to handle that
+					- BaseDamage is only three atomic fields
+					- Equipment can be loaded by item name
+					- Effects should always be empty
+					- I just don't really want to store all of the stats
+				- I think that this is acceptable, we will need to be very careful about ever giving a creature reference to an Area or something because then it will all fall apart. For now everything that a creature references will not reference anything above itself. Except for some effects, but those shouldn't be serialized?
+		- We can make a task to revisit storing Creatures in JSON instead of in bytes
+	- Areas don't need to be stored
+		- But their encounters do
+			- We could fix this by making encounters clone their enemies into combat screens
+			- So all we need to keep track of is if the combat is finished or not
+				- This could be a lot better done by each encounter populating player_log with a special `finished_encounter_<id>` and checking to see if that log exists
+		- Dungeon Rooms:
+			- No features currently exist that need their state saved
+			- Room state will involve Locked Doors and if they are Revealed
+				- Change Locked Doors to a feature that checks a field in player_log
+					- They could alternatively be Tuples of (Direction, log)
+				- Change Room.revealed to a field in player_log, this can be set the same way as Encounter.finished
+- Current Area of the Player
+	- Areas reference the player when they enter it, so when the data is loaded then the player will need to "enter" to area
+	- Store player location in the world
+	- If they are in a dungeon, we could store their position in the dungeon as well
+		- This will break recursive dungeons, but we just don't have to make those lol
+- Quest Status
+	- Quests are just lists of QuestSteps
+	- QuestSteps store QuestStep.complete for some reason, while also using log_completion
+		- Can probably get rid of `complete`
+	- Load Quests by name/id
+- Level Up Handler
+	- This stores a list of creatures it will level up, I am unsure how best to handle this
+	- When we serialize it we could point to each character that has already been serialized by Creature ID
+- Can't save mid-combat, don't worry about individual enemy states in that case
+
+Where can you save?
+- World
+- Dungeons
+- Areas
+
+Steps:
+- Serialize Creatures:
+	- Store all atomic values
+	- Creature.sprite: Doesn't need to store the caches but need to store everything else
+	- Creature.abilities: Store by Ability name
+	- Creature.profession: Store by Profession name
+	- Creature.base_damage: Store this by calling Damage.get()
+	- Creature.equipment: Store as dict(str, Equipment.name)
+	- Creature.effects: This should always be empty
+	- Creature.food: Store as name instead of object
+	- Player.party: Store as creature ids
+	- Player.area: Store as None for now
+- Save and Load player_log
+- Save and Load Inventory
+- Save and Load messages
+- An Escape screen that you can select Save or Load from, also Load from start screen
+- Set encounters to clone their enemies into the CombatScreen when combat begins
+- Remove Encounter.finished and instead populate the player log with it
+- Remove Room.revealed from dungeon rooms, instead store it in player_log like encounters
+- Fix locked doors
+- Fix QuestSteps
+- Load Quests by name/id
+- Save and Load Level Up Handler, will need to reference each companion
+	- For now, don't bother saving companions. Each should already be referenced by this, so we can just use already loaded ones.
+- Fix Escape screen for loading, allow loading from non-world screens
+	- World may need to be decoupled from Game
+	- You can only Save from World, Dungeons, Area, you can Load from anywhere
+- Load the player in the correct area.
+- Load to the correct screen. This will either be World, Area, or Dungeon
+- If the player is in a dungeon, load to the correct room in the dungeon
+	- The player needs to figure out if they are in a dungeon or not
+- Ensure that all of the handlers that get imported are reset upon loading.
+	- inventory, quest_handler, level_up_handler, world
+- Unit Tests:
+	- Create a World, save World, load World, hash both objects and see if they are the same

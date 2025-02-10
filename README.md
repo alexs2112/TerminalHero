@@ -85,8 +85,7 @@ options:
 
 **World**
 - Draw the world like how dungeons are drawn, instead of using tiles
-- This can't just turn into a dungeon because I still want Area Screens and you can't just walk around to explore it (ie. keep the interface the same for now)
-- Each world area should have a priority or something, sort the areas in the world screen by priority rather than index (Vaelthorne Shrine currently shows up first when unlocked)
+  - This can't just turn into a dungeon because I still want Area Screens and you can't just walk around to explore it (ie. keep the interface the same for now)
 
 **Dialogue**
 - Somehow mark dialogue options that have not been chosen yet
@@ -121,10 +120,8 @@ options:
 - Since creature turns are determined based on their abilities, we might not need to give them specific AIs anymore
 - Professions should give the creature starting equipment, rather than the creature factory doing it
   - We could consider choosing a profession gives the abilities to the creature, rather than the creature listing off their abilities + professions abilities
-
-**Saving**
-- This is going to be a bit of an issue
-- This should be figured out sooner rather than later for balance testing
+- Instead of storing open stat and ability points in Creature, we could store spent points. Then the level_up_handler could just keep track of total points that are allowed to be spent.
+  - Would be easier to keep track, then it wouldn't need to keep a reference to creatures
 
 **Other**
 - New constant of `FONT_HEIGHT + 2`
@@ -136,3 +133,5 @@ options:
   - We probably just don't need the EffectFactory lol
 - Rename draw_sprite to draw_from_rect, rename draw_creature to draw_sprite, handle dest coords better
 - Separate combat log from dialogue log for recording history
+- Tidy up places where World is referenced now that it is decoupled from Game
+- Support multiple files to save and load from

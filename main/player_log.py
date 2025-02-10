@@ -59,9 +59,8 @@ def update_log(field):
     from quests.quest_handler import get_quest_handler
     player_log = get_player_log()
     quest_handler = get_quest_handler()
-    if field in player_log:
-        player_log[field] = True
-        for q in quest_handler.get():
-            q.check_completion()
-            if q.complete:
-                quest_handler.mark_complete(q)
+    player_log[field] = True
+    for q in quest_handler.get():
+        q.check_completion()
+        if q.complete:
+            quest_handler.mark_complete(q)

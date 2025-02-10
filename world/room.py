@@ -1,4 +1,7 @@
 from world.area import Area
+from main.player_log import get_player_log, update_log
+
+player_log = get_player_log()
 
 EXIT_UP = (0,-1)
 EXIT_RIGHT = (1,0)
@@ -20,12 +23,13 @@ class Room(Area):
         self.player_position = (0,0)
 
         # If the player has explored this room yet or not
-        self.revealed: bool = False
+        self.log_condition: str = f'room_{self.id}'
 
         # A list of exits available to this room
         self.exits = []
 
         # Which of the exits are currently locked
+        # Stored as [(direction, log_condition)]
         self.locked = []
 
         # The direction in which to leave the dungeon
@@ -34,6 +38,19 @@ class Room(Area):
         # A list of features that the player can interact with (chests, locked doors, etc)
         # For now, just a list of strings, to be expanded upon
         self.features = []
+
+    def enter_area(self, player):
+        player.room = self
+        self.player = player
+        update_log(self.entry_log_update)
+
+    def set_revealed(self):
+        update_log(self.log_condition)
+
+    def is_revealed(self):
+        if self.log_condition in player_log:
+            return True
+        return False
 
     def set_unscaled_position(self, x, y):
         self.unscaled_position = (x,y)

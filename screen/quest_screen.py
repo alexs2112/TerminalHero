@@ -97,7 +97,7 @@ class QuestScreen(Screen):
             if not step.is_enabled():
                 continue
             y += 8
-            self.write(step.name, (x, y), CYAN if step.complete else WHITE)
+            self.write(step.name, (x, y), CYAN if step.check_completion() else WHITE)
             y += FONT_HEIGHT + 2
 
             lines = fit_text(step.description, SCREEN_WIDTH - 56 - self.center_point)

@@ -11,11 +11,11 @@ class BurningEffect(Effect):
 
     def effect_start(self, creature):
         messenger.add(f"{creature.name} catches fire!")
-        dam = creature.take_damage(self.strength, 'fire')
+        dam = creature.take_damage(self.strength)
         messenger.add(f"{creature.name} burns for {dam} :ORANGE:fire damage:ORANGE:!")
 
     def effect_turn(self, creature):
-        dam = creature.take_damage(self.strength, 'fire')
+        dam = creature.take_damage(self.strength)
         messenger.add(f"{creature.name} burns for {dam} :ORANGE:fire damage:ORANGE:!")
         self.duration -= 1
 
@@ -212,7 +212,7 @@ class BleedEffect(Effect):
         messenger.add(f"{creature.name} is bleeding!")
 
     def effect_turn(self, creature):
-        dam = creature.take_damage(self.strength, 'physical', ignore_armor=True)
+        dam = creature.take_damage(self.strength, ignore_armor=True)
         messenger.add(f"{creature.name} bleeds for {dam} damage.")
         self.duration -= 1
 
@@ -317,7 +317,7 @@ class ChallengedEffect(Effect):
 
     def modify_total_damage(self, attacker, damage):
         if attacker == self.creature:
-            damage.apply_multiplier(self.strength / 100)
+            damage.apply_multiplier(1 + self.strength / 100)
 
     def combine(self, creature, other_effect):
         if other_effect.name == self.name:

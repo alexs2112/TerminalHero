@@ -26,6 +26,9 @@ class QuestHandler:
     def add(self, quest: Quest):
         self.quests.append(quest)
 
+    def add_done(self, quest: Quest):
+        self.done.append(quest)
+
     def mark_complete(self, quest: Quest):
         self.quests.remove(quest)
         self.done.append(quest)

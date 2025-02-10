@@ -171,7 +171,7 @@ class AbilityFactory:
                 else:
                     targets = area.player.party
                 for e in targets:
-                    if t != e and t.is_alive():
+                    if t != e and e.is_alive():
                         if basic_attack_roll(c,e):
                             damage = c.get_base_damage()
                             damage = a.scale_damage(damage, c)
