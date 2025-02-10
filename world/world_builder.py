@@ -99,7 +99,7 @@ class WorldBuilder:
             "The stench of burnt wood and flesh lingers in the air, and blood darkens the earth where the traders made their last stand.")
         area.dungeon = dungeon_builder.new_caravan_wreckage(area)
         area.condition = 'known_caravan_wreckage'
-        self.world.add_area((3,4), area)
+        self.world.add_area((2,7), area)
 
         area = Area("The Bloodstone Mine", (12,12,12,12))
         area.add_description(

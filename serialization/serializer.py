@@ -11,7 +11,7 @@ class Serializer:
         self.file = file
         self.data = {}
 
-    def serialize(self, world: World):
+    def serialize(self, world: World, load_screen: str):
         self.data['player_log'] = get_player_log()
 
         self.data['player'] = save_creature(world.player)
@@ -36,7 +36,7 @@ class Serializer:
         levels = get_level_up_handler()
         self.data['xp_tracker'] = levels.xp
 
-        self.data['area_name'] = world.player.area.name
+        self.data['load_screen'] = load_screen
 
         with open(self.file, 'w+', encoding='utf-8') as f:
             json.dump(self.data, f, indent=2)

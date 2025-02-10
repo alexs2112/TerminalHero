@@ -62,10 +62,40 @@ class Deserializer:
         for c in party:
             levels.add_creature(c)
 
+    # This is kind of a mess
     def load_player_location(self, world, player):
-        area_name = self.data['area_name']
+        area_id = player.area
         for a in world.get_areas():
-            if a.name == area_name and a.condition_met():
+            if a.id == area_id and a.condition_met():
                 player.area = a
                 a.player = player
-                break
+
+                room_id = player.room
+                if a.dungeon:
+                    for r in a.dungeon.get_rooms():
+                        if r.id == room_id:
+                            player.room = r
+                            r.player = player
+                            return
+                    player.room = None
+                return
+        player.area = None
+        player.room = None
+
+    # Callable outside of loading, get the last screen that the player was on
+    # This is super ugly but works, we can clean it up when we need to
+    def get_screen(self, canvas, world):
+        # pylint: disable=import-outside-toplevel
+        if self.data['load_screen'] == 'world':
+            from screen.world_screen import WorldScreen
+            return WorldScreen(canvas, world)
+        elif self.data['load_screen'] == 'area':
+            from screen.area_screen import AreaScreen
+            from screen.world_screen import WorldScreen
+            return AreaScreen(canvas, world.player.area, world.player, WorldScreen(canvas, world))
+        elif self.data['load_screen'] == 'dungeon':
+            from screen.dungeon_screen import DungeonScreen
+            from screen.area_screen import AreaScreen
+            from screen.world_screen import WorldScreen
+            return DungeonScreen(canvas, world.player.area.dungeon, world.player,
+                                    AreaScreen(canvas, world.player.area, world.player, WorldScreen(canvas, world)))

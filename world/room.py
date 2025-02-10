@@ -39,6 +39,11 @@ class Room(Area):
         # For now, just a list of strings, to be expanded upon
         self.features = []
 
+    def enter_area(self, player):
+        player.room = self
+        self.player = player
+        update_log(self.entry_log_update)
+
     def set_revealed(self):
         update_log(self.log_condition)
 

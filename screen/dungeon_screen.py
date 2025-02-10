@@ -5,7 +5,6 @@ from main.util import *
 from main.clock import get_clock
 from main.notification import add_notification
 from screen.screen import Screen
-from screen.area_screen import AreaScreen
 from screen.combat_screen import CombatScreen
 from screen.dialog_screen import DialogScreen
 from screen.quest_screen import QuestScreen
@@ -23,7 +22,14 @@ class DungeonScreen(Screen):
         super().__init__(canvas)
         self.dungeon = dungeon
         self.player = player
-        self.player_pos = dungeon.start_player_pos
+
+        if player.room:
+            for x in range(self.dungeon.width):
+                for y in range(self.dungeon.height):
+                    if self.dungeon.rooms[x][y] == player.room:
+                        self.player_pos = (x,y)
+        else:
+            self.player_pos = dungeon.start_player_pos
 
         # When the player leaves the dungeon, return to this screen
         self.return_screen = return_screen
@@ -42,7 +48,6 @@ class DungeonScreen(Screen):
         self.current_room = None
         self.room_description = []
         self.options = []           # [(text, function, colour)]
-        self.areas = {}             # { index: AreaFeature }
         self.dialog = {}            # { index: DialogFeature }
         self.encounters = {}        # { index: Encounter }
         self.dungeon_sprite = None  # Cache how the dungeon is supposed to look as it is resource intensive, this is to scale
@@ -81,7 +86,7 @@ class DungeonScreen(Screen):
                 elif event.key == pygame.K_c:
                     return CreatureScreen(self.canvas, self.player, self)
                 elif event.key == pygame.K_ESCAPE:
-                    return EscapeScreen(self.canvas, self)
+                    return EscapeScreen(self.canvas, self, can_save = True, load_screen = 'dungeon')
         return self
 
     def display(self):
@@ -123,15 +128,9 @@ class DungeonScreen(Screen):
 
     def define_options(self):
         opts = []
-        new_areas = {}
         new_encounters = {}
         new_dialog = {}
         i = 0
-        for a in self.current_room.get_area_features():
-            opts.append((a.name, self.enter_area, YELLOW))
-            new_areas[i] = a
-            i += 1
-
         for e in self.current_room.enabled_encounters():
             opts.append((e.name, self.begin_encounter, RED))
             new_encounters[i] = e
@@ -147,7 +146,6 @@ class DungeonScreen(Screen):
             i += 1
 
         self.options = opts
-        self.areas = new_areas
         self.encounters = new_encounters
         self.dialog = new_dialog
 
@@ -175,6 +173,7 @@ class DungeonScreen(Screen):
             return self
         elif direction == self.current_room.exit_dungeon_direction:
             self.return_screen.refresh(area=self.dungeon.area)
+            self.player.room = None
             return self.return_screen
         return self
 
@@ -230,9 +229,6 @@ class DungeonScreen(Screen):
 
     # Functions called by the room option the player selects
     # These are essentially the same as in AreaScreen
-    def enter_area(self, index):
-        return AreaScreen(self.canvas, self.areas[index].area, self.player, self)
-
     def begin_encounter(self, index):
         return CombatScreen(self.canvas, self.encounters[index], self.current_room, self.player, self)
 

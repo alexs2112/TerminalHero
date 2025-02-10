@@ -3,6 +3,7 @@ from creature.creature import Creature
 from creature.player import Player
 from creature.creature_sprite import CreatureSprite, ModularSprite
 from combat.damage import Damage
+from item.item import ITEM_SLOTS
 
 def save_creature(creature: Creature):
     # Take the creature's attributes, then overwrite the ones that cannot be serialized
@@ -12,6 +13,8 @@ def save_creature(creature: Creature):
     out['profession'] = creature.profession.name        # Assume that this is not None
     out['base_damage'] = creature.base_damage.__dict__.copy()
     new_equipment = {}
+    for s in ITEM_SLOTS:
+        new_equipment[s] = ''
     for s, e in out['equipment'].items():
         if out['equipment'][s]:
             new_equipment[s] = e.name
@@ -22,9 +25,11 @@ def save_creature(creature: Creature):
 
     if creature.type == 'player':
         out['party'] = [ p.id for p in creature.party ]
-
-        # Area will need to be revisited
-        out['area'] = None
+        out['area'] = creature.area.id
+        if creature.room:
+            out['room'] = creature.room.id
+        else:
+            out['room'] = None
 
     return out
 
@@ -44,6 +49,8 @@ def load_creature(creature_dict: dict):
     c.set_profession(get_profession_by_name(out['profession']))
     c.set_base_damage(Damage(out['base_damage']['min'], out['base_damage']['max'], out['base_damage']['type']))
     for slot, item_name in out['equipment'].items():
+        if not item_name:   # empty string
+            continue
         c.equipment[slot] = get_item_by_name(item_name)
     c.set_sprite(unhash_creature_sprite(out['sprite']))
     if out['food']:

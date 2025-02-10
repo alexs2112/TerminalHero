@@ -10,10 +10,11 @@ from world.world_builder import get_world
 world = get_world()
 
 class EscapeScreen(Screen):
-    def __init__(self, canvas, prev_screen, can_save=True):
+    def __init__(self, canvas, prev_screen, can_save=True, load_screen='world'):
         super().__init__(canvas)
         self.prev_screen = prev_screen
         self.can_save = can_save
+        self.load_screen = load_screen
         self.index = 0 if can_save else 1
         self.options = [
             "Save",
@@ -46,11 +47,13 @@ class EscapeScreen(Screen):
                         else:
                             return self
                     elif self.options[self.index] == "Load":
-                        self.load_game()
-                        self.prev_screen.refresh()
-                        return self.prev_screen
+                        return self.load_game()
+                        #self.prev_screen.refresh()
+                        #return self.prev_screen
                     elif self.options[self.index] == "Exit":
                         return None
+                elif event.key == pygame.K_ESCAPE:
+                    return self.prev_screen
         return self
 
     def display(self):
@@ -73,9 +76,10 @@ class EscapeScreen(Screen):
     def save_game(self):
         add_notification(['Game Saved!'])
         s = Serializer(SAVE_FILE)
-        s.serialize(world)
+        s.serialize(world, self.load_screen)
 
     def load_game(self):
         add_notification(['Game Loaded!'])
         d = Deserializer(SAVE_FILE)
         d.deserialize(world)
+        return d.get_screen(self.canvas, world)

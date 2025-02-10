@@ -55,7 +55,7 @@ class WorldScreen(Screen):
                 elif event.key == pygame.K_c:
                     return CreatureScreen(self.canvas, self.world.player, self)
                 elif event.key == pygame.K_ESCAPE:
-                    return EscapeScreen(self.canvas, self)
+                    return EscapeScreen(self.canvas, self, can_save = True, load_screen = 'world')
         return self
 
     def move_into(self, area):

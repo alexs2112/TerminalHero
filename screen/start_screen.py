@@ -39,11 +39,11 @@ class StartScreen(Screen):
                         if world.player:
                             # If the player is already assigned via commands
                             return WorldScreen(self.canvas, world)
-                        return ProfessionScreen(self.canvas, world)
+                        return ProfessionScreen(self.canvas)
                     elif self.options[self.index] == "Load Game":
                         d = Deserializer(SAVE_FILE)
                         d.deserialize(world)
-                        return WorldScreen(self.canvas, world)
+                        return d.get_screen(self.canvas, world)
                     elif self.options[self.index] == "Exit":
                         return None
         return self

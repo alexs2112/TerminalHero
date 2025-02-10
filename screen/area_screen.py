@@ -86,7 +86,7 @@ class AreaScreen(Screen):
                 elif event.key == pygame.K_c:
                     return CreatureScreen(self.canvas, self.player, self)
                 elif event.key == pygame.K_ESCAPE:
-                    return EscapeScreen(self.canvas, self)
+                    return EscapeScreen(self.canvas, self, can_save = True, load_screen = 'area')
         return self
 
     def display(self):

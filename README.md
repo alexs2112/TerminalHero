@@ -150,11 +150,12 @@ options:
 - Fix Escape screen for loading, allow loading from non-world screens
   - World may need to be decoupled from Game
   - You can only Save from World, Dungeons, Area, you can Load from anywhere
-- Load the player in the correct area
-	- This means we will always load into either the World or the Dungeon screen, which is acceptable
-  - Set both Area.player and Player.area
+- Load the player in the correct area.
+- Load to the correct screen. This will either be World, Area, or Dungeon
+- If the player is in a dungeon, load to the correct room in the dungeon
+  - The player needs to figure out if they are in a dungeon or not
 - Ensure that all of the handlers that get imported are reset upon loading.
-  - inventory, quest_handler, level_up_handler
+  - inventory, quest_handler, level_up_handler, world
 - Unit Tests:
 	- Create a World, save World, load World, hash both objects and see if they are the same
 
@@ -168,3 +169,5 @@ options:
   - We probably just don't need the EffectFactory lol
 - Rename draw_sprite to draw_from_rect, rename draw_creature to draw_sprite, handle dest coords better
 - Separate combat log from dialogue log for recording history
+- Tidy up places where World is referenced now that it is decoupled from Game
+- Support multiple files to save and load from

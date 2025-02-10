@@ -1,7 +1,7 @@
 import pygame
 from screen.screen import Screen
 from screen.world_screen import WorldScreen
-from world.world import World
+from world.world_builder import get_world
 from creature.player import Player
 from creature.creature_factory import get_creature_factory
 from item.item import WEAPON, ARMOR, TRINKET
@@ -18,9 +18,8 @@ PROFESSIONS = [
     'luminarch'
 ]
 class ProfessionScreen(Screen):
-    def __init__(self, canvas, world: World):
+    def __init__(self, canvas):
         super().__init__(canvas)
-        self.world = world
         self.index = 0
 
         self.players = self.initialize_players()
@@ -45,8 +44,9 @@ class ProfessionScreen(Screen):
                     if self.index < 0:
                         self.index = len(self.players) - 1
                 elif event.key == pygame.K_RETURN:
-                    self.world.player = self.players[self.index]
-                    return WorldScreen(self.canvas, self.world)
+                    world = get_world()
+                    world.player = self.players[self.index]
+                    return WorldScreen(self.canvas, world)
         return self
 
     def display(self):

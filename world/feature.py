@@ -58,12 +58,6 @@ class DialogFeature(Feature):
     def get_dialog_node(self):
         return self.dialog_function()
 
-class AreaFeature(Feature):
-    def __init__(self, name, area):
-        super().__init__(name)
-        self.type = AREA
-        self.area = area
-
 class FoodStoreFeature(Feature):
     def __init__(self, name):
         super().__init__(name)

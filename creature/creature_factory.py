@@ -287,7 +287,7 @@ class CreatureFactory:
 
     def new_rangu(self):
         rangu = Creature("Rangu", 1)
-        rangu.set_sprite(ModularSprite((24,24,12,12), (24,12,12,12)))
+        rangu.set_sprite(ModularSprite((24,24,12,12), (24,0,12,12)))
         rangu.set_description("Wrapped in a weathered cloak, Rangu's presence is both imposing and effortless. "
                               "His twin hunting knives rest at his hips, and a musky scent of charred wood clings to him-like a fire that never fully goes out.")
         rangu.set_defensive_stats(base_hp=8, defense=0, dodge=3, will=2, endurance=2)
