@@ -221,3 +221,82 @@ class EncounterFactory:
         e.block_exit = True
         e.reward_xp = 300
         return e
+
+    # Bandit Camp
+    def bandit_camp_failed_sneak(self):
+        e = Encounter('bandit_camp_failed_sneak', "Attack Bandits")
+        e.valid_condition = 'bandit_camp_sneak_failed' # Note this is different than the ID
+        e.set_enemy_functions(
+            creature_factory.new_bandit_grunt_1,
+            creature_factory.new_bandit_cutthroat
+        )
+        e.block_exit = True
+        e.reward_xp = 300
+        return e
+
+    def bandit_camp_watchtower_default(self):
+        e = Encounter('bandit_camp_watchtower_default', "Attack Bandits")
+        e.invalid_condition = 'bandit_camp_assassination'
+        e.set_enemy_functions(
+            creature_factory.new_bandit_grunt_1,
+            creature_factory.new_bandit_grunt_2,
+            creature_factory.new_bandit_raider
+        )
+        e.block_exit = True
+        e.reward_xp = 450
+        return e
+
+    def bandit_camp_watchtower_small(self):
+        e = Encounter('bandit_camp_watchtower_small', "Attack Bandits")
+        e.valid_condition = 'bandit_camp_assassination'
+        e.set_enemy_functions(
+            creature_factory.new_bandit_grunt_2,
+            creature_factory.new_bandit_raider
+        )
+        e.block_exit = True
+        e.reward_xp = 450
+        return e
+
+    def bandit_camp_pool(self):
+        e = Encounter('bandit_camp_pool', "Attack Bandits")
+        e.set_enemy_functions(
+            creature_factory.new_bandit_cutthroat,
+            creature_factory.new_bandit_cutthroat
+        )
+        e.block_exit = True
+        e.reward_xp = 400
+        return e
+
+    def bandit_camp_fire_default(self):
+        e = Encounter('bandit_camp_fire_default', "Attack Bandits")
+        e.invalid_condition = 'bandit_camp_assassination'
+        e.set_enemy_functions(
+            creature_factory.new_bandit_grunt_1,
+            creature_factory.new_bandit_cutthroat,
+            creature_factory.new_lesser_black_flame_elemental
+        )
+        e.block_exit = True
+        e.reward_xp = 550
+        return e
+
+    def bandit_camp_fire_small(self):
+        e = Encounter('bandit_camp_fire_small', "Attack Bandits")
+        e.valid_condition = 'bandit_camp_assassination'
+        e.set_enemy_functions(
+            creature_factory.new_bandit_grunt_1,
+            creature_factory.new_lesser_black_flame_elemental
+        )
+        e.block_exit = True
+        e.reward_xp = 550
+        return e
+
+    def bandit_camp_boss(self):
+        e = Encounter('bandit_camp_boss', "Attack Bandits")
+        e.set_enemy_functions(
+            creature_factory.new_bandit_cutthroat,
+            creature_factory.new_bandit_grunt_2,
+            creature_factory.new_bandit_raider_elite
+        )
+        e.block_exit = True
+        e.reward_xp = 700
+        return e

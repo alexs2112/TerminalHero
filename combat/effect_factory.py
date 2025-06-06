@@ -11,9 +11,6 @@ def get_effect_factory():
     return _effect_factory
 
 class EffectFactory:
-    def create_burning_effect(self, damage, duration):
-        return BurningEffect(duration, damage)
-
     def create_disarmed_effect(self, duration, strength):
         return DisarmedEffect(duration, strength)
 

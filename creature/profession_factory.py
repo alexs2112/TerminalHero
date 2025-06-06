@@ -81,5 +81,5 @@ class ProfessionFactory:
         p = Profession("Ashen Stalker")
         p.set_stats(dexterity=2, intelligence=1, speed=1, dodge=1)
         p.add_ability(abilities.blinding_smoke(80))
-        p.add_ability(abilities.flickering_flames(80))
+        p.add_ability(abilities.flickering_flames(90, Damage(0,2,'fire'), 10, intelligence=0.5))
         return p

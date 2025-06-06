@@ -1,32 +1,49 @@
+from random import random
 from combat.effect import Effect
+from combat.damage import Damage
 from main.colour import *
 from main.messenger import get_messenger
 messenger = get_messenger()
 
 # Take fire damage at the start of the effect and at the start of each turn
 class BurningEffect(Effect):
-    def __init__(self, duration, strength):
+    def __init__(self, duration, damage, caster, shake_off_chance):
         super().__init__("Burning", duration, ORANGE)
-        self.strength = strength
+        self.damage = damage
+        self.caster = caster
+        self.shake_off_chance = shake_off_chance
 
     def effect_start(self, creature):
         messenger.add(f"{creature.name} catches fire!")
-        dam = creature.take_damage(self.strength)
-        messenger.add(f"{creature.name} burns for {dam} :ORANGE:fire damage:ORANGE:!")
+        self.deal_damage(creature)
 
     def effect_turn(self, creature):
-        dam = creature.take_damage(self.strength)
-        messenger.add(f"{creature.name} burns for {dam} :ORANGE:fire damage:ORANGE:!")
-        self.duration -= 1
+        self.deal_damage(creature)
+        if random() * 100 < self.shake_off_chance + creature.stat('endurance') * 5:
+            messenger.add(f"{creature.name} shakes off the fire.")
+            self.duration = 0
+        else:
+            self.duration -= 1
 
     def effect_end(self, creature):
         messenger.add(f"{creature.name} puts out the flames.")
 
-    def combine(self, _, other_effect):
+    def deal_damage(self, creature):
+        damage = self.damage.clone()
+        damage = self.caster.calculate_total_damage(creature, self.damage)
+        dam = damage.roll_damage()
+        messenger.add(f"{creature.name} burns for {dam} :ORANGE:Fire Damage:ORANGE:.")
+        creature.take_damage(dam)
+
+    def combine(self, creature, other_effect):
         if other_effect.name == self.name:
+            min_dam = max(self.damage.min, other_effect.damage.min)
+            max_dam = max(self.damage.max, other_effect.damage.max)
+            self.damage = Damage(min_dam, max_dam, 'fire')
             self.duration = max(other_effect.duration, self.duration)
-            self.strength = max(other_effect.strength, self.strength)
+            self.shake_off_chance = max(other_effect.shake_off_chance, self.shake_off_chance)
             messenger.add("The flames burn brighter!")
+            self.deal_damage(creature)
             return True
         return False
 
@@ -387,9 +404,42 @@ class EnchantedWeaponEffect(Effect):
 
     def combine(self, creature, other_effect):
         if other_effect.name == self.name:
-            self.effect_end(creature)
             self.duration = other_effect.duration
             self.strength = other_effect.strength
+            self.effect_start(creature)
+            return True
+        return False
+
+class PoisonedEffect(Effect):
+    def __init__(self, duration, strength):
+        super().__init__("Poisoned", duration, BLUEVIOLET)
+        self.strength = strength
+
+    def effect_start(self, creature):
+        messenger.add(f"{creature.name} is :BLUEVIOLET:Poisoned:BLUEVIOLET:.")
+        creature.add_temp_stats(
+            strength = -self.strength,
+            dexterity = -self.strength,
+            intelligence = -self.strength,
+            wisdom = -self.strength
+        )
+
+    def effect_turn(self, _):
+        self.duration -= 1
+
+    def effect_end(self, creature):
+        creature.add_temp_stats(
+            strength = self.strength,
+            dexterity = self.strength,
+            intelligence = self.strength,
+            wisdom = self.strength
+        )
+
+    def combine(self, creature, other_effect):
+        if other_effect.name == self.name:
+            self.effect_end(creature)
+            self.duration = max(other_effect.duration, self.duration)
+            self.strength = max(other_effect.strength, self.strength)
             self.effect_start(creature)
             return True
         return False

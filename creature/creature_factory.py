@@ -270,6 +270,54 @@ class CreatureFactory:
         c.set_ai(BasicAI(c))
         return c
 
+    def new_bandit_raider(self):
+        c = Creature("Bandit Raider", 1)
+        c.set_sprite(CreatureSprite((24,72,12,12),(96,0,12,12)))
+        c.set_description("A bulky bandit with makeshift armor and a jagged blade, standing their ground even when wounded.")
+        c.set_defensive_stats(base_hp=6,defense=6,dodge=2,will=1,endurance=2)
+        c.set_offensive_stats(speed=2,strength=3,dexterity=2,intelligence=1,wisdom=1)
+        c.set_base_damage(Damage(0, 2, 'physical'))
+        c.add_ability(abilities.war_cry(2, 1))
+        c.add_ability(abilities.basic_attack(strength=1))
+        c.add_ability(abilities.bolster(1, 3))
+        c.add_ability(abilities.multi_attack(strength=0.8))
+        c.set_ai(BasicAI(c))
+        return c
+
+    def new_bandit_raider_elite(self):
+        c = self.new_bandit_raider()
+        c.set_sprite(CreatureSprite((48,72,12,12),(96,12,12,12)))
+        c.set_defensive_stats(base_hp=9,defense=9,dodge=2,will=1,endurance=2)
+        c.set_offensive_stats(speed=3,strength=4,dexterity=2,intelligence=1,wisdom=1)
+        return c
+
+    def new_bandit_cutthroat(self):
+        c = Creature("Bandit Cutthroat", 1)
+        c.set_sprite(CreatureSprite((36,72,12,12),(96,0,12,12)))
+        c.set_description("A ruthless cutthroat wielding a poisoned dagger, they sacrifice defense for the chance to overwhelm foes with sheer ferocity.")
+        c.set_defensive_stats(base_hp=4,defense=5,dodge=2,will=1,endurance=2)
+        c.set_offensive_stats(speed=4,strength=2,dexterity=2,intelligence=1,wisdom=1)
+        c.set_base_damage(Damage(0, 2, 'physical'))
+        c.add_ability(abilities.basic_attack(dexterity=1))
+        c.add_ability(abilities.multi_attack(dexterity=0.8))
+        c.add_ability(abilities.poisoned_dagger(1, dexterity=1.5))
+        c.add_ability(abilities.reckless_attack(dexterity=1.5))
+        c.set_ai(BasicAI(c))
+        return c
+
+    def new_lesser_black_flame_elemental(self):
+        c = Creature("Lesser Black-Flame Elemental", 1)
+        c.set_sprite(CreatureSprite((60,72,12,12),(96,24,12,12)))
+        c.set_description("A volatile spirit of smoldering darkness, the Lesser Black-Flame Elemental flickers between realms, lashing out with searing black fire.")
+        c.set_defensive_stats(base_hp=4, defense=5, dodge=4, will=2, endurance=1)
+        c.set_offensive_stats(speed=3, strength=2, dexterity=1, intelligence=2, wisdom=2)
+        c.set_base_damage(Damage(0, 2, 'fire'))
+        c.add_ability(abilities.basic_attack(intelligence=1))
+        c.add_ability(abilities.flickering_flames(90, Damage(0,1,'fire'), 25, intelligence=1))
+        c.add_ability(abilities.self_destruct(Damage(1,3,'fire'), intelligence=1))
+        c.set_ai(BasicAI(c))
+        return c
+
     def new_gorren(self):
         gorren = Creature("Gorren", 1)
         gorren.set_sprite(ModularSprite((0,24,12,12), (0,0,12,12)))

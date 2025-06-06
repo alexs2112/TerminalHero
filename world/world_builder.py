@@ -104,6 +104,15 @@ class WorldBuilder:
         area.condition = 'known_caravan_wreckage'
         self.world.add_area((2,7), area)
 
+        area = Area("Bandit Camp", (48,12,12,12))
+        area.add_description(
+            "The remains of the caravan smolder in the midday sun-charred wagons overturned, splintered crates spilling their contents across the dirt. "
+            "The stench of burnt wood and flesh lingers in the air, and blood darkens the earth where the traders made their last stand.")
+        area.dungeon = dungeon_builder.new_bandit_camp(area)
+        area.condition = 'known_bandit_camp'
+        area.features = [ feature_factory.bandit_camp_sneak_check() ]
+        self.world.add_area((1,6), area)
+
         area = Area("The Bloodstone Mine", (12,12,12,12))
         area.add_description(
             "The village is built around the remains of a Bloodstone meteorite that had struck the earth a long time ago. "

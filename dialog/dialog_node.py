@@ -24,6 +24,9 @@ class DialogNode:
         # Condition that does not show this child node
         self.unless = None
 
+        # Set this field in the player log when this node is chosen
+        self.set_log = None
+
         # Only allow this dialog node to be selected once
         self.only_once = False
 
@@ -51,6 +54,9 @@ class DialogNode:
 
     def set_only_once(self, only_once: bool):
         self.only_once = only_once
+
+    def set_set_log(self, set_log: str):
+        self.set_log = set_log
 
     def set_stat_requirement(self, stat_requirement):
         self.stat_requirement = stat_requirement

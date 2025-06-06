@@ -74,7 +74,6 @@ options:
   - Move the combat log to the top of the screen?
 - Position enemy sprites bottom aligned, so that we can have enemies bigger than 12x12 (bosses should be 16x16)
 - Have a target_highlight function or something so that abilities like Rainstorm and Rallying Cry will show what creatures they will affect, even though you target yourself
-- Edit flickering_flames to pass it a Damage object instead of just a number
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
@@ -93,7 +92,7 @@ options:
     - Arrow-key control for dialogue options
 - Show the sprite of the NPC you are talking to
 - Coloured text should wrap properly
-- Dialogue that loads directly into combat or other screens
+- Dialogue that loads directly into combat or other screens, and combat that leads directly into dialogue
 
 **Items**
 - Magic weapons buff damage of a particular type?
@@ -134,3 +133,9 @@ options:
 - Separate combat log from dialogue log for recording history
 - Tidy up places where World is referenced now that it is decoupled from Game
 - Support multiple files to save and load from
+- Escape screen to flee combat and leave dungeons, also to view menus
+
+**Next Step**:
+- Bandit Camp boss needs a unique death sprite
+- Clearing bandit camp will open dialogue with the camp leader
+- Quest needs the next step to involve clearing the camp and interrogating the leader

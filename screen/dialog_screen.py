@@ -43,6 +43,8 @@ class DialogScreen(Screen):
         self.current_node: DialogNode = node
         if self.current_node.only_once:
             update_log(self.current_node.id)
+        if self.current_node.set_log:
+            update_log(self.current_node.set_log)
         self.children = self.get_valid_children()
         self.current_node.call_function(self.player)
         self.lines = fit_text(self.current_node.text, SCREEN_WIDTH - 32)

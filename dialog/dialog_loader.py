@@ -34,3 +34,6 @@ def rangu_initial_meeting():
 
 def rangu_tavern():
     return load_dialog('resources/dialog/rangu_tavern.json')['start']
+
+def bandit_camp_sneak_check():
+    return load_dialog('resources/dialog/bandit_camp_sneak_check.json')['start']

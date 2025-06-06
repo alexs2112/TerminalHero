@@ -1,0 +1,58 @@
+{
+    "nodes": {
+        "start": {
+            "name": "System",
+            "text": "You approach the bandit camp. From your position in the deep brush, you can see several guards keeping watch over the area.",
+            "children": [
+                ["Attempt to sneak in.", "sneak"],
+                ["Leave", "None"]
+            ]
+        },
+        "sneak": {
+            "type": "Roll",
+            "stat": "stealth",
+            "value": 10,
+            "success": "sneak_success",
+            "failure": "sneak_failure",
+            "set_log": "bandit_camp_sneak_attempted"
+        },
+        "sneak_failure": {
+            "name": "System",
+            "text": "It is difficult to sneak through the unfamiliar terrain. Terrain that the bandits have had plenty of time to study and fortify. Sneaking forward, you stumble almost directly into a bandit hidden in the underbrush...",
+            "children": [
+                ["Sound the alarm...", "spawn_enemies"]
+            ]
+        },
+        "spawn_enemies": {
+            "name": "System",
+            "text": "None",
+            "children": [],
+            "set_log": "bandit_camp_sneak_failed"
+        },
+
+        "sneak_success": {
+            "name": "System",
+            "text": "It is difficult to sneak through the unfamiliar terrain however you manage to do it. There was a close-call with a pair of bandits hidden in the brush, but you manage to get past the outer perimeter of guards. The camp is open to you.",
+            "children": [
+                ["Take out some unsuspecting bandits", "assassinate"],
+                ["Map out the area", "map"]
+            ]
+        },
+        "assassinate": {
+            "name": "System",
+            "text": "Sneaking through the bandit camp, you are successfully able to take out a handful of unaware guards before retreating back to the rest of the party.",
+            "children": [
+                ["End", "None"]
+            ],
+            "set_log": "bandit_camp_assassination"
+        },
+        "map": {
+            "name": "System",
+            "text": "Sneaking through the bandit camp, you make note of locations of interest. You find the main campground, and note a ramshackle Watchtower, a small pool of fresh water, and a large fire pit.",
+            "children": [
+                ["End", "None"]
+            ],
+            "function": "bandit_camp_map"
+        }
+    }
+}

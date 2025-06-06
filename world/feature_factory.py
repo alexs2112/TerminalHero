@@ -109,3 +109,11 @@ class FeatureFactory():
             return player_log['met_rangu'] and not player_log['visit_bandit_camp']
         f.set_enabled_function(enabled)
         return f
+
+    def bandit_camp_sneak_check(self):
+        f = DialogFeature("Attempt to Sneak In")
+        f.set_dialog_function(bandit_camp_sneak_check)
+        def enabled():
+            return not player_log['bandit_camp_sneak_attempted']
+        f.set_enabled_function(enabled)
+        return f

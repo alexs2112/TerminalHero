@@ -45,6 +45,9 @@ def initialize_player_log():
         'accepted_scales_spurs': False,
         'met_rangu': False,
         'visit_bandit_camp': False,
+        'bandit_camp_sneak_attempted': False,
+        'bandit_camp_sneak_failed': False,
+        'bandit_camp_assassination': False,
 
         # Food Related Logs
         'food_mushroom': False,

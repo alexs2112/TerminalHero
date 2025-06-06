@@ -213,48 +213,65 @@ class DungeonBuilder:
 
     def new_bandit_camp(self, area):
         d = Dungeon("Bandit Camp",
-                    "placeholder text",
+                    "Nestled deep within the forest, the bandit camp is a chaotic sprawl of mismatched tents, crude barricades, and scavenged supplies. "
+                    "The scent of smoke and unwashed bodies hangs heavy in the air, mingling with the distant crackle of a dying bonfire. "
+                    "Rough-hewn wooden structures stand alongside makeshift shelters, their canvas flaps swaying in the breeze.",
                     area, 2, 3)
         d.set_unscaled_size(64, 96)
         d.start_player_pos = (1,0)
 
         entrance = Room("Hidden Path", (100,78,32,32))
-        entrance.add_description("placeholder text")
+        entrance.add_description("A narrow trail winds through the underbrush, barely visible to the untrained eye. "
+                                 "Twisted roots and tangled vines obscure the path, but faint boot prints in the dirt betray frequent use. "
+                                 "The scent of damp earth and pine fills the air, masking any trace of those who pass through.")
         entrance.set_unscaled_position(32,0)
         entrance.set_player_position(18,14)
         entrance.exits = [ EXIT_LEFT ]
+        entrance.encounters = [ encounter_factory.bandit_camp_failed_sneak() ]
         entrance.exit_dungeon_direction = EXIT_UP
         d.add_room((1,0), entrance)
 
         watchtower = Room("Makeshift Watchtower", (67,78,32,32))
-        watchtower.add_description("placeholder text")
+        watchtower.add_description("A crooked wooden tower leans precariously among the trees, lashed together with rope and scavenged planks. "
+                                   "The structure creaks ominously in the wind, as if it could collapse at any moment.")
         watchtower.set_unscaled_position(0,0)
         watchtower.set_player_position(16,14)
         watchtower.exits = [ EXIT_DOWN, EXIT_RIGHT ]
+        watchtower.encounters = [ encounter_factory.bandit_camp_watchtower_default(),
+                                  encounter_factory.bandit_camp_watchtower_small() ]
         d.add_room((0,0), watchtower)
 
         pool = Room("Bandit Camp", (67,111,32,32))
         pool.id = 'bandit_camp_1'
-        pool.add_description("placeholder text")
+        pool.add_description("A still, clear pool reflects the canopy above, its surface disturbed only by the occasional ripple. "
+                             "Barrels and crude wooden troughs line the edge, where bandits gather water for their provisions. "
+                             "Nearby, discarded bones and food scraps hint at their recent meals.")
         pool.set_unscaled_position(0,32)
         pool.set_player_position(16,16)
         pool.exits = [ EXIT_UP, EXIT_RIGHT, EXIT_DOWN ]
+        pool.encounters = [ encounter_factory.bandit_camp_pool() ]
         d.add_room((0,1), pool)
 
         fire = Room("Bandit Camp", (100,111,32,32))
         fire.id = 'bandit_camp_2'
-        fire.add_description("placeholder text")
+        fire.add_description("A wide fire pit, its embers still glowing, sits at the heart of the camp. "
+                             "Scattered bedrolls and crude sleeping tents encircle the flames, the remnants of a half-eaten meal left abandoned on a flat stone. "
+                             "The smell of charred wood and old stew lingers in the cool air.")
         fire.set_unscaled_position(32,32)
         fire.set_player_position(12,16)
         fire.exits = [ EXIT_LEFT ]
+        fire.encounters = [ encounter_factory.bandit_camp_fire_default(),
+                            encounter_factory.bandit_camp_fire_small() ]
         d.add_room((1,1), fire)
 
         boss = Room("Bandit Camp", (67,144,32,32))
         boss.id = 'bandit_camp_3'
-        boss.add_description("placeholder text")
+        boss.add_description("A cluster of tents stands in loose formation, one larger and more adorned than the rest. "
+                             "A heavy chest, its iron fittings worn with age, sits at the center, surrounded by makeshift tables littered with maps and stolen trinkets.")
         boss.set_unscaled_position(0,64)
         boss.set_player_position(16,14)
         boss.exits = [ EXIT_UP ]
+        boss.encounters = [ encounter_factory.bandit_camp_boss() ]
         d.add_room((0,2), boss)
 
         return d

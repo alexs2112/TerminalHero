@@ -75,6 +75,9 @@ def load_node_initial(log_id, node_data):
     only_once = False
     if 'only_once' in node_data:
         only_once = node_data['only_once']
+    set_log = None
+    if 'set_log' in node_data:
+        set_log = node_data['set_log']
 
     d = DialogNode(log_id, node_data['name'], node_data['text'], node_data['children'])
     d.set_condition(condition)
@@ -83,6 +86,7 @@ def load_node_initial(log_id, node_data):
     d.set_area_option(area_option)
     d.set_stat_requirement(stat_requirement)
     d.set_only_once(only_once)
+    d.set_set_log(set_log)
     return d
 
 def load_roll_initial(log_id, node_data):
@@ -111,6 +115,9 @@ def load_roll_initial(log_id, node_data):
     only_once = False
     if 'only_once' in node_data:
         only_once = node_data['only_once']
+    set_log = None
+    if 'set_log' in node_data:
+        set_log = node_data['set_log']
 
     d = DialogRoll(log_id, name, text, node_data['value'], node_data['stat'], node_data['success'], node_data['failure'])
     d.set_condition(condition)
@@ -119,4 +126,5 @@ def load_roll_initial(log_id, node_data):
     d.set_area_option(area_option)
     d.set_stat_requirement(stat_requirement)
     d.set_only_once(only_once)
+    d.set_set_log(set_log)
     return d

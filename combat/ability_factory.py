@@ -418,15 +418,18 @@ class AbilityFactory:
                 messenger.add(f"{c.name} conjurs a cloud of Blinding Smoke but {t.name} dodges it.")
         a.set_effect(effect)
         return a
-    def flickering_flames(self, base_hit_chance):
+    def flickering_flames(self, base_hit_chance, base_damage, shake_off_chance, **scaling):
         a = Ability("Flickering Flames", cooldown=3)
         a.set_description("Attempt to light an enemy on fire.")
         a.set_target_priority(default_offensive_priority)
+        a.set_scaling(scaling)
         def effect(c: Creature, t: Creature, _):
             success = attack_roll(c) > (100-base_hit_chance) + t.stat('dodge') * 5 - c.stat('intelligence') * 5
             if success:
                 messenger.add(f"{c.name} casts Flickering Flames.")
-                t.add_effect(effects.create_burning_effect(c.stat('intelligence'), 2 + c.stat('intelligence')))
+                damage = base_damage.clone()
+                a.scale_damage(damage, c)
+                t.add_effect(BurningEffect(3, damage, c, shake_off_chance))
             else:
                 messenger.add(f"{c.name} throws flame at {t.name} but misses.")
         a.set_effect(effect)
@@ -730,5 +733,91 @@ class AbilityFactory:
             messenger.add(f"A :BLUEVIOLET:{s.name}:BLUEVIOLET: awakens.")
             a.get_encounter().add_enemies(s)
             c.add_effect(effects.create_armor_effect(4, 8))
+        a.set_effect(effect)
+        return a
+
+    # Bandit Camp
+    def war_cry(self, defense, strength):
+        a = Ability("War Cry", cooldown=4, cost=2)
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            if c.has_effect("Bolstered"):
+                return [ Priority(a, c, 1) ]
+            return [ Priority(a, c, 3) ]
+        a.set_target_priority(priority)
+        def effect(c: Creature, t: Creature, a: Area):
+            messenger.add(f"{c.name} lets out a War Cry.")
+            for e in a.get_encounter().enemies:
+                e.add_effect(BolsteredEffect(2, strength, defense))
+        a.set_effect(effect)
+        return a
+    def poisoned_dagger(self, strength, **scaling):
+        a = Ability("Poisoned Dagger", cooldown=4, cost=2)
+        a.set_target_priority(high_offensive_priority)
+        a.set_scaling(scaling)
+        def effect(c: Creature, t: Creature, area: Area):
+            success = attack_roll(c) > t.stat('dodge') * 5
+            if success:
+                damage = c.get_base_damage()
+                damage = a.scale_damage(damage, c)
+                damage = c.calculate_total_damage(t, damage)
+                dam = damage.roll_damage()
+                messenger.add(f"{c.name} slashes the {t.name} for {dam} {damage.type} damage.")
+                t.take_damage(dam)
+                if t.is_alive():
+                    roll = random() * 80
+                    if roll > t.stat('endurance') * 5:
+                        t.add_effect(PoisonedEffect(2, strength))
+            else:
+                messenger.add(f"{c.name} bites at {t.name} but misses.")
+        a.set_effect(effect)
+        return a
+    def reckless_attack(self, **scaling):
+        a = Ability("Reckless Attack", cooldown=2, cost=1)
+        a.set_description("Attack an enemy when you have no more armor.")
+        def can_target(c: Creature, o: Creature):
+            return c.armor <= 0
+        a.set_can_target(can_target)
+        a.set_target_priority(high_offensive_priority)
+        a.set_scaling(scaling)
+        def effect(c: Creature, t: Creature, _):
+            if basic_attack_roll(c, t):
+                damage = c.get_base_damage()
+                damage = a.scale_damage(damage, c)
+                damage = c.calculate_total_damage(t, damage)
+                dam = damage.roll_damage()
+                messenger.add(f"{c.name} reckless attacks {t.name} for {dam} {damage.type} damage!")
+                t.take_damage(dam)
+        a.set_effect(effect)
+        return a
+
+    # Black-Flame Elementals
+    def self_destruct(self, base_damage, **scaling):
+        a = Ability("Self-Destruct", cooldown=1, cost=1)
+        a.set_description("Explode your remaining lifeforce to deal damage to each enemy.")
+        def can_target(c: Creature, o: Creature):
+            return c.armor > 0 and c.hp <= c.max_hp() * 2 / 3
+        a.set_can_target(can_target)
+        def priority(a: Ability, c: Creature, p: Player, e: Encounter):
+            if len(p.party) > 1:
+                return [ Priority(a,c,4) ]
+            return [ ]
+        a.set_target_priority(priority)
+        a.set_scaling(scaling)
+        def effect(c: Creature, t: Creature, area: Area):
+            messenger.add(f"{c.name} bursts apart in a fiery explosion.")
+            c.take_damage(100,True)
+            at_least_one_hit = False
+
+            for p in area.player.party:
+                if attack_roll(c, 85) > p.stat('dodge') * 5:
+                    at_least_one_hit = True
+                    damage = base_damage.clone()
+                    damage = a.scale_damage(damage, c)
+                    damage = c.calculate_total_damage(p, damage)
+                    dam = damage.roll_damage()
+                    messenger.add(f"{p.name} is struck for {dam} {damage.type} damage.")
+                    p.take_damage(dam)
+            if not at_least_one_hit:
+                messenger.add("Everybody evades the explosion.")
         a.set_effect(effect)
         return a

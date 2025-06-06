@@ -100,6 +100,7 @@ def finish_rangu_initial(player: Player):
 
     add_notification([':YELLOW:Area Unlocked!:YELLOW:',
                       'Rangu marks your map with the location of the :CYAN:Bandit Camp:CYAN:.'])
+    update_log('known_bandit_camp')
 
     if not player_log['tavern_open']:
         update_log('tavern_open')
@@ -120,3 +121,8 @@ def rangu_eat_buried_torch(player: Player):
         if a.name == "Rangu":
             a.eat_food(item_factory.new_plump_helmet())
             return
+
+def bandit_camp_map(player: Player):
+    # Assume the player's area is the bandit camp
+    for r in player.area.dungeon.get_rooms():
+        r.set_revealed()
