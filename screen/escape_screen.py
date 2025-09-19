@@ -1,5 +1,6 @@
 import pygame
 from screen.screen import Screen
+from screen.controls_screen import ControlsScreen
 from main.constants import *
 from main.colour import *
 from main.notification import add_notification
@@ -19,11 +20,12 @@ class EscapeScreen(Screen):
         self.options = [
             "Save",
             "Load",
+            "Controls",
             "Exit"
         ]
 
-        self.box_width = FONT_WIDTH * 8
-        self.box_height = (FONT_HEIGHT + 4) * 5
+        self.box_width = FONT_WIDTH * 16
+        self.box_height = (FONT_HEIGHT + 4) * (len(self.options) + 2)
         self.box_start = (SCREEN_WIDTH - self.box_width) / 2
 
     def check_events(self, events):
@@ -48,8 +50,11 @@ class EscapeScreen(Screen):
                             return self
                     elif self.options[self.index] == "Load":
                         return self.load_game()
-                        #self.prev_screen.refresh()
-                        #return self.prev_screen
+                        # I do not remember why this is commented out?
+                        # self.prev_screen.refresh()
+                        # return self.prev_screen
+                    elif self.options[self.index] == "Controls":
+                        return ControlsScreen(self.canvas, self.prev_screen)
                     elif self.options[self.index] == "Exit":
                         return None
                 elif event.key == pygame.K_ESCAPE:
