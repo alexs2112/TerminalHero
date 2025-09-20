@@ -19,7 +19,7 @@ Each companion will have a damage type, and a choice of 3 classes. The player sh
 - Inquisitor: Martial attacks + Holy powers, Tank + Healer
 
 ### Dark
-- [[Soulwarden]]: Control into Area Burst
+- [[Soulwarden (Old)]]: Control into Area Burst
 - Hexer: Slow control, applying crippling Debuffs and Buffs
 - Shadowblade: Stealthy, Single-Target Burst
 

@@ -74,6 +74,7 @@ options:
   - Move the combat log to the top of the screen?
 - Position enemy sprites bottom aligned, so that we can have enemies bigger than 12x12 (bosses should be 16x16)
 - Have a target_highlight function or something so that abilities like Rainstorm and Rallying Cry will show what creatures they will affect, even though you target yourself
+- Limit number of abilities for PCs to some sort of "memory" stat or whatever
 
 **Dungeons**
 - Dungeons refresh enemies if the player leaves before completing them (defeating boss?)
@@ -93,6 +94,7 @@ options:
 - Show the sprite of the NPC you are talking to
 - Coloured text should wrap properly
 - Dialogue that loads directly into combat or other screens, and combat that leads directly into dialogue
+- Character portraits?
 
 **Items**
 - Magic weapons buff damage of a particular type?
@@ -134,6 +136,19 @@ options:
 - Tidy up places where World is referenced now that it is decoupled from Game
 - Support multiple files to save and load from
 - Escape screen to flee combat and leave dungeons, also to view menus
+- Regression tests for saving and restoring creatures?
+- Somewhat resizable window? Not sure how to best do this without blowing up the aesthetic
+- Witch Companion in the woods that has various tea abilities?
+- Bump up creatures to 16x16 instead of 12x12
+
+**Levelling Up**:
+- A notification somewhere for unspent points?
+- Gaining companions starts them at lvl 1 abilities with a bunch of unspent skill points and stuff
+- Tiers of abilities to unlock, each tier has 3 abilities, later tiers unlock with levels (second tier at level 3, then 5, then 7, etc)
+- You also get stat points, one for Offensive/Defensive stats, and one for Dialogue stats?
+  - Or no increases to Dialogue? Maybe you can get bonus dialogue stats from doing certain things but you are locked into whatever your party has
+  - Maybe you can only spend stat points on the primary Offensive stats, and otherwise you get corresponding Defensive Stats?
+  - I don't entirely remember how all of these stats interact
 
 **Next Step**:
 - Bandit Camp boss needs a unique death sprite

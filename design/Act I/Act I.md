@@ -7,8 +7,8 @@ At the end of each of these main sidequests, the player will be provided with a 
 
 ### Sidequests
 Speaking to Elder Varik directly leads to several sidequests:
-- [[Grave Concerns]] - Providing [[Gorren, The Grave-Touched]] (Dark)
-- [[Scales and Spurs]] - Providing [[Rangu, the Drifting Fang]] (Fire)
+- [[Grave Concerns - Old]] - Providing [[Gorren, The Grave-Touched]] (Dark)
+- [[Scales and Spurs - Overview]] - Providing [[Rangu, the Drifting Fang]] (Fire)
 
 When talking to [[Bartender Doran the Red]] of [[The Lifeblood Tavern]], they can gain an additional two sidequests that each provide a companion.
 - ??? (Cold)

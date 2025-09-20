@@ -44,10 +44,10 @@ With the pulse of necromantic energy that Gorren felt, the enemies in the cemete
 
 Encounters:
 - 2 Patchwork Dead + Lanternbearer
-- 3 Rotting Hounds
+- 3 Rotting Strays
 
 If the player has not already, they should be at least level 2 after they clear this section.
-> [!Danger] Rotting Hounds
+> [!Danger] Rotting Stray
 > Decayed canine corpses animated to guard the cemetery. They move faster than the shambling Patchwork Dead.
 > Rabid Bite: Has a chance to Bleed
 > Chilling Howl: Buff each Rotting Hound in the encounter
@@ -65,14 +65,14 @@ Once the player arrives at the Vaelthorne Shrine, there is a pillar of dark ston
 > Runic Chains: Deal damage and stun a character, reduce their AP by 2
 > This enemy gains additional action points every turn
 ### The Vaelthorne Crypt
-The crypt itself is a very short dungeon. There are only three rooms beyond the entrance hall, each room having a full encounter of moderately tough enemies. One direction takes you directly to the boss fight, the Unhallowed Guardian, while the other direction takes you to a treasure chest in a ritual room. This chest contains both Loot and the [[Obsidian Lantern]] required, while the boss drops some strong equipment for the party. The party is expected to be at level 3 for this dungeon.
+The crypt itself is a very short dungeon. There are only three rooms beyond the entrance hall, each room having a full encounter of moderately tough enemies. One direction takes you directly to the boss fight, the Unhallowed Guardian, while the other direction takes you to a treasure chest in a ritual room. This chest contains strong loot for the party, while the boss drops the [[Obsidian Lantern]]. The party is expected to be at level 3 for this dungeon.
 
 When the Unhallowed Guardian is defeated, Gorren feels another dark wave of necromantic energy emanate from its corpse before it dissolves into a pile of Salt.
 
 Encounters:
 - Main Hall: 2 Bone Servitor, 1 Patchwork Dead
 - Ritual Room: 2 Gravebound Watcher
-- Boss Room: 1 Unhallowed Guardian, 1 Bone Servitor
+- Boss Room: 1 Unhallowed Guardian, 1 Gravebound Watcher
 
 > [!Note]
 > The player should not be allowed to simply leave and re-enter the crypt without consequences.
@@ -84,7 +84,7 @@ Encounters:
 > Multi-Attack: Attack twice (3 AP)
 
 > [!Danger] Gravebound Watcher
-> A towering, rotting figure with glowing eyes and remnants of priestly robes.
+> A rotting figure with glowing eyes and remnants of priestly robes.
 > Hollow Gaze: Deal Dark damage, reduce the target's Dark resistance
 > Necrotic Chains: Bind the target, dealing Dark damage and stunning the target
 
@@ -107,10 +107,16 @@ The party will fight its way to the Eternal Church once more. Once inside, there
 > [!Note]
 > Once the ritual is complete, all encounters still active in the cemetery will end. This should probably reward the party a fraction of the XP that would be gained by defeating them in combat.
 
+> [!Danger] Bound Remnants
+> Essentially higher level patchwork dead. They have a variety of attacks based on their equipped weapons. When they die for the first time, they regenerate at a single hit point.
+> Sword and Shield: Disarming Strike, Bone Shield, Multi-Attack
+> Hammer: Heavy Blow, Multi-Attack
+> Axe: Cleave, Multi-Attack
+
 > [!Danger] The Soul-Tethered Herald
 > The Soul-Tethered Herald is a twisted undead being that was once a priest or holy figure in life. In death, it has become a conduit for the endless waves of necromantic energy that have corrupted the cemetery.
 > Necrotic Wave: Deal Dark damage to each player, reducing their Dark resistance for a time
-> Unholy Summon: Summon a Patchwork Dead or Bone Servitor (3 AP). This grants the boss some armor
+> Unholy Summon: Summon a Bone Servitor or a Bound Remnant (3 AP). This grants the boss some armor
 > Dark Tether: Deal Dark damage and stun the target
 > Gains additional AP each turn
 
