@@ -272,8 +272,8 @@ class AbilityFactory:
                 damage = c.calculate_total_damage(t, damage)
                 base_dam = damage.roll_damage()
                 if t.has_effect("Wet"):
-                    dam = base_dam + c.level * 7
-                    messenger.add(f"{c.name} blasts {t.name} for {dam} ({base_dam} + {c.level * 7}) Air damage!")
+                    dam = base_dam + c.get_level() * 7
+                    messenger.add(f"{c.name} blasts {t.name} for {dam} ({base_dam} + {c.get_level() * 7}) Air damage!")
                     t.take_damage(dam)
                     success = True
                 else:
@@ -298,7 +298,7 @@ class AbilityFactory:
         a.set_can_target(can_target)
         def effect(c: Creature, t: Creature, a: Area):
             # For now, just assume only a party member will ever use this
-            strength = int((c.level + 1) / 2)
+            strength = int((c.get_level() + 1) / 2)
             armor = c.stat('wisdom') * 8
             for p in a.player.party:
                 if p.is_alive():

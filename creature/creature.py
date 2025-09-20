@@ -6,6 +6,7 @@ from combat.effect import Effect
 from combat.damage import Damage
 from creature.profession import Profession
 from creature.creature_sprite import CreatureSprite
+from creature.level_up_handler import get_level_up_handler
 from item.item import *
 
 messenger = get_messenger()
@@ -23,10 +24,6 @@ class Creature:
         self.abilities: list[Ability] = []
         self.ai = None
         self.profession: Profession = None
-
-        # Floating stat and ability points for leveling up
-        self.stat_points = 0
-        self.ability_points = 0
 
         self.base_hp = 0
         self.hp = 0
@@ -88,6 +85,9 @@ class Creature:
 
         # If this creature is allied with the player
         self.allied: bool = False
+
+        self.spent_stat_points = 0
+        self.spent_ability_points = 0
 
     def set_description(self, description):
         self.description = description
@@ -160,11 +160,16 @@ class Creature:
                 s += item.stats[stat_name]
         return s
 
+    def get_level(self):
+        if self.allied:
+            return get_level_up_handler().get_level()
+        return self.level
+
     def max_hp(self):
-        return self.base_hp + self.stat('endurance') * self.level
+        return self.base_hp + self.stat('endurance') * self.get_level()
 
     def max_armor(self):
-        return self.stat('defense') + self.level
+        return self.stat('defense')
 
     def gain_hp(self, num):
         diff = min(self.max_hp() - self.hp, num)

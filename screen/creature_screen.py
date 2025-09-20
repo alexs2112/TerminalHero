@@ -1,6 +1,7 @@
 import pygame
 from screen.screen import Screen
 from creature.creature import Creature
+from creature.level_up_handler import get_level_up_handler
 from main.constants import *
 from main.colour import *
 from main.util import draw_creature, fit_text
@@ -11,6 +12,7 @@ class CreatureScreen(Screen):
         self.creature = creature
         self.prev_screen = prev_screen
         self.desc_lines = fit_text(creature.description, SCREEN_WIDTH - 256 - 24 - 20)
+        self.level_handler = get_level_up_handler()
 
     def check_events(self, events):
         for event in events:
@@ -34,12 +36,16 @@ class CreatureScreen(Screen):
 
         # Write name, level, and profession
         x, y = 136, y + 12
-        self.write(self.creature.name.upper(), (x, y))
-        y += FONT_HEIGHT + 2
-        prof_string = f"Level {self.creature.level}"
+        name_string = self.creature.name.upper()
         if self.creature.profession:
-            prof_string += f" {self.creature.profession.name}"
-        self.write(prof_string, (x, y), LIGHTGRAY)
+            name_string += f" ({self.creature.profession.name})"
+        self.write(name_string, (x, y))
+
+        y += FONT_HEIGHT + 2
+        level_string = f"Level {self.creature.get_level()}"
+        if self.creature.allied:
+            level_string += f"      EXP: {self.level_handler.get_exp()} (next level: {self.level_handler.get_remaining_exp()})"
+        self.write(level_string, (x, y), LIGHTGRAY)
 
     def draw_health(self, x, y):
         rect_x = x + FONT_WIDTH * 12 + 12

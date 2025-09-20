@@ -26,32 +26,38 @@ def get_level_up_handler():
 
 class LevelUpHandler:
     def __init__(self):
-        self.creatures = []
         self.xp = 0
-
-    def add_creature(self, creature):
-        self.creatures.append(creature)
 
     def get_exp(self):
         return self.xp
 
+    def get_remaining_exp(self):
+        next_bp = 0
+        for bp in LEVEL_UP_BREAKPOINTS:
+            next_bp += bp
+            if next_bp > self.xp:
+                break
+        return next_bp - self.xp
+
+    def get_level(self):
+        for i in range(len(LEVEL_UP_BREAKPOINTS)):
+            if self.xp < LEVEL_UP_BREAKPOINTS[i]:
+                return i
+
     def add_xp(self, amount: int):
+        old = self.xp
         self.xp += amount
-        next_bp = LEVEL_UP_BREAKPOINTS[self.creatures[0].level]
+
+        next_bp = 0
+        for bp in LEVEL_UP_BREAKPOINTS:
+            next_bp += bp
+            if next_bp > old:
+                break
+
         if self.xp >= next_bp:
-            self.xp -= next_bp
-            new_level = self.creatures[0].level + 1
-
-            for c in self.creatures:
-                if c.level < new_level:
-                    c.level += 1
-                    c.stat_points += 1
-                    if (c.level) % 2:
-                        c.ability_points += 1
-
+            new_level = self.get_level()
             msg = [':YELLOW:Level Up!:YELLOW:']
             msg += [ f'Level: {new_level - 1} -> :GREEN:{new_level}:GREEN:']
             msg += [ ':GREEN:Stat Point Gained!:GREEN:']
-            if (new_level) % 2:
-                msg += [ ':GREEN:Ability Point Gained!']
+            msg += [ ':GREEN:Ability Point Gained!']
             add_notification(msg)

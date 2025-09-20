@@ -18,7 +18,7 @@ class Deserializer:
         self.load_player_log()
         self.load_inventory()
         self.load_quests()
-        self.load_level_up_handler(world.player.party)
+        self.load_level_up_handler()
         self.load_player_location(world, world.player)
 
     def load_companions(self):
@@ -53,14 +53,9 @@ class Deserializer:
             func = getattr(quests.quest_factory, quest_id)
             q.add_done(func())
 
-    def load_level_up_handler(self, party):
+    def load_level_up_handler(self):
         levels = get_level_up_handler()
-        levels.creatures.clear()
         levels.xp = self.data['xp_tracker']
-
-        # Instead of storing the party, just add all of them on load
-        for c in party:
-            levels.add_creature(c)
 
     # This is kind of a mess
     def load_player_location(self, world, player):

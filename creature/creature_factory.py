@@ -2,7 +2,6 @@ from creature.creature import Creature
 from creature.player import Player
 from creature.creature_sprite import CreatureSprite, ModularSprite
 from creature.profession_factory import get_profession_factory
-from creature.level_up_handler import get_level_up_handler
 from creature.ai.basic_ai import BasicAI
 from item.item_factory import get_item_factory
 from combat.damage import Damage
@@ -12,7 +11,6 @@ from dialog.dialog_loader import *
 abilities = get_ability_factory()
 professions = get_profession_factory()
 items = get_item_factory()
-level_handler = get_level_up_handler()
 
 # pylint: disable=invalid-name
 _creature_factory = None
@@ -53,7 +51,6 @@ class CreatureFactory:
             player.equip_item(items.new_sword())
         player.refresh()
         player.allied = True
-        level_handler.add_creature(player)
         return player
 
     def new_patchwork_dead_1(self):
@@ -330,7 +327,6 @@ class CreatureFactory:
         gorren.set_profession(professions.soulwarden())
         gorren.refresh()
         gorren.allied = True
-        level_handler.add_creature(gorren)
         return gorren
 
     def new_rangu(self):
@@ -345,5 +341,4 @@ class CreatureFactory:
         rangu.set_profession(professions.ashen_stalker())
         rangu.refresh()
         rangu.allied = True
-        level_handler.add_creature(rangu)
         return rangu
