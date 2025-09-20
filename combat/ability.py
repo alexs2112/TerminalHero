@@ -62,5 +62,5 @@ class Ability:
 
     def scale_damage(self, damage, creature):
         for s, v in self.scaling.items():
-            damage.add_damage(int(creature.stat(s) * v))
+            damage.add_damage(int(creature.stat(s) * v * 7))
         return damage

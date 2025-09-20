@@ -27,7 +27,7 @@ class ProfessionFactory:
         )
         p.set_stats(strength=2, endurance=1)
         p.add_ability(abilities.multi_attack(strength=1))
-        p.add_ability(abilities.bolster(1, 5))
+        p.add_ability(abilities.bolster(1, 35))
         return p
 
     def duelist(self):
@@ -52,7 +52,7 @@ class ProfessionFactory:
         )
         p.set_stats(intelligence=2, will=2, dodge=1)
         p.add_ability(abilities.rainstorm())
-        p.add_ability(abilities.lightning_strike(Damage(1,3,'air'), 90, intelligence=1))
+        p.add_ability(abilities.lightning_strike(Damage(5, 20, 'air'), 90, intelligence=1))
         return p
 
     def luminarch(self):
@@ -72,14 +72,14 @@ class ProfessionFactory:
         p = Profession("Soulwarden")
         p.set_stats(intelligence=2, will=1, endurance=1)
         p.set_resistances(dark=10)
-        p.add_ability(abilities.drain_life(90, Damage(0, 2, 'dark'), intelligence=1))
-        p.add_ability(abilities.corpse_explosion(Damage(1,3,'dark'), intelligence=1.25))
-        p.add_ability(abilities.curse_of_decay(Damage(0, 2, 'dark'), intelligence=1))
+        p.add_ability(abilities.drain_life(90, Damage(5, 15, 'dark'), intelligence=1))
+        p.add_ability(abilities.corpse_explosion(Damage(10, 20, 'dark'), intelligence=1.25))
+        p.add_ability(abilities.curse_of_decay(Damage(5, 15, 'dark'), intelligence=1))
         return p
 
     def ashen_stalker(self):
         p = Profession("Ashen Stalker")
         p.set_stats(dexterity=2, intelligence=1, speed=1, dodge=1)
         p.add_ability(abilities.blinding_smoke(80))
-        p.add_ability(abilities.flickering_flames(90, Damage(0,2,'fire'), 10, intelligence=0.5))
+        p.add_ability(abilities.flickering_flames(90, Damage(5, 15, 'fire'), 10, intelligence=0.5))
         return p

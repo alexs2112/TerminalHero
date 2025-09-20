@@ -272,8 +272,8 @@ class AbilityFactory:
                 damage = c.calculate_total_damage(t, damage)
                 base_dam = damage.roll_damage()
                 if t.has_effect("Wet"):
-                    dam = base_dam + c.level * 2
-                    messenger.add(f"{c.name} blasts {t.name} for {dam} ({base_dam} + {c.level * 2}) Air damage!")
+                    dam = base_dam + c.level * 7
+                    messenger.add(f"{c.name} blasts {t.name} for {dam} ({base_dam} + {c.level * 7}) Air damage!")
                     t.take_damage(dam)
                     success = True
                 else:
@@ -299,7 +299,7 @@ class AbilityFactory:
         def effect(c: Creature, t: Creature, a: Area):
             # For now, just assume only a party member will ever use this
             strength = int((c.level + 1) / 2)
-            armor = c.stat('wisdom')
+            armor = c.stat('wisdom') * 8
             for p in a.player.party:
                 if p.is_alive():
                     p.add_effect(BolsteredEffect(3, strength, armor))
@@ -314,7 +314,7 @@ class AbilityFactory:
         def effect(c: Creature, t: Creature, _):
             # We will need to fix this when we change ability scaling
             # For now, just increase strength by wisdom
-            t.add_effect(EnchantedWeaponEffect(2, c.stat('wisdom')))
+            t.add_effect(EnchantedWeaponEffect(2, c.stat('wisdom') * 5))
         a.set_effect(effect)
         return a
 
@@ -344,7 +344,7 @@ class AbilityFactory:
                 messenger.add(f"{t.name} takes {dam} {damage.type} damage!")
                 messenger.add(f"{c.name} restores {c.stat('intelligence')} armor.")
                 t.take_damage(dam)
-                c.gain_armor(c.stat('intelligence'))
+                c.gain_armor(c.stat('intelligence') * 5)
             else:
                 messenger.add(f"{c.name} casts Drain Life. {t.name} resists.")
         a.set_effect(effect)
@@ -411,8 +411,8 @@ class AbilityFactory:
         def effect(c: Creature, t: Creature, _):
             success = attack_roll(c, base_accuracy) > t.stat('dodge') * 5
             if success:
-                messenger.add(f"{c.name} conjurs a cloud of Blinding Smoke. {t.name} takes 1 physical damage.")
-                t.take_damage(1, 'physical')
+                messenger.add(f"{c.name} conjurs a cloud of Blinding Smoke. {t.name} takes 5 physical damage.")
+                t.take_damage(5, 'physical')
                 t.add_effect(effects.create_blinded_effect(1, 60))
             else:
                 messenger.add(f"{c.name} conjurs a cloud of Blinding Smoke but {t.name} dodges it.")
@@ -442,7 +442,7 @@ class AbilityFactory:
         a.set_target_priority(default_bolstered_priority)
         def effect(c: Creature, t: Creature, _):
             messenger.add(f"{c.name} waves their :BLUEVIOLET:Pale Lantern:BLUEVIOLET:.")
-            t.add_effect(effects.create_bolstered_effect(3, c.stat('intelligence'), c.stat('intelligence') + 2))
+            t.add_effect(effects.create_bolstered_effect(3, c.stat('intelligence'), c.stat('intelligence') * 8))
         a.set_effect(effect)
         return a
 
@@ -470,7 +470,7 @@ class AbilityFactory:
                 if t.is_alive():
                     roll = random() * 75
                     if roll > t.stat('endurance') * 5:
-                        t.add_effect(effects.create_bleed_effect(3, 1))
+                        t.add_effect(effects.create_bleed_effect(3, 5))
             else:
                 messenger.add(f"{c.name} bites at {t.name} but misses.")
         a.set_effect(effect)
@@ -487,7 +487,7 @@ class AbilityFactory:
             messenger.add(f"{c.name} lets out a chilling howl.")
             for e in a.get_encounter().enemies:
                 if e.name == name and e.is_alive():
-                    e.add_effect(effects.create_bolstered_effect(2, 2, 2))
+                    e.add_effect(effects.create_bolstered_effect(2, 2, 10))
         a.set_effect(effect)
         return a
 
@@ -635,7 +635,7 @@ class AbilityFactory:
         def effect(c: Creature, _, area: Area):
             at_least_one = False
             messenger.add(f"The {c.name} calls upon unholy energies.")
-            armor = c.stat('intelligence')
+            armor = c.stat('intelligence') * 7
             for t in area.player.party:
                 if t.is_alive():
                     success = random() * 85 > t.stat('will') * 5

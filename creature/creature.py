@@ -31,7 +31,7 @@ class Creature:
         self.base_hp = 0
         self.hp = 0
         self.armor = 0
-        self.base_damage = Damage(0, 1, 'physical')
+        self.base_damage = Damage(0, 10, 'physical')
 
         self.stats = {
             # Defensive Stats
